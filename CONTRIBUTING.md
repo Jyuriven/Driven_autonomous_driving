@@ -9,7 +9,6 @@
     - fix : 버그 패치
     - feat : 기능 추가
     - style : 기능 변경 없이 간단한 변수명, 파일명, 경로변경 등의 작업
-    - design : 프로그램 UI 변경
     - BREAKING CHANGE : 커다란 API의 변경
     - HOTFIX : 급하게 큰 에러의 수정한 경우
     - refactor : 기능 변경 없이 레거시를 리팩터링하는 거대한 작업

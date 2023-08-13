@@ -1,6 +1,6 @@
 import argparse
 import numpy as np
-import imageio
+import imageio.v2 as imageio
 import time
 
 import pyastar2d
@@ -13,7 +13,7 @@ def parse_args():
         "An example of using pyastar2d to find the solution to a maze"
     )
     parser.add_argument(
-        "--input", type=str, default="mazes/maze_small.png",
+        "--input", type=str, default="decision/library/mazes/maze_small.png",
         help="Path to the black-and-white image to be used as input.",
     )
     parser.add_argument(
@@ -56,7 +56,7 @@ def main():
     # set allow_diagonal=True to enable 8-connectivity
     path = pyastar2d.astar_path(grid, start, end, allow_diagonal=False)
     dur = time.time() - t0
-
+    print(grid)
     if path.shape[0] > 0:
         print(f"Found path of length {path.shape[0]} in {dur:.6f}s")
         maze = np.stack((maze, maze, maze), axis=2)

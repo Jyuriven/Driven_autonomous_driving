@@ -1,0 +1,2 @@
+ublox_f9p/ntrip_ros:ublox_f9p/rtcm_msgs:ublox_f9p/ublox:ublox_f9p/ublox_gps:ublox_f9p/ublox_msgs:ublox_f9p/ublox_serialization
+-DCATKIN_DEVEL_PREFIX=/home/minseok/Driven_autonomous_driving/feat_waypoint/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/minseok/Driven_autonomous_driving/feat_waypoint/catkin_ws/install -G Unix Makefiles

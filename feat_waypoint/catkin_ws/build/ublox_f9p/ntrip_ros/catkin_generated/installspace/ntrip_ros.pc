@@ -1,0 +1,8 @@
+prefix=/home/minseok/Driven_autonomous_driving/feat_waypoint/catkin_ws/install
+
+Name: ntrip_ros
+Description: Description of ntrip_ros
+Version: 0.0.1
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

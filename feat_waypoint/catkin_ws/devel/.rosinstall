@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/minseok/Driven_autonomous_driving/feat_waypoint/catkin_ws/devel/setup.sh

@@ -11,11 +11,9 @@ ONE_MPH = 0.44704
 
 
 class Controller(object):
-    def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit, accel_limit,
-                 wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
+    def __init__(self, vehicle_mass, fuel_capacity, brake_deadband, decel_limit, accel_limit, wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
         '''
         vehicle_mass: 차량의 무게
-        fuel_capacity: 연료 탱크 용량
         brake_deadband: 브레이크 페달 민감도
         decel_limit: 출발 정지시 감속 제한
         accel_limit: 최대 가속도
@@ -41,7 +39,6 @@ class Controller(object):
         self.vel_lpf = LowPassFilter(tau, ts)
 
         self.vehicle_mass = vehicle_mass
-        self.fuel_capacity = fuel_capacity
         self.brake_deadband = brake_deadband
         self.decel_limit = decel_limit
         self.accel_limit = accel_limit

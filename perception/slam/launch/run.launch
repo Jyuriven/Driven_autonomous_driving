@@ -16,4 +16,7 @@
     <node pkg="lego_loam" type="mapOptmization"     name="mapOptmization"     output="screen"/>
     <node pkg="lego_loam" type="transformFusion"    name="transformFusion"    output="screen"/>
 
+    <!--- Data Convert-->
+    <node pkg="lego_loam" type="pointcloud2gridmap"    name="pointcloud2gridmap"    output="screen"/>
+    
 </launch>

@@ -2,6 +2,7 @@ from twist_controller import Controller
 
 #메인 코드
 def main():
+    master_control = Controller
     Throttle, Brake, Steering=Controller.control()
     print(Throttle,Brake,Steering)
 

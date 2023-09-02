@@ -194,8 +194,7 @@ public:
         cloudSegmentation();
         // 6. Publish all clouds
         publishCloud();
-        // 7. Reset parameters for next iteration
-        resetParameters();
+        
 
         ROS_INFO("2D Coordinates:");
         for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
@@ -203,6 +202,9 @@ public:
             float y = segmentedCloudPure->points[i].y;
             ROS_INFO("Point %zu - X: %f, Y: %f", i, x, y);
         }
+
+        // 7. Reset parameters for next iteration
+        resetParameters();
     }
 
     void findStartEndAngle(){

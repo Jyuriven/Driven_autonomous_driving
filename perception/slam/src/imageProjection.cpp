@@ -97,6 +97,8 @@ public:
         pubSegmentedCloudInfo = nh.advertise<cloud_msgs::cloud_info> ("/segmented_cloud_info", 1);
         pubOutlierCloud = nh.advertise<sensor_msgs::PointCloud2> ("/outlier_cloud", 1);
 
+        std::string pointCloudTopic = "/segmented_cloud_pure";
+
         nanPoint.x = std::numeric_limits<float>::quiet_NaN();
         nanPoint.y = std::numeric_limits<float>::quiet_NaN();
         nanPoint.z = std::numeric_limits<float>::quiet_NaN();
@@ -194,6 +196,13 @@ public:
         publishCloud();
         // 7. Reset parameters for next iteration
         resetParameters();
+
+        ROS_INFO("2D Coordinates:");
+        for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
+            float x = segmentedCloudPure->points[i].x;
+            float y = segmentedCloudPure->points[i].y;
+            ROS_INFO("Point %zu - X: %f, Y: %f", i, x, y);
+        }
     }
 
     void findStartEndAngle(){
@@ -496,6 +505,7 @@ public:
             laserCloudTemp.header.stamp = cloudHeader.stamp;
             laserCloudTemp.header.frame_id = "base_link";
             pubSegmentedCloudPure.publish(laserCloudTemp);
+
         }
         // projected full cloud info
         if (pubFullInfoCloud.getNumSubscribers() != 0){

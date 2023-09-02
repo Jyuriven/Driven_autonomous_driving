@@ -13,8 +13,6 @@ max_lat_accel: 차량의 최대 측면 가속도
 max_steer_angle: 조향 장치의 최대 회전각도
 '''
 
-#MAX Stop_sign 
-
 #메인
 def main():
     master_control = Controller()
@@ -23,7 +21,7 @@ def main():
     if start_time - end_time > 2:
         master_control.stop_sign = True
     
-    Throttle, Brake, Steering, start_time = master_control.control( )
+    Throttle, Brake, Steering, start_time = master_control.control(210, )
     print(Throttle,Brake,Steering)
 if __name__ == "__main__":
     main()

@@ -17,7 +17,6 @@ class YawController(object):
         #아크탄젠트
         angle = atan(self.wheel_base / radius) * self.steer_ratio
         
-        
         '''
         최대 조향각과 최소 조향각 사이 값인지 확인
         if  angle >= self.max_angle:

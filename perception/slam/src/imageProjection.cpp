@@ -196,11 +196,12 @@ public:
         publishCloud();
         
 
-        ROS_INFO("2D Coordinates:");
+        ROS_INFO("segmentedCloudPure:\n");
+        ROS_INFO("Size of SCP: %d", egmentedCloudPure->points.size())
         for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
             float x = segmentedCloudPure->points[i].x;
             float y = segmentedCloudPure->points[i].y;
-            ROS_INFO("Point %zu - X: %f, Y: %f", i, x, y);
+            ROS_INFO("Point %zu - X: %f, Y: %f \n", i, x, y);
         }
 
         // 7. Reset parameters for next iteration

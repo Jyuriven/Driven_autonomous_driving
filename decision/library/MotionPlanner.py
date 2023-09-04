@@ -28,10 +28,11 @@ isBarricade() : 전방에 멈춰야하는 콘이 있나요 ? , 빨간색 콘이 
 DEFAULT_VELOCITY = 10
 BARRICADE_DISTANCE_THRESHOLD = 100  ## cm 기준 
 
-class MotionPlan():
+class MotionPlanner():
 
     now_velocity = 0
     now_steering = 0
+    now_yaw_rate = 0
 
     first_target_velocity = 0
     first_target_steering = 0
@@ -56,6 +57,11 @@ class MotionPlan():
         self.now_steering = imu.yawrate
         return self.now_steering
     
+    def get_now_yawrate(self):
+        imu = perception.get_imu()
+        self.now_yaw_rate = imu.yawrate
+        return self.now_yaw_rate
+    
     def get_left_barricade_distance(self):
         self.left_barricade_distance = perception.get_left_barricade_distance()
         return self.left_barricade_distance
@@ -77,13 +83,7 @@ class MotionPlan():
         self.first_target_steering = target_steering_1
         self.second_target_steering = target_steering_2
     
-
-class MotionPlanner():
     
-    def __init__(self):
-        self.velocity = 0
-        self.steering = 0
-        self.yaw_rate = 0
         
     
 
@@ -103,32 +103,67 @@ class MotionPlanner():
         return target_degree - now_degree
 
     
-    def motionplanning(smoothingpath):
+    ### 차량이 정상적인 경로로 움직이고 있는지 확인하여 만약 아니라면 핸들을 왼쪽으로 꺾으며 후진해야하는지, 오른쪽으로 꺾으며 회전해야하는지 결정한다. 
+    def is_stable_status(self):
+        print("현재속도 : ", self.get_now_velocity())
+        print("현재스티어링각 : ",self.get_now_steering())
+        print("현재 yawrate : ",self.get_now_yawrate())
 
-        ''' 빨간색 콘이 존재하지 않고, '''
+        ## 정상적이지 않은 경로라고 판단할수있는 근거가 뭘까 ?
+        
+    
+    def stableMotionning(self,smoothingpath,LAD):
+        ### look ahead distance 를 고려해야할수도 있음. 
+    
+        radian_tmp = gradient.calculate_radian(smoothingpath[2*LAD][0],smoothingpath[2*LAD][1],smoothingpath[3*LAD][0],smoothingpath[3*LAD][1])
+        target_degree = gradient.rad2deg(radian_tmp)
+        self.first_target_steering = self.get_now_steering - target_degree
+        self.first_target_velocity = DEFAULT_VELOCITY
+
+        return self
+
+
+    def motionplanning(self,smoothingpath):
+        #---미완성코드---
+        ## 우리 차가 초기 위치로 돌아왔냐 ? --- 
+        if perception.gps_isInitStatus():
+            return self 
+            
+
+        ''' 전방에 빨간콘이 존재하지 않을 때 '''
         if not perception.isBarricade():
-            motion_plan =  MotionPlan()
+            
             radian_tmp = gradient.calculate_radian(smoothingpath[0][0],smoothingpath[0][1],smoothingpath[1][0],smoothingpath[1][1])
             target_degree = gradient.rad2deg(radian_tmp)
             
-            motion_plan.first_target_steering = motion_plan.get_now_steering - target_degree
-            motion_plan.first_target_velocity = DEFAULT_VELOCITY
+            self.first_target_steering = self.get_now_steering - target_degree
+            self.first_target_velocity = DEFAULT_VELOCITY
 
 
             radian_tmp = gradient.calculate_radian(smoothingpath[1][0],smoothingpath[1][1],smoothingpath[2][0],smoothingpath[2][1])
             target_degree = gradient.rad2deg(radian_tmp)
 
-            motion_plan.second_target_steering = motion_plan.first_target_steering - target_degree # degree
-            motion_plan.second_target_velocity = DEFAULT_VELOCITY
+            self.second_target_steering = self.first_target_steering - target_degree # degree
+            self.second_target_velocity = DEFAULT_VELOCITY
 
-            return motion_plan
+            return self
         
-        # ''' 임계치보다 낮은 거리르 가지고 있을 때 '''
+        ### 빨간콘이 존재하고, 전방 콘과의 거리가 10 미터 이내일때 
         elif perception.isBarricade()==1 and BARRICADE_DISTANCE_THRESHOLD < 100 :
-            print(1)
-            return motion_plan
-
             
+            if BARRICADE_DISTANCE_THRESHOLD < 50:
+                self.first_target_velocity = 0
+                return self
+            
+            print(" ************ OH FUCK! WE SHOULD STOP!! ***************** ")
+            print(" ***************  DECREASE VELOCITY  ******************** ")
+            self.first_target_velocity = DEFAULT_VELOCITY-10
+            return self
+
+
+
+        
+        ###             
             
         ### 길 찾기 기반 경로 결정 ### 
         ### Motion Planning ### 

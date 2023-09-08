@@ -197,7 +197,7 @@ public:
         
 
         ROS_INFO("segmentedCloudPure:\n");
-        ROS_INFO("Size of SCP: %d", egmentedCloudPure->points.size())
+        ROS_INFO("Size of SCP: %d", egmentedCloudPure->points.size());
         for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
             float x = segmentedCloudPure->points[i].x;
             float y = segmentedCloudPure->points[i].y;

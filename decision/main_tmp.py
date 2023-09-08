@@ -1,13 +1,11 @@
+import library.lidar as Lidar
+import library.udp as UDP
 import library.mapping_ as MAP
 import library.MotionPlanner as MotionPlanner
-import library.gradient as gradient
 import pyastar2d
 import numpy as np
 from time import sleep
 from os import sys
-
-import matplotlib.pyplot as plt
-
 
 ## pesudo code 먼저 작성 함. 
 ## 큰 틀은 라이다 연결 -> 빈 지도 생성 -> point cloud data to grid 변환 ->grid 저장
@@ -20,7 +18,7 @@ import matplotlib.pyplot as plt
 #lidar_ip = '127,0.0.1'
 #lidar_port = 8080
 
-motion_controller = MotionPlanner.MotionPlanner()
+#motion_controller = MotionPlanner()
 #lidar_connection = Lidar.LidarConnection()
 #udp_connection = UDP.UDPConnection()
 
@@ -30,7 +28,7 @@ HEIGH = 100
 
 #main_grid = MAP.init_root_grid(HEIGH,WIDTH,RES)
 main_grid = np.ones((100,100),np.float32)
-print("size of Grid : ",WIDTH*HEIGH)
+print("size of Grid : %d",WIDTH*HEIGH)
 
 MAIN_GRID_SET = 1
 
@@ -58,16 +56,10 @@ try:
         else:
             print("Using maze solver.py")
 
+        MAP.save_grid(main_grid,"main_grid")
         print(path)
-        target_d = motion_controller.calculate_target_degree(path)
-        smoothing_path = gradient.smooth(path)
-        print(smoothing_path)
-
-        plt.plot(smoothing_path)
-        plt.show()
-        break
-
         
+        target_d = motion_controller.calculate_target_degree(path)
         ## taregt_d,velocity 아두이노로 전송하기.        
         ## velocity 가 너무 빠른상태에서 steering 이 되지 않아야 함.
 
@@ -75,5 +67,5 @@ try:
 
 except KeyboardInterrupt:
     print("####### INTERRUPTED #########")
-    MAP.save_grid(path,"main_grid")
+    MAP.save_grid(main_grid,"main_grid")
     sys.exit(0)

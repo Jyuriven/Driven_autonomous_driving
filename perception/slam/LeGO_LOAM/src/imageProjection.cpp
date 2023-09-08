@@ -194,16 +194,6 @@ public:
         cloudSegmentation();
         // 6. Publish all clouds
         publishCloud();
-        
-
-        ROS_INFO("segmentedCloudPure:\n");
-        ROS_INFO("Size of SCP: %d", egmentedCloudPure->points.size());
-        for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
-            float x = segmentedCloudPure->points[i].x;
-            float y = segmentedCloudPure->points[i].y;
-            ROS_INFO("Point %zu - X: %f, Y: %f \n", i, x, y);
-        }
-
         // 7. Reset parameters for next iteration
         resetParameters();
     }
@@ -377,6 +367,16 @@ public:
                 }
             }
         }
+        // Print the size and some points from segmentedCloudPure
+        ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
+        for (size_t i = 0; i < std::min(segmentedCloudPure->points.size(), static_cast<size_t>(10)); ++i) {
+            float x = segmentedCloudPure->points[i].x;
+            float y = segmentedCloudPure->points[i].y;
+            float z = segmentedCloudPure->points[i].z;
+            int intensity = static_cast<int>(segmentedCloudPure->points[i].intensity);
+            ROS_INFO("Point %zu - X: %f, Y: %f, Z: %f, Intensity: %d", i, x, y, z, intensity);
+        }
+
     }
 
     void labelComponents(int row, int col){

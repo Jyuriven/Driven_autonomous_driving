@@ -2,6 +2,7 @@ import rospy
 from yaw_controller import YawController
 from pid import PID
 from lowpass import LowPassFilter
+from gpsdata import *
 
 Full_brake = 1
 
@@ -35,10 +36,12 @@ class Controller(object):
         
         
         #차단 주파수
+        '''
         tau = 0.5  # cutoff frequency, i.e., 1/(2*pi*tau)
         ts = 0.02  # sample time
         self.vel_lpf = LowPassFilter(tau, ts)
-
+        '''
+        
         self.vehicle_mass = vehicle_mass
         self.brake_deadband = brake_deadband
         self.decel_limit = decel_limit
@@ -64,8 +67,8 @@ class Controller(object):
             return 0.0, 0.0, 0.0
         '''
         
-        #LowPassFilter 클래스를 통한 노이즈 제거
-        current_vel = self.vel_lpf.filt(current_vel)
+        #LowPassFilter 클래스를 통한 노이즈 제거 (필요 없음)
+        #current_vel = self.vel_lpf.filt(current_vel)
 
         steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel, stop_sign)
         
@@ -80,17 +83,22 @@ class Controller(object):
         brake = 0.0
         
         
-        
-        if linear_vel == 0.0 and current_vel < 0.1:
+        #목표 속도가 0이 되면 풀 브레이크
+        if linear_vel == 0.0 and vel_error < 3:
             throttle = 0.0
             brake = Full_brake
             if stop_sign:
                 start_time = rospy.get_time()
             stop_sign = False
-            
+        
+        #중간브레이크는 없는가...?
+        
+        
+        #원하는 속도에 도달하면 쓰로틀값을 내린다.
         elif throttle < 0.1 and vel_error < 0.0:
             throtle = 0.0
             if not stop_sign:
                 decel = max(vel_error, self.decel_limit)
                 brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
+                
         return throttle, brake, steering, start_time

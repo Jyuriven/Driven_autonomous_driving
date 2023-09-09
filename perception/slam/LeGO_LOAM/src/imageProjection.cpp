@@ -368,14 +368,63 @@ public:
         }
         // }
         // Print the size and some points from segmentedCloudPure
-        ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
-        for (size_t i = 0; i < std::min(segmentedCloudPure->points.size(), static_cast<size_t>(10)); ++i) {
+        // ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
+        // for (size_t i = 0; i < std::min(segmentedCloudPure->points.size(), static_cast<size_t>(50)); ++i) {
+        //     float x = segmentedCloudPure->points[i].x;
+        //     float y = segmentedCloudPure->points[i].y;
+        //     float z = segmentedCloudPure->points[i].z;
+        //     int intensity = static_cast<int>(segmentedCloudPure->points[i].intensity);
+        //     ROS_INFO("Point %zu - X: %f, Y: %f, Z: %f, Intensity: %d", i, x, y, z, intensity);
+        // }
+        // x 및 y 좌표의 최소 및 최대값
+        float x_min = std::numeric_limits<float>::max();
+        float x_max = -std::numeric_limits<float>::max();
+        float y_min = std::numeric_limits<float>::max();
+        float y_max = -std::numeric_limits<float>::max();
+
+        // x와 y의 최소 및 최대값 찾기
+        for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
             float x = segmentedCloudPure->points[i].x;
             float y = segmentedCloudPure->points[i].y;
-            float z = segmentedCloudPure->points[i].z;
-            int intensity = static_cast<int>(segmentedCloudPure->points[i].intensity);
-            ROS_INFO("Point %zu - X: %f, Y: %f, Z: %f, Intensity: %d", i, x, y, z, intensity);
+            
+            if (x < x_min) x_min = x;
+            if (x > x_max) x_max = x;
+            if (y < y_min) y_min = y;
+            if (y > y_max) y_max = y;
         }
+
+        // 크기 계산
+        const int width = 800; // 원하는 배열 너비
+        const int height = 800; // 원하는 배열 높이
+
+        // 범위 계산
+        float x_range = x_max - x_min;
+        float y_range = y_max - y_min;
+
+        // 크기가 0인 경우를 방지하기 위해 최소값 사용
+        if (x_range < std::numeric_limits<float>::epsilon()) x_range = 1.0;
+        if (y_range < std::numeric_limits<float>::epsilon()) y_range = 1.0;
+
+        // 2차원 배열 초기화
+        int grid[width][height] = {0};
+
+        // 데이터 매핑 및 배열 업데이트
+        ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
+        for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
+            float x = segmentedCloudPure->points[i].x;
+            float y = segmentedCloudPure->points[i].y;
+            ROS_INFO("Point %zu - X: %f, Y: %f Intensity: %d", i, x, y, intensity);
+            // x, y 좌표를 2차원 배열 인덱스로 매핑
+            int x_index = static_cast<int>((x - x_min) / x_range * width);
+            int y_index = static_cast<int>((y - y_min) / y_range * height);
+
+            // 배열 범위 내의 유효한 인덱스인지 확인
+            if (x_index >= 0 && x_index < width && y_index >= 0 && y_index < height) {
+                // 해당 인덱스의 값을 증가시킴 (포인트 수 카운트)
+                grid[x_index][y_index]++;
+            }
+        }
+
 
     }
 

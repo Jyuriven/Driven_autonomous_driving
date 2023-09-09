@@ -355,7 +355,9 @@ public:
 
             segMsg.endRingIndex[i] = sizeOfSegCloud-1 - 5;
         }
-        
+##################################################################################################
+## 실험중 
+##################################################################################################
         // extract segmented cloud for visualization
         // if (pubSegmentedCloudPure.getNumSubscribers() != 0){
         for (size_t i = 0; i < N_SCAN; ++i){
@@ -366,15 +368,6 @@ public:
                 }
             }
         }
-        // }
-        // Print the size and some points from segmentedCloudPure
-        // ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
-        // for (size_t i = 0; i < std::min(segmentedCloudPure->points.size(), static_cast<size_t>(50)); ++i) {
-        //     float x = segmentedCloudPure->points[i].x;
-        //     float y = segmentedCloudPure->points[i].y;
-        //     float z = segmentedCloudPure->points[i].z;
-        //     int intensity = static_cast<int>(segmentedCloudPure->points[i].intensity);
-        //     ROS_INFO("Point %zu - X: %f, Y: %f, Z: %f, Intensity: %d", i, x, y, z, intensity);
         // }
         // x 및 y 좌표의 최소 및 최대값
         float x_min = std::numeric_limits<float>::max();
@@ -394,16 +387,16 @@ public:
         }
 
         // 크기 계산
-        const int width = 800; // 원하는 배열 너비
-        const int height = 800; // 원하는 배열 높이
+        const int width = 1000; // 원하는 배열 너비
+        const int height = 1000; // 원하는 배열 높이
 
         // 범위 계산
         float x_range = x_max - x_min;
         float y_range = y_max - y_min;
 
         // 크기가 0인 경우를 방지하기 위해 최소값 사용
-        if (x_range < std::numeric_limits<float>::epsilon()) x_range = 1.0;
-        if (y_range < std::numeric_limits<float>::epsilon()) y_range = 1.0;
+        // if (x_range < std::numeric_limits<float>::epsilon()) x_range = 1.0;
+        // if (y_range < std::numeric_limits<float>::epsilon()) y_range = 1.0;
 
         // 2차원 배열 초기화
         int grid[width][height] = {0};
@@ -420,12 +413,38 @@ public:
 
             // 배열 범위 내의 유효한 인덱스인지 확인
             if (x_index >= 0 && x_index < width && y_index >= 0 && y_index < height) {
-                // 해당 인덱스의 값을 증가시킴 (포인트 수 카운트)
-                grid[x_index][y_index]++;
+                grid[x_index][y_index] = intensity;
             }
         }
+        std::string baseFileName = "data.txt"
+        std::ifstream fileCheck(baseFileName);
+        int fileNumber = 1;
 
+        while (fileCheck) {
+            fileCheck.close();  // 파일을 닫고
+            fileNumber++;       // 숫자를 증가시키고
+            fileName = baseFileName + std::to_string(fileNumber) + ".txt"; // 다음 파일 이름 생성
+            fileCheck.open(fileName); // 다음 파일이 이미 존재하는지 다시 확인
+        }
 
+        std::ofstream outputFile(fileName);
+
+        // 배열 내용 파일에 쓰기
+        for (int i = 0; i < height; ++i) {
+            for (int j = 0; j < width; ++j) {
+                // 한 줄에 한 행의 내용을 저장
+                outputFile << grid[i][j] << " ";
+            }
+            // 다음 행으로 넘어갈 때 줄 바꿈 추가
+            outputFile << "\n";
+        }
+
+        // 파일 닫기
+        outputFile.close();
+        
+##################################################################################################
+## 실험중 
+##################################################################################################
     }
 
     void labelComponents(int row, int col){

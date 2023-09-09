@@ -406,6 +406,8 @@ public:
         for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
             float x = segmentedCloudPure->points[i].x;
             float y = segmentedCloudPure->points[i].y;
+            int intensity = static_cast<int>(segmentedCloudPure->points[i].intensity);
+            
             ROS_INFO("Point %zu - X: %f, Y: %f Intensity: %d", i, x, y, intensity);
             // x, y 좌표를 2차원 배열 인덱스로 매핑
             int x_index = static_cast<int>((x - x_min) / x_range * width);

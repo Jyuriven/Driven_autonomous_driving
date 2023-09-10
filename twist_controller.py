@@ -4,15 +4,18 @@ from pid import PID
 from lowpass import LowPassFilter
 from gpsdata import *
 
-Full_brake = 1
+Full_brake = 1  
 
 class Controller(object):
     #stop_sign이 false면 리니어 모터는 움직이고 있다.
     stop_sign = False
     start_time=0
     
+    current_velocity = rospy.Subscriber("fix_velocity", TwistWithCovarianceStamped, velocity_callback)
+    
     def __init__(self, vehicle_mass, brake_deadband, decel_limit, accel_limit,
                  wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
+        #무게와 반지름은 각각 kg, m의 단위를 사용할 것으로 보인다.
         '''
         vehicle_mass: 차량의 무게
         brake_deadband: 브레이크 페달 민감도
@@ -99,7 +102,6 @@ class Controller(object):
             throtle = 0.0
             if not stop_sign:
                 decel = max(vel_error, self.decel_limit)
-                #brake를 안써도 되는 구간에서도 사용할 수 있는 것 아닌가??
                 brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
-                
+                        
         return throttle, brake, steering, start_time

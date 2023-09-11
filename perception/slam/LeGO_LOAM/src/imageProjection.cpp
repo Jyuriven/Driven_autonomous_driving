@@ -385,10 +385,25 @@ public:
             if (y < y_min) y_min = y;
             if (y > y_max) y_max = y;
         }
+        
+        // ######## downsample ######## // 
+        pcl::VoxelGrid<pcl::PointXYZ> sor;
+        sor.setInputCloud(segmentedCloudPure);
+        
+        // 격자 크기 설정 (다운샘플링 정도를 조절)
+        sor.setLeafSize(0.01f, 0.01f, 0.01f); // X, Y, Z 축 각각의 크기 설정
+        
+        // 다운샘플링된 PointCloud를 저장할 객체 생성
+        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_downsampled(new pcl::PointCloud<pcl::PointXYZ>);
+        
+        // Voxel Grid 필터 적용하여 다운샘플링
+        sor.filter(*cloud_downsampled);
+
+        // ######## downsample ######## //
 
         // 크기 계산
-        const int width = 1000; // 원하는 배열 너비
-        const int height = 1000; // 원하는 배열 높이
+        const int width = 50;
+        const int height = 50;
 
         // 범위 계산
         float x_range = x_max - x_min;
@@ -403,10 +418,10 @@ public:
 
         // 데이터 매핑 및 배열 업데이트
         ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
-        for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
-            float x = segmentedCloudPure->points[i].x;
-            float y = segmentedCloudPure->points[i].y;
-            int intensity = static_cast<int>(segmentedCloudPure->points[i].intensity);
+        for (size_t i = 0; i < cloud_downsampled->points.size(); ++i) {
+            float x = cloud_downsampled->points[i].x;
+            float y = cloud_downsampled->points[i].y;
+            int intensity = static_cast<int>(cloud_downsampled->points[i].intensity);
             
             ROS_INFO("Point %zu - X: %f, Y: %f Intensity: %d", i, x, y, intensity);
             // x, y 좌표를 2차원 배열 인덱스로 매핑

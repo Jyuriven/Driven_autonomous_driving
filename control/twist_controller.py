@@ -54,12 +54,12 @@ class Controller(object):
         self.last_time = rospy.get_time()
         self.last_vel = 0.0
 
-def control(self, current_vel, linear_vel, angular_vel, stop_sign):
+def control(self, current_vel, linear_vel, angular, stop_sign):
 
     '''
     current_vel: 현재 속도
     linear_vel: 목표 속도
-    angular_vel: 목표 각속도
+    angular: 목표 조향각
     '''
     # 전달받을 값들
 
@@ -79,7 +79,8 @@ def control(self, current_vel, linear_vel, angular_vel, stop_sign):
     #LowPassFilter 클래스를 통한 노이즈 제거 (필요 없음)
     #current_vel = self.vel_lpf.filt(current_vel)
 
-    steering = self.yaw_controller.get_steering(linear_vel, angular_vel, current_vel, stop_sign)
+    ### 아두이노에 처 넣을 각 
+    steering = self.yaw_controller.get_steering(linear_vel, angular, current_vel, stop_sign)
     
     #목표속도와 현재 속도 오차 연산
     vel_error = linear_vel - current_vel #선속도가 아니라 목표 속도가 맞는거같음.
@@ -110,5 +111,12 @@ def control(self, current_vel, linear_vel, angular_vel, stop_sign):
             decel = max(vel_error, self.decel_limit)
             #brake를 안써도 되는 구간에서도 사용할 수 있는 것 아닌가??
             brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
-            
+    
+
+    print("Jetson2Ardu Control DATA : ")
+    print("Jetson2Ardu Control DATA ( THROTTLE ) : %d",throtle )
+    print("Jetson2Ardu Control DATA ( BREAK ) : %f", brake)
+    print("Jetson2Ardu Control DATA ( STEERING ) : %f", steering )
+    print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
+
     return throttle, brake, steering, start_time

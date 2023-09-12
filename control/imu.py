@@ -1,4 +1,3 @@
-
 import serial
 import vpython
 from math import sin,cos
@@ -23,43 +22,34 @@ def get_imu():
     words = line.decode('utf-8').split(",")
     data_index = 1
 
+    ###데이터 입력###
     roll = float(words[data_index])
     pitch = float(words[data_index + 1])
+    now_sec=time.time()
     yaw = float(words[data_index + 2])
 
-    
+    pre_sec=0
+    pre_yaw=yaw
+    ###각속도 연산 및 데이터 출력###
+    yaw_angular=(yaw-pre_yaw)/(now_sec-pre_sec)
     print("roll : ",int(roll))
     print("pitch :", int(pitch))
     print("yaw rate :",int(yaw))
-    
-    return roll,pitch,yaw
+    print("yaw angular velocity :",int(yaw_angular))
+        
+    pre_sec=now_sec
+    pre_yaw=yaw
+    return roll,pitch,yaw,
     
 if __name__ =="__main__":
         
     comport_num = input("COM Port: ")
-    comport_num = 'COM' + comport_num
+    comport_num = '/dev/ttyUSB' + comport_num
     comport_baudrate = int(input("Baudrate: "))
     ser = serial.Serial(port=comport_num, baudrate=comport_baudrate)
     
     
     while True:
-        line = ser.readline()
-        print(line)
-        words = line.decode('utf-8').split(",")
-        
-        data_index = 1
-        
-
-        roll = float(words[data_index])
-        pitch = float(words[data_index + 1])
-        yaw = float(words[data_index + 2])
-
-        
-        print("roll : ",int(roll))
-        print("pitch :", int(pitch))
-        print("yaw rate :",int(yaw))
-        
-    # time.sleep(1)
-        
-
-    ser.close()
+        get_imu()
+        # time.sleep(1)
+    #ser.close()

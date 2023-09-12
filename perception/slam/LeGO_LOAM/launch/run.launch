@@ -17,6 +17,6 @@
     <node pkg="lego_loam" type="transformFusion"    name="transformFusion"    output="screen"/>
 
     <!--- Data Convert-->
-    <node pkg="lego_loam" type="mapconvert" name="mapconvert" output="screen" />
+    <node pkg="lego_loam" type="mapConvert.py" name="mapconvert" output="screen" />
 
 </launch>

@@ -60,5 +60,4 @@ add_executable(transformFusion src/transformFusion.cpp)
 target_link_libraries(transformFusion ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${OpenCV_LIBRARIES})
 
 
-add_executable(mapconvert scripts/mapConvert.py)
-target_link_libraries(mapconvert ${catkin_LIBRARIES})
+add_executable(mapConvert scripts/mapConvert.py)

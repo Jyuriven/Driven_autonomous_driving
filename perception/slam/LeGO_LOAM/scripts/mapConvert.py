@@ -10,7 +10,7 @@ def cloud_callback(msg):
     print(f'array:::::{point_cloud}')
 
 def main():
-    rospy.init_node('mapconvert', anonymous=True)
+    rospy.init_node('mapConvert', anonymous=True)
     rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
 
     rospy.spin()

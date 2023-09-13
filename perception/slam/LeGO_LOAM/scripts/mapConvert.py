@@ -14,7 +14,7 @@ def cloud_callback(msg):
 def main():
     rospy.init_node('mapConvert', anonymous=True)
     rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
-
+    print('python 들어왔음.')
     rospy.spin()
 
 if __name__ == '__main__':

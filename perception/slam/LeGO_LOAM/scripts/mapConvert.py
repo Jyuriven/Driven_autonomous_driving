@@ -7,34 +7,58 @@ import numpy as np
 
 def cloud_callback(msg):
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    point_cloud = np.array([p[:3] for p in pc_data])
+    map_point_cloud = np.array([p[:3] for p in pc_data])
     
-    # 최종 맵
-    grid_map = [[0]*50 for i in range(50)]
+    return map_point_cloud
+    
+def key_pose_origin_callback(msg):
+    pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
+    key_point_cloud = np.array([p[:3] for p in pc_data])
+    
+    return key_point_cloud
+
+def convert(pc_map, key_pose):
+     # 최종 맵
+    grid_map = [['.']*30 for i in range(30)]
     
     # x, y, z 좌표 값의 최대 최소 값
-    max_list = np.apply_along_axis(lambda a: np.max(a), 0, point_cloud)
-    min_list = np.apply_along_axis(lambda a: np.min(a), 0, point_cloud)
+    max_list = np.apply_along_axis(lambda a: np.max(a), 0, pc_map)
+    min_list = np.apply_along_axis(lambda a: np.min(a), 0, pc_map)
     
-    for point in point_cloud:
+    
+    for point, pose in pc_map, key_pose:
         x = point[0]
         y = point[1]
+        pose_x = pose[0]
+        pose_y = pose[1]
         
         # 맵에 좌표 맵핑
-        if (min_list[0] <= x <= max_list[0]) and (min_list[1] <= y <= max_list[1]):
+        if (-30.0 <= x <= 30.0) and (-30.0 <= y <= 30.0):
             # x, y 좌표를 grid_map 인덱스로 변환
-            x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 49)
-            y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 49)
+            x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+            y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
             
             # 해당 좌표에 값을 1로 설정
             grid_map[x_idx][y_idx] = 1
+        
+        # 맵에 차 위치 맵핑
+        if (-30.0 <= pose_x <= 30.0) and (-30.0 <= pose_y <= 30.0):
+            # x, y 좌표를 grid_map 인덱스로 변환
+            x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+            y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+            
+            # 해당 좌표에 값을 1로 설정
+            grid_map[x_idx][y_idx] = 8
+        
 
     print(f'MAP:\n{grid_map}')
-
+    
 def main():
     rospy.init_node('mapConvert', anonymous=True)
-    rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
-    print('python 들어왔음.')
+    pc_map = rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
+    key_pose = rospy.Subscriber("/key_pose_origin", PointCloud2, key_pose_origin_callback)
+    grid_map = convert(pc_map, key_pose)
+    
     rospy.spin()
 
 if __name__ == '__main__':

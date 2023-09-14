@@ -23,5 +23,8 @@ def main():
     
     Throttle, Brake, Steering, start_time = master_control.control(210, )
     print(Throttle,Brake,Steering)
+    
+    
+    
 if __name__ == "__main__":
     main()

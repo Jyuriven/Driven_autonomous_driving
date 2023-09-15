@@ -5,17 +5,20 @@ from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import numpy as np
 
+map_point_cloud = None
+key_point_cloud = None
+
 def cloud_callback(msg):
+    global map_point_cloud
+    
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
     map_point_cloud = np.array([p[:3] for p in pc_data])
     
-    return map_point_cloud
-    
 def key_pose_origin_callback(msg):
+    global key_point_cloud
+    
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
     key_point_cloud = np.array([p[:3] for p in pc_data])
-    
-    return key_point_cloud
 
 def convert(pc_map, key_pose):
      # 최종 맵
@@ -51,12 +54,12 @@ def convert(pc_map, key_pose):
             grid_map[x_idx][y_idx] = 8
         
 
-    print(f'MAP:\n{grid_map}')
+    print(f'\nMAP:\n{grid_map}')
     
 def main():
     rospy.init_node('mapConvert', anonymous=True)
-    pc_map = rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
-    key_pose = rospy.Subscriber("/key_pose_origin", PointCloud2, key_pose_origin_callback)
+    rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
+    rospy.Subscriber("/key_pose_origin", PointCloud2, key_pose_origin_callback)
     grid_map = convert(pc_map, key_pose)
     
     rospy.spin()

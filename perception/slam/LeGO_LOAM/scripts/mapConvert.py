@@ -5,31 +5,33 @@ from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import numpy as np
 
-map_point_cloud = None
-key_point_cloud = None
+map_point = None
+key_point = None
 
 def cloud_callback(msg):
-    global map_point_cloud
+    global map_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    map_point_cloud = np.array([p[:3] for p in pc_data])
+    map_point = np.array([p[:3] for p in pc_data])
     
 def key_pose_origin_callback(msg):
-    global key_point_cloud
+    global key_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    key_point_cloud = np.array([p[:3] for p in pc_data])
+    key_point = np.array([p[:3] for p in pc_data])
 
-def convert(pc_map, key_pose):
+def convert():
+    global map_point
+    global key_point
      # 최종 맵
     grid_map = [['.']*30 for i in range(30)]
     
     # x, y, z 좌표 값의 최대 최소 값
-    max_list = np.apply_along_axis(lambda a: np.max(a), 0, pc_map)
-    min_list = np.apply_along_axis(lambda a: np.min(a), 0, pc_map)
+    max_list = np.apply_along_axis(lambda a: np.max(a), 0, map_point)
+    min_list = np.apply_along_axis(lambda a: np.min(a), 0, map_point)
     
     
-    for point, pose in pc_map, key_pose:
+    for point, pose in map_point, key_point:
         x = point[0]
         y = point[1]
         pose_x = pose[0]
@@ -60,7 +62,7 @@ def main():
     rospy.init_node('mapConvert', anonymous=True)
     rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
     rospy.Subscriber("/key_pose_origin", PointCloud2, key_pose_origin_callback)
-    grid_map = convert(pc_map, key_pose)
+    grid_map = convert()
     
     rospy.spin()
 

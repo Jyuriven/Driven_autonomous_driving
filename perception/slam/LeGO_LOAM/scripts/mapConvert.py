@@ -4,22 +4,37 @@ import rospy
 from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import numpy as np
+import threading
 
+'''
+map_point: imageProjection.cpp에서 publish한 /segmented_cloud_pure 토픽의 메세지를 subscribe하여 만든 넘파이 맵
+key_point: mapOptimization.cpp에서 publish한 /key_pose_origin 토픽의 메세지를 subscribe하여 만든 자동차의 좌표값
+'''
 map_point = None
 key_point = None
+
+map_lock = threading.Lock()
+key_lock = threading.Lock()
 
 def cloud_callback(msg):
     global map_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    map_point = np.array([p[:3] for p in pc_data])
+    # 
+    with map_lock:
+        map_point = np.array([p[:3] for p in pc_data])
+    
+    convert()
     
 def key_pose_origin_callback(msg):
     global key_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    key_point = np.array([p[:3] for p in pc_data])
-
+    with key_point:
+        key_point = np.array([p[:3] for p in pc_data])
+    
+    convert()
+    
 def convert():
     global map_point
     global key_point
@@ -30,8 +45,12 @@ def convert():
     max_list = np.apply_along_axis(lambda a: np.max(a), 0, map_point)
     min_list = np.apply_along_axis(lambda a: np.min(a), 0, map_point)
     
+    with map_lock:
+        map_data = map_point.copy()
+    with key_lock:
+        key_data = key_point.copy()
     
-    for point, pose in map_point, key_point:
+    for point, pose in (map_data, key_data):
         x = point[0]
         y = point[1]
         pose_x = pose[0]
@@ -43,7 +62,7 @@ def convert():
             x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
             y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
             
-            # 해당 좌표에 값을 1로 설정
+            # 장애물의 위치는 1
             grid_map[x_idx][y_idx] = 1
         
         # 맵에 차 위치 맵핑
@@ -52,7 +71,7 @@ def convert():
             x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
             y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
             
-            # 해당 좌표에 값을 1로 설정
+            # 자동차의 위치는 8
             grid_map[x_idx][y_idx] = 8
         
 
@@ -62,9 +81,11 @@ def main():
     rospy.init_node('mapConvert', anonymous=True)
     rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
     rospy.Subscriber("/key_pose_origin", PointCloud2, key_pose_origin_callback)
-    grid_map = convert()
     
-    rospy.spin()
+    
+    rate = rospy.Rate(10)  # 10Hz로 설정하거나 원하는 빈도로 설정
+    while not rospy.is_shutdown():
+        rate.sleep()
 
 if __name__ == '__main__':
     main()

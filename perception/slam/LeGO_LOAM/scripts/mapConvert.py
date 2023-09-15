@@ -20,70 +20,65 @@ def cloud_callback(msg):
     global map_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    # 
-    with map_lock:
-        map_point = np.array([p[:3] for p in pc_data])
-    
+    map_point = np.array([p[:3] for p in pc_data])
+    print(f'map:{map_point}')
     convert()
     
-def key_pose_origin_callback(msg):
+def key_pose_callback(msg):
     global key_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    with key_point:
-        key_point = np.array([p[:3] for p in pc_data])
-    
+    key_point = np.array([p[:3] for p in pc_data])
+    print(f'key:{key_point}')
     convert()
     
 def convert():
     global map_point
     global key_point
-     # 최종 맵
-    grid_map = [['.']*30 for i in range(30)]
     
-    # x, y, z 좌표 값의 최대 최소 값
-    max_list = np.apply_along_axis(lambda a: np.max(a), 0, map_point)
-    min_list = np.apply_along_axis(lambda a: np.min(a), 0, map_point)
-    
-    with map_lock:
-        map_data = map_point.copy()
-    with key_lock:
-        key_data = key_point.copy()
-    
-    for point, pose in (map_data, key_data):
-        x = point[0]
-        y = point[1]
-        pose_x = pose[0]
-        pose_y = pose[1]
-        
-        # 맵에 좌표 맵핑
-        if (-30.0 <= x <= 30.0) and (-30.0 <= y <= 30.0):
-            # x, y 좌표를 grid_map 인덱스로 변환
-            x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
-            y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+    if map_point is not None or key_point is not None:
             
-            # 장애물의 위치는 1
-            grid_map[x_idx][y_idx] = 1
+        # 최종 맵
+        grid_map = [['.']*30 for i in range(30)]
         
-        # 맵에 차 위치 맵핑
-        if (-30.0 <= pose_x <= 30.0) and (-30.0 <= pose_y <= 30.0):
-            # x, y 좌표를 grid_map 인덱스로 변환
-            x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
-            y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+        # x, y, z 좌표 값의 최대 최소 값
+        max_list = np.apply_along_axis(lambda a: np.max(a), 0, map_point)
+        min_list = np.apply_along_axis(lambda a: np.min(a), 0, map_point)
+        
+        for point, pose in (map_point, key_point):
+            x = point[0]
+            y = point[1]
+            pose_x = pose[0]
+            pose_y = pose[1]
             
-            # 자동차의 위치는 8
-            grid_map[x_idx][y_idx] = 8
-        
+            # 맵에 좌표 맵핑
+            if (-30.0 <= x <= 30.0) and (-30.0 <= y <= 30.0):
+                # x, y 좌표를 grid_map 인덱스로 변환
+                x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+                y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+                
+                # 장애물의 위치는 1
+                grid_map[x_idx][y_idx] = '🚧'
+            
+            # 맵에 차 위치 맵핑
+            if (-30.0 <= pose_x <= 30.0) and (-30.0 <= pose_y <= 30.0):
+                # x, y 좌표를 grid_map 인덱스로 변환
+                x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+                y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+                
+                # 자동차의 위치는 8
+                grid_map[x_idx][y_idx] = '🚘'
+            
 
-    print(f'\nMAP:\n{grid_map}')
+        print(f'\nMAP:\n{grid_map}')
     
 def main():
     rospy.init_node('mapConvert', anonymous=True)
     rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)
-    rospy.Subscriber("/key_pose_origin", PointCloud2, key_pose_origin_callback)
+    rospy.Subscriber("/key_pose_origin", PointCloud2, key_pose_callback)
     
     
-    rate = rospy.Rate(10)  # 10Hz로 설정하거나 원하는 빈도로 설정
+    rate = rospy.Rate(5)  # 10Hz로 설정하거나 원하는 빈도로 설정
     while not rospy.is_shutdown():
         rate.sleep()
 

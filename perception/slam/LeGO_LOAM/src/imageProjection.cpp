@@ -363,7 +363,6 @@ public:
                 }
             }
         }
-        ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
     }
 
     void labelComponents(int row, int col){

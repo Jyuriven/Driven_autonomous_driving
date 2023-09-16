@@ -56,9 +56,11 @@ def convert():
             # 맵에 좌표 맵핑
             if (-10.0 <= map_x <= 10.0) and (-10.0 <= map_y <= 10.0):
                 # x, y 좌표를 grid_map 인덱스로 변환
-                x_idx = int((map_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
-                y_idx = int((map_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
-                
+                # x_idx = int((map_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+                # y_idx = int((map_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+                x_idx = int((map_x + 10.0) / 20.0 * 29)
+                y_idx = int((map_y + 10.0) / 20.0 * 29)
+
                 # 장애물
                 grid_map[x_idx][y_idx] = 0
             
@@ -69,9 +71,11 @@ def convert():
             # 맵에 차 위치 맵핑
             if (-10.0 <= pose_x <= 10.0) and (-10.0 <= pose_y <= 10.0):
                 # x, y 좌표를 grid_map 인덱스로 변환
-                x_idx = int((pose_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
-                y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
-                
+                # x_idx = int((pose_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+                # y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+                x_idx = int((pose_x + 10.0) / 20.0 * 29)
+                y_idx = int((pose_y + 10.0) / 20.0 * 29)
+
                 # 자동차
                 grid_map[x_idx][y_idx] = 7
             

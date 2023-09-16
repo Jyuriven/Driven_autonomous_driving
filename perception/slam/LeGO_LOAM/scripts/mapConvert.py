@@ -29,7 +29,7 @@ def key_pose_callback(msg):
     global key_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    key_point = np.array([p[:3] for p in pc_data])
+    key_point = np.array(pc_data[:3])
     print('key renewal\n')
     convert()
     
@@ -39,9 +39,13 @@ def convert():
     global grid_map
     
     if map_point is not None and key_point is not None:
-            
+        
+        # Optimization
+        map_size = 20
+        filter_size = 20.0
+        
         # 최종 맵
-        grid_map = [[1]*30 for i in range(30)]
+        grid_map = [[1]*map_size for i in range(map_size)]
         
         # x, y, z 좌표 값의 최대 최소 값
         max_list = np.apply_along_axis(lambda a: np.max(a), 0, map_point)
@@ -54,30 +58,30 @@ def convert():
             map_y = point[1]
             
             # 맵에 좌표 맵핑
-            if (-10.0 <= map_x <= 10.0) and (-10.0 <= map_y <= 10.0):
+            if (-filter_size <= map_x <= filter_size) and (-filter_size <= map_y <= filter_size):
                 # x, y 좌표를 grid_map 인덱스로 변환
                 # x_idx = int((map_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
                 # y_idx = int((map_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
-                x_idx = int((map_x + 10.0) / 20.0 * 29)
-                y_idx = int((map_y + 10.0) / 20.0 * 29)
+                x_idx = int((map_x + filter_size) / 2 * filter_size * (map_size - 1))
+                y_idx = int((map_y + filter_size) / 2 * filter_size * (map_size - 1))
 
                 # 장애물
                 grid_map[x_idx][y_idx] = 0
             
-        for pose in key_point:
-            pose_x = pose[0]
-            pose_y = pose[1]
-            
-            # 맵에 차 위치 맵핑
-            if (-10.0 <= pose_x <= 10.0) and (-10.0 <= pose_y <= 10.0):
-                # x, y 좌표를 grid_map 인덱스로 변환
-                # x_idx = int((pose_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
-                # y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
-                x_idx = int((pose_x + 10.0) / 20.0 * 29)
-                y_idx = int((pose_y + 10.0) / 20.0 * 29)
+        
+        pose_x = key_point[0]
+        pose_y = key_point[1]
+        
+        # 맵에 차 위치 맵핑
+        if (-filter_size <= pose_x <= filter_size) and (-filter_size <= pose_y <= filter_size):
+            # x, y 좌표를 grid_map 인덱스로 변환
+            # x_idx = int((pose_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+            # y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+            x_idx = int((pose_x + filter_size) / 2 * filter_size * (map_size - 1))
+            y_idx = int((pose_y + filter_size) / 2 * filter_size * (map_size - 1))
 
-                # 자동차
-                grid_map[x_idx][y_idx] = 7
+            # 자동차
+            grid_map[x_idx][y_idx] = 7
             
 
         print(f'\nMAP:\n{grid_map}')

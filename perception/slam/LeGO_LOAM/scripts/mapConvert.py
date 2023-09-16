@@ -29,7 +29,7 @@ def key_pose_callback(msg):
     global key_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
-    key_point = np.array(pc_data[:3])
+    key_point = np.array([p[:3] for p in pc_data])
     print('key renewal\n')
     convert()
     
@@ -69,8 +69,8 @@ def convert():
                 grid_map[x_idx][y_idx] = 0
             
         
-        pose_x = key_point[0]
-        pose_y = key_point[1]
+        pose_x = key_point[0][0]
+        pose_y = key_point[0][1]
         
         # 맵에 차 위치 맵핑
         if (-filter_size <= pose_x <= filter_size) and (-filter_size <= pose_y <= filter_size):

@@ -46,13 +46,15 @@ def convert():
         # x, y, z 좌표 값의 최대 최소 값
         max_list = np.apply_along_axis(lambda a: np.max(a), 0, map_point)
         min_list = np.apply_along_axis(lambda a: np.min(a), 0, map_point)
+        print(f'max point:{max_list[0]}  {max_list[1]}\n')
+        print(f'min point:{min_list[0]}  {min_list[1]}\n')
         
         for point in map_point:
             map_x = point[0]
             map_y = point[1]
             
             # 맵에 좌표 맵핑
-            if (-30.0 <= map_x <= 30.0) and (-30.0 <= map_y <= 30.0):
+            if (-10.0 <= map_x <= 10.0) and (-10.0 <= map_y <= 10.0):
                 # x, y 좌표를 grid_map 인덱스로 변환
                 x_idx = int((map_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
                 y_idx = int((map_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
@@ -65,7 +67,7 @@ def convert():
             pose_y = pose[1]
             
             # 맵에 차 위치 맵핑
-            if (-30.0 <= pose_x <= 30.0) and (-30.0 <= pose_y <= 30.0):
+            if (-10.0 <= pose_x <= 10.0) and (-10.0 <= pose_y <= 10.0):
                 # x, y 좌표를 grid_map 인덱스로 변환
                 x_idx = int((pose_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
                 y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)

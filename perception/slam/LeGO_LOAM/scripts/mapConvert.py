@@ -62,8 +62,8 @@ def convert():
                 # x, y 좌표를 grid_map 인덱스로 변환
                 # x_idx = int((map_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
                 # y_idx = int((map_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
-                x_idx = int((map_x + filter_size) / 2 * filter_size * (map_size - 1))
-                y_idx = int((map_y + filter_size) / 2 * filter_size * (map_size - 1))
+                x_idx = int((map_x + filter_size) / (2 * filter_size) * (map_size - 1))
+                y_idx = int((map_y + filter_size) / (2 * filter_size) * (map_size - 1))
 
                 # 장애물
                 grid_map[x_idx][y_idx] = 0
@@ -77,8 +77,8 @@ def convert():
             # x, y 좌표를 grid_map 인덱스로 변환
             # x_idx = int((pose_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
             # y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
-            x_idx = int((pose_x + filter_size) / 2 * filter_size * (map_size - 1))
-            y_idx = int((pose_y + filter_size) / 2 * filter_size * (map_size - 1))
+            x_idx = int((pose_x + filter_size) / (2 * filter_size) * (map_size - 1))
+            y_idx = int((pose_y + filter_size) / (2 * filter_size) * (map_size - 1))
 
             # 자동차
             grid_map[x_idx][y_idx] = 7

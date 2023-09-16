@@ -63,8 +63,8 @@ def convert():
             # 맵에 차 위치 맵핑
             if (-30.0 <= pose_x <= 30.0) and (-30.0 <= pose_y <= 30.0):
                 # x, y 좌표를 grid_map 인덱스로 변환
-                x_idx = int((x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
-                y_idx = int((y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
+                x_idx = int((pose_x - min_list[0]) / (max_list[0] - min_list[0]) * 29)
+                y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
                 
                 # 자동차
                 grid_map[x_idx][y_idx] = 8

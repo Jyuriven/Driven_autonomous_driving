@@ -12,6 +12,7 @@ key_point: mapOptimization.cpp에서 publish한 /key_pose_origin 토픽의 메�
 '''
 map_point = None
 key_point = None
+grid_map = None
 
 map_lock = threading.Lock()
 key_lock = threading.Lock()
@@ -21,35 +22,34 @@ def cloud_callback(msg):
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
     map_point = np.array([p[:3] for p in pc_data])
-    print(f'map:{map_point}')
-    convert()
+    print('map renewal\n')
+    # convert()
     
 def key_pose_callback(msg):
     global key_point
     
     pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
     key_point = np.array([p[:3] for p in pc_data])
-    print(f'key:{key_point}')
+    print('key renewal\n')
     convert()
     
 def convert():
     global map_point
     global key_point
+    global grid_map
     
     if map_point is not None and key_point is not None:
             
         # 최종 맵
-        grid_map = [['.']*30 for i in range(30)]
+        grid_map = [[1]*30 for i in range(30)]
         
         # x, y, z 좌표 값의 최대 최소 값
         max_list = np.apply_along_axis(lambda a: np.max(a), 0, map_point)
         min_list = np.apply_along_axis(lambda a: np.min(a), 0, map_point)
         
-        for point, pose in zip(map_point, key_point):
+        for point in map_point:
             map_x = point[0]
             map_y = point[1]
-            pose_x = pose[0]
-            pose_y = pose[1]
             
             # 맵에 좌표 맵핑
             if (-30.0 <= map_x <= 30.0) and (-30.0 <= map_y <= 30.0):
@@ -58,7 +58,11 @@ def convert():
                 y_idx = int((map_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
                 
                 # 장애물
-                grid_map[x_idx][y_idx] = 1
+                grid_map[x_idx][y_idx] = 0
+            
+        for pose in key_point:
+            pose_x = pose[0]
+            pose_y = pose[1]
             
             # 맵에 차 위치 맵핑
             if (-30.0 <= pose_x <= 30.0) and (-30.0 <= pose_y <= 30.0):
@@ -67,7 +71,7 @@ def convert():
                 y_idx = int((pose_y - min_list[1]) / (max_list[1] - min_list[1]) * 29)
                 
                 # 자동차
-                grid_map[x_idx][y_idx] = 8
+                grid_map[x_idx][y_idx] = 7
             
 
         print(f'\nMAP:\n{grid_map}')

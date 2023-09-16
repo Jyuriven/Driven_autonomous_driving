@@ -52,6 +52,8 @@ def check_cone_color(img, xyxy):
         color = ['Blue', [255,0,0]]
     print(f"h::{hsv[0,0,0]} | color: {color[0]}")
     return color
+
+
 def dominant_color(x, img):
     mid_y = int((x[1] + x[3]) / 2)
     box = img[mid_y:int(x[3]), int(x[0]):int(x[2])]

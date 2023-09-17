@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/minseok/gps/src/ublox_f9p/ublox_gps/include/ublox_gps/mkgmtime.h
+time.h
+-
+
+/home/minseok/gps/src/ublox_f9p/ublox_gps/src/mkgmtime.c
+ublox_gps/mkgmtime.h
+/home/minseok/gps/src/ublox_f9p/ublox_gps/src/ublox_gps/mkgmtime.h
+

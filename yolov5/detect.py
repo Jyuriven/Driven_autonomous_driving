@@ -111,11 +111,11 @@ def detect(save_img=False):
                     if save_img or view_img:  # Add bbox to image
                         
                         # 콘 섹낄
-                        # color = check_cone_color(im0, xyxy)
-                        color, color_val, h = dominant_color(xyxy, im0)
+                        color = check_cone_color(im0, xyxy)
+                        # color, color_val, h = dominant_color(xyxy, im0)
                         
                         label = f'{color} {conf:.2f}'
-                        plot_one_box(xyxy, im0, label=label, color=color_val, line_thickness=3)
+                        plot_one_box(xyxy, im0, label=label, color=color[1], line_thickness=3)
 
             # Print time (inference + NMS)
             print(f'{s}Done. ({t2 - t1:.3f}s)')

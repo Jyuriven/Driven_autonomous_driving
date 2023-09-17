@@ -30,9 +30,9 @@ def check_cone_color(img, xyxy):
         img: image
         xyxy: x_min, y_min, x_max, y_max
     '''    
-    mid_y = int((xyxy[1] + xyxy[3])//2)
+    mid_y = int((xyxy[1] + xyxy[3])/2)
     
-    crop_img = img[mid_y:int(xyxy[3]), :]
+    crop_img = img[mid_y:int(xyxy[3]), int(xyxy[0]):int(xyxy[2])]
     crop_img = np.reshape(crop_img, (-1, 3))
     crop_img = np.float32(crop_img)
     
@@ -52,39 +52,6 @@ def check_cone_color(img, xyxy):
         color = ['Blue', [255,0,0]]
     print(f"h::{hsv[0,0,0]} | color: {color[0]}")
     return color
-
-
-def dominant_color(x, img):
-    mid_y = int((x[1] + x[3]) / 2)
-    box = img[mid_y:int(x[3]), int(x[0]):int(x[2])]
-    data = np.reshape(box, (-1,3))
-    data = np.float32(data)
-
-    criteria = (cv2.TERM_CRITERIA_EPS + cv2.TERM_CRITERIA_MAX_ITER, 10, 1.0)
-    flags = cv2.KMEANS_RANDOM_CENTERS
-    compactness,labels,centers = cv2.kmeans(data,1,None,criteria,10,flags)
-
-    dominant = centers[0].astype(np.int32)
-    bgr = np.uint8([[dominant]])
-    hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
-
-    h = hsv[0,0,0]
-    colors = {'red': [0,0,255], 'yellow': [0,255,255], 'green': [0,255,0],
-            'blue': [255,0,0], 'unknown': [50,50,50]}
-    if h < 16:
-        color = 'red'
-    elif h < 35:
-        color = 'yellow'
-    elif h < 92:
-        color = 'green'
-    elif h < 130:
-        color = 'blue'
-    elif h < 172:
-        color = 'unknown'   
-    else:
-        color = 'red'
-
-    return color, colors[color], h
 
 def color_list():
     # Return first 10 plt colors as (r,g,b) https://stackoverflow.com/questions/51350872/python-from-color-name-to-rgb

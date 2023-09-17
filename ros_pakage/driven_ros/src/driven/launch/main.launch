@@ -1,0 +1,16 @@
+<launch>
+
+    <!--- LiDAR execute -->
+    <include file="경로/VLP16_points.launch"/>
+
+    <!--- LeGO_LOAM execute -->
+    <include file="../driven/src/perception/src[None Package]/slam/LeGO_LOAM/launch/run.launch"/>
+    
+    <!--- GPS execute -->
+    <include file="../driven/src/control/gps/src/ublox_f9p/ntrip_ros/launch/ntrip_ros.launch"/>
+    <include file="../driven/src/control/gps/src/ublox_f9p/ublox_gps/launch/ublox_device.launch"/>
+    
+    <!--- main thread -->
+    <node pkg="driven" type="main_thread.py" name="jet2ard publisher" output="screen"/>
+    
+</launch>

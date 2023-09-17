@@ -85,7 +85,13 @@ def convert():
             
 
         print(f'\nMAP:\n{grid_map}')
-    
+        
+def getOGMmap():
+    if grid_map is not None:
+        return grid_map
+    else:
+        print('Map is Empty')
+
 def main():
     rospy.init_node('mapConvert', anonymous=True)
     rospy.Subscriber("/segmented_cloud_pure", PointCloud2, cloud_callback)

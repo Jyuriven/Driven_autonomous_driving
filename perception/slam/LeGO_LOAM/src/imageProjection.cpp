@@ -355,11 +355,6 @@ public:
 
             segMsg.endRingIndex[i] = sizeOfSegCloud-1 - 5;
         }
-// ##################################################################################################
-// ## 실험중 
-// ##################################################################################################
-        // extract segmented cloud for visualization
-        // if (pubSegmentedCloudPure.getNumSubscribers() != 0){
         for (size_t i = 0; i < N_SCAN; ++i){
             for (size_t j = 0; j < Horizon_SCAN; ++j){
                 if (labelMat.at<int>(i,j) > 0 && labelMat.at<int>(i,j) != 999999){
@@ -368,101 +363,6 @@ public:
                 }
             }
         }
-        // }
-        // x 및 y 좌표의 최소 및 최대값
-        float x_min = std::numeric_limits<float>::max();
-        float x_max = -std::numeric_limits<float>::max();
-        float y_min = std::numeric_limits<float>::max();
-        float y_max = -std::numeric_limits<float>::max();
-
-        // x와 y의 최소 및 최대값 찾기
-        for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
-            float x = segmentedCloudPure->points[i].x;
-            float y = segmentedCloudPure->points[i].y;
-            
-            if (x < x_min) x_min = x;
-            if (x > x_max) x_max = x;
-            if (y < y_min) y_min = y;
-            if (y > y_max) y_max = y;
-        }
-        
-        // ######## downsample ######## // 
-        pcl::VoxelGrid<pcl::PointXYZ> sor;
-        sor.setInputCloud(segmentedCloudPure);
-        
-        // 격자 크기 설정 (다운샘플링 정도를 조절)
-        sor.setLeafSize(0.01f, 0.01f, 0.01f); // X, Y, Z 축 각각의 크기 설정
-        
-        // 다운샘플링된 PointCloud를 저장할 객체 생성
-        pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_downsampled(new pcl::PointCloud<pcl::PointXYZ>);
-        
-        // Voxel Grid 필터 적용하여 다운샘플링
-        sor.filter(*cloud_downsampled);
-
-        // ######## downsample ######## //
-
-        // 크기 계산
-        const int width = 50;
-        const int height = 50;
-
-        // 범위 계산
-        float x_range = x_max - x_min;
-        float y_range = y_max - y_min;
-
-        // 크기가 0인 경우를 방지하기 위해 최소값 사용
-        // if (x_range < std::numeric_limits<float>::epsilon()) x_range = 1.0;
-        // if (y_range < std::numeric_limits<float>::epsilon()) y_range = 1.0;
-
-        // 2차원 배열 초기화
-        int grid[width][height] = {0};
-
-        // 데이터 매핑 및 배열 업데이트
-        ROS_INFO("Size of segmentedCloudPure: %zu", segmentedCloudPure->points.size());
-        for (size_t i = 0; i < cloud_downsampled->points.size(); ++i) {
-            float x = cloud_downsampled->points[i].x;
-            float y = cloud_downsampled->points[i].y;
-            int intensity = static_cast<int>(cloud_downsampled->points[i].intensity);
-            
-            ROS_INFO("Point %zu - X: %f, Y: %f Intensity: %d", i, x, y, intensity);
-            // x, y 좌표를 2차원 배열 인덱스로 매핑
-            int x_index = static_cast<int>((x - x_min) / x_range * width);
-            int y_index = static_cast<int>((y - y_min) / y_range * height);
-
-            // 배열 범위 내의 유효한 인덱스인지 확인
-            if (x_index >= 0 && x_index < width && y_index >= 0 && y_index < height) {
-                grid[x_index][y_index] = intensity;
-            }
-        }
-        std::string baseFileName = "data.txt";
-        std::string fileName = "data.txt";
-        std::ifstream fileCheck(baseFileName);
-        int fileNumber = 1;
-
-        while (fileCheck) {
-            fileCheck.close();  // 파일을 닫고
-            fileNumber++;       // 숫자를 증가시키고
-            fileName = baseFileName + std::to_string(fileNumber) + ".txt"; // 다음 파일 이름 생성
-            fileCheck.open(fileName); // 다음 파일이 이미 존재하는지 다시 확인
-        }
-
-        std::ofstream outputFile(fileName);
-
-        // 배열 내용 파일에 쓰기
-        for (int i = 0; i < height; ++i) {
-            for (int j = 0; j < width; ++j) {
-                // 한 줄에 한 행의 내용을 저장
-                outputFile << grid[i][j] << " ";
-            }
-            // 다음 행으로 넘어갈 때 줄 바꿈 추가
-            outputFile << "\n";
-        }
-
-        // 파일 닫기
-        outputFile.close();
-        
-// ##################################################################################################
-// ## 실험중 
-// ##################################################################################################
     }
 
     void labelComponents(int row, int col){

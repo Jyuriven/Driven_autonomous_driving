@@ -194,16 +194,6 @@ public:
         cloudSegmentation();
         // 6. Publish all clouds
         publishCloud();
-        
-
-        ROS_INFO("segmentedCloudPure:\n");
-        ROS_INFO("Size of SCP: %d", egmentedCloudPure->points.size())
-        for (size_t i = 0; i < segmentedCloudPure->points.size(); ++i) {
-            float x = segmentedCloudPure->points[i].x;
-            float y = segmentedCloudPure->points[i].y;
-            ROS_INFO("Point %zu - X: %f, Y: %f \n", i, x, y);
-        }
-
         // 7. Reset parameters for next iteration
         resetParameters();
     }
@@ -365,15 +355,11 @@ public:
 
             segMsg.endRingIndex[i] = sizeOfSegCloud-1 - 5;
         }
-        
-        // extract segmented cloud for visualization
-        if (pubSegmentedCloudPure.getNumSubscribers() != 0){
-            for (size_t i = 0; i < N_SCAN; ++i){
-                for (size_t j = 0; j < Horizon_SCAN; ++j){
-                    if (labelMat.at<int>(i,j) > 0 && labelMat.at<int>(i,j) != 999999){
-                        segmentedCloudPure->push_back(fullCloud->points[j + i*Horizon_SCAN]);
-                        segmentedCloudPure->points.back().intensity = labelMat.at<int>(i,j);
-                    }
+        for (size_t i = 0; i < N_SCAN; ++i){
+            for (size_t j = 0; j < Horizon_SCAN; ++j){
+                if (labelMat.at<int>(i,j) > 0 && labelMat.at<int>(i,j) != 999999){
+                    segmentedCloudPure->push_back(fullCloud->points[j + i*Horizon_SCAN]);
+                    segmentedCloudPure->points.back().intensity = labelMat.at<int>(i,j);
                 }
             }
         }

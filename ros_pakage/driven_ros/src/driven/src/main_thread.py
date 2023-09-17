@@ -5,6 +5,7 @@ import threading
 import sys
 import rospy
 from driven.msg import jet2ard
+from perception.slam.LeGO_LOAM.scripts.mapConvert import getOGMmap
 
 ### import control 
 
@@ -36,13 +37,7 @@ publisher = rospy.Publisher(name="jet2ard publisher",data_class=jet2ard,queue_si
 try:
     while True:
        ### PERCEPTION
-       pointcloud = lidar_con.get_pointcloud()
-       ### 라이다로부터 point cloud 데이터를 받아옵니다. 
-       ### --- 상세요구사항
-       ### ------ 1. point cloud 값을 가져오는 주기를 선택할 수 있도록 작성해야 합니다. 마찬가지로 path_motion_planning 에 걸리는 시간을 고려하여야 하니.
-       ### ------ 2. point cloud 값은 로그로 저장되어야 합니다. 어떤 형태인지는 모르겠지만, 디버그 용도로 시간과 데이터를 기록해야합니다. 파일이름 [DEBUG]LIDARPC_20230823_LOG.txt
-
-       main_map = decision.getOGMmap(pointcloud)
+       main_map = decision.getOGMmap()
        ### pointcloud 데이터로부터 2D OGM cost map 을 반환합니다. 
        ### --- 상세요구사항 
        ### ------ 1. 현실의 Scale 과 맞출 수 있도록 지도 크기를 조절 할 수 있어야 합니다. 
@@ -57,15 +52,11 @@ try:
 
 
        ### CONTROL
-       jet2ard_data = control.twistController(motion_plan)
        msg = jet2ard()
-       msg.throttle = jet2ard_data.throttle 
-       msg.steering = jet2ard_data.steering
-       msg.brake = jet2ard_data.brake
-       msg.start_time =  jet2ard.start_time
+       msg.throttle,msg.brake,msg.steering,msg.start_time = control.twistController(motion_plan)
        rospy.loginfo(msg)
        publisher.publsh(msg)
-       r.sleep()
+       rospy.sleep()
 
        ### motion plan 변수(객체)를 토대로 아두이노에 신호를 보내 차량을 움직입니다. 
        ### 상세요구사항 

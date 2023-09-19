@@ -1,3 +1,6 @@
+#!/usr/bin/python3
+#-*- coding:utf-8 -*-
+
 import control
 import decision
 import perception
@@ -5,7 +8,7 @@ import threading
 import sys
 import rospy
 from driven.msg import jet2ard
-from perception.slam.LeGO_LOAM.scripts.mapConvert import getOGMmap
+from perception.src.slam.LeGO_LOAM.scripts.mapConvert import getOGMmap
 
 ### import control 
 
@@ -29,7 +32,7 @@ publisher = rospy.Publisher(name="jet2ard publisher",data_class=jet2ard,queue_si
 try:
     while True:
        ### PERCEPTION
-       main_map = decision.getOGMmap()
+       main_map = getOGMmap()
        ### pointcloud 데이터로부터 2D OGM cost map 을 반환합니다. 
        ### --- 상세요구사항 
        ### ------ 1. 현실의 Scale 과 맞출 수 있도록 지도 크기를 조절 할 수 있어야 합니다. 
@@ -39,8 +42,8 @@ try:
     
        
        ### DECISION
-       path=decision.pathlanning(main_map)
-       motion_plan = decision.motionplanning(path)
+       path=decision.library.pathlanning(main_map)
+       motion_plan = decision.library.motionplanning(path)
 
 
        ### CONTROL

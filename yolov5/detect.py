@@ -6,6 +6,7 @@ import cv2
 import torch
 import torch.backends.cudnn as cudnn
 from numpy import random
+import numpy as np
 
 from models.experimental import attempt_load
 from utils.datasets import LoadStreams, LoadImages
@@ -15,11 +16,12 @@ from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
 # cone detection
-from utils.cone_utils import check_cone_color, emgergency
+from utils.cone_utils import check_cone_color, emgergency_call, red_cone_stop
 
-def detect(emergency=3,
+def run(emergency=3,
+        red_stop=4,
          weights='weights/best.pt', # 가중치 경로
-         source='stop_final.mp4', # 0 이면 웹캠, 데이터 경로
+         source='red.mp4', # 0 이면 웹캠, 데이터 경로
          imgsz=640,
          conf_thres=0.5,
          iou_thres=0.45,
@@ -36,6 +38,8 @@ def detect(emergency=3,
          exist_ok=None,
          save_img=False
          ):
+    
+    check_requirements()
     
     webcam = source.isnumeric() or source.endswith('.txt') or source.lower().startswith(
         ('rtsp://', 'rtmp://', 'http://'))
@@ -98,7 +102,7 @@ def detect(emergency=3,
         # Apply Classifier
         if classify:
             pred = apply_classifier(pred, modelc, img, im0s)
-
+            
         # Process detections
         for i, det in enumerate(pred):  # detections per image
             if webcam:  # batch_size >= 1
@@ -122,7 +126,8 @@ def detect(emergency=3,
                 
                 # check the number of cone
                 emg = False
-                emg = emgergencyCall(n, emergency)
+                emg = emgergency_call(n, emergency)
+                box_list = []
                 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -136,10 +141,17 @@ def detect(emergency=3,
                         
                         # 콘 RGB
                         color = check_cone_color(im0, xyxy)
-                        
+                        if color[0] is 'Orange':
+                            box_list.append(xyxy)
+
                         label = f'{color[0]} {conf:.2f}'
                         plot_one_box(xyxy, im0, label=label, color=color[1], line_thickness=3)
-
+                               
+                # stop sign when red cones come out
+                stop = red_cone_stop(box_list)
+                
+                yield emg, stop
+                
             # Print time (inference + NMS)
             print(f'{s}Done. ({t2 - t1:.3f}s)')
 
@@ -171,16 +183,4 @@ def detect(emergency=3,
 
     print(f'Done. ({time.time() - t0:.3f}s)')
 
-def emgergencyCall(cnt, threshold):
     
-    #비상 ㅅㄱ
-    if cnt <= threshold:
-        return True
-    # ㄱㅊ ㅋㅋ
-    else:
-        return False
-
-def execute():
-    check_requirements()
-    with torch.no_grad():
-        detect()

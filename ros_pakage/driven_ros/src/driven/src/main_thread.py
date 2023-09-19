@@ -9,13 +9,7 @@ from perception.slam.LeGO_LOAM.scripts.mapConvert import getOGMmap
 
 ### import control 
 
-lidar_con = perception.Lidar_Connection() ### 라이다를 연결하고, 라이다 커넥션 객체를 반환합니다. 
-imu_con = perception.Imu_Connection() ### IMU 객체 반환 
-ardu_con = control.ardu_con() ### 아두이노 객체 반환 
-gps_con = perception.Gps_connection()
 
-
-lidar_con.SLAM() 
 ### SLAM 을 실행합니다.
 ### --- 상세요구사항
 ### ------ 1. SLAM 이 동작하고 있는것을 디스플레이로 확인할 수 있어야 합니다. < 대회 중 모니터링을 위해 > 
@@ -24,8 +18,6 @@ lidar_con.SLAM()
 ### ---------- 지금 코드에서는 SLAM 이 코드안의 함수로 작동 할 텐데, 잿자에서 그냥 새로운 프로세스로 실행시켜서 파일만 뽑아내고 main_thread.py 에서는 해당 파일을 가져와서 쓰는 것.
 ### ------ 4. SLAM 으로 뽑아내는 지도는 저장(축적)되어야 합니다.
  
-gps_con.Start_getStatus()
-imu_con.Start_getStatus()
 ### GPS와 IMU에서 지속적으로 상태값을 받아옵니다. 새로운 쓰레드로 실행되기 때문에 해당 객체에 지속적으로 값을 업데이트 합니다. 
 ### --- 상세요구사항
 ### ------ 1. GPS, IMU 값을 실시간으로 모니터링 할 수 있어야 합니다. 그렇지 않다면 일단 로그라도 작성 할 수 있또록 작성해야합니다. 

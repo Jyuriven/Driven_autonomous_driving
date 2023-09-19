@@ -2,7 +2,8 @@
 #-*- coding:utf-8 -*-
 
 import control
-import decision
+import decision.library.MotionPlanner as MotionPlanner
+import decision.library.pathplanner as Pathplanner
 import perception
 import threading
 import sys
@@ -29,6 +30,8 @@ from perception.src.slam.LeGO_LOAM.scripts.mapConvert import getOGMmap
 rospy.init_node("jet2ard publisher")
 publisher = rospy.Publisher(name="jet2ard publisher",data_class=jet2ard,queue_size=1)
 
+motion_planner = MotionPlanner()
+
 try:
     while True:
        ### PERCEPTION
@@ -42,13 +45,12 @@ try:
     
        
        ### DECISION
-       path=decision.library.pathlanning(main_map)
-       motion_plan = decision.library.motionplanning(path)
-
+       path=Pathplanner.pathlanning(main_map)
+       motion_planner.motionplanning(motion_planner,path)
 
        ### CONTROL
        msg = jet2ard()
-       msg.throttle,msg.brake,msg.steering,msg.start_time = control.twistController(motion_plan)
+       msg.throttle,msg.brake,msg.steering,msg.start_time = control.twistController(motion_planner)
        rospy.loginfo(msg)
        publisher.publsh(msg)
        rospy.sleep()

@@ -1,6 +1,7 @@
 import math
-import library.gradient as gradient
-import perception
+import gradient
+from ...perception import perception
+
 '''
 요청해야하는 코드
 ###########
@@ -34,11 +35,18 @@ class MotionPlanner():
     now_steering = 0
     now_yaw_rate = 0
 
+
+    brake_level = 0 ### 1 =  30 % , 2 = 60%  3, 90%
+
     first_target_velocity = 0
     first_target_steering = 0
     
     second_target_velocity = 0
     second_target_steering = 0
+
+    '''GPS 가 초기 위치로 돌아왔는지를 확인하기 위한 변수'''
+    init_gps_x = 0.0
+    init_gps_y = 0.0
 
     ''' 왼쪽,오른쪽 바리게이트와의 거리 차량 중심 기준 cm 단위 '''
     left_barricade_distance = 0
@@ -137,10 +145,6 @@ class MotionPlanner():
         if check_stable_code_left_right_color == 2:
             return check_stable_code_left_right_color
             
-
-
-            
-        perception.lef
         
     
     def stableMotionning(self,smoothingpath,LAD):
@@ -152,7 +156,7 @@ class MotionPlanner():
         radian_tmp = gradient.calculate_radian(smoothingpath[2*LAD][0],smoothingpath[2*LAD][1],smoothingpath[3*LAD][0],smoothingpath[3*LAD][1])
         target_degree = gradient.rad2deg(radian_tmp)
         self.first_target_steering =  target_degree - self.get_now_steering
-        self.first_target_velocity = DEFAULT_VELOCITY
+        self.first_target_velocity = DEFAULT_VELOCITY-5
 
         return self
 
@@ -161,24 +165,49 @@ class MotionPlanner():
         LOOK AHEAD DISTANCE 를 함수의 인자로 넣는 이유는 차량의 속도에 따라서 목표지점과의 각도 계산을 달리 해야하기 때문이다.
         예를들어, 1m 앞에 있는 점을 첫번쨰 motion planning 지점으로 놓을건지, 10cm 앞에 있는 점을 첫번쨰 motion planning 지점으로 놓을건지를 결정한다는 말이다. 
     '''
+
+    def isInitPosition_by_gps(self):
+        if perception.get_gps().x == self.init_gps_x and perception.get_gps().y == self.init_gps_y:
+            print("init gps coordinate x: %.2f y : %.2f ",self.init_gps_x,self.init_gps_y)
+            return True ## 제자리로 돌아왔다 ! 근데 오차가 있어서 정수로 비교하던지 소숫점 n 번쨰 짜리로 하던지 해야함.
+        
+        else:
+            False
+
+
     def motionplanning(self,smoothingpath,LAD):
         #---미완성코드---
         ## 우리 차가 초기 위치로 돌아왔냐 ? --- 
-        if perception.gps_isInitStatus():
-            return self 
             
+        if self.isInitPosition_by_gps():
+            self.first_target_steering = 0
+            self.second_target_steering = 0
+            self.first_target_velocity = 0
+            self.second_target_velocity = 0
+            self.brake_level = 90 ## level 3
+            return self 
+
 
         ''' 전방에 빨간콘이 존재하지 않을 때 '''
         if not perception.isBarricade():
             
-            radian_tmp = gradient.calculate_radian(smoothingpath[LAD][0],smoothingpath[LAD][1],smoothingpath[1][0],smoothingpath[1][1])
+            ''' 
+                모션플래닝 테스트 코드 1
+                    * 작동방식
+                        1. pathplanning(A*) -> path_smoothing 과정을 거친 경로에 대한 점 n개가 2*n 배열로 생김
+                        2. 2*n 배열에서 LAD ( Look Ahead Distance ) : 만큼 앞에 있는 경로 지점과 그 바로 앞 지점 or 다시 Look Ahead Distance 만큼 떨어진 지점의 기울기 차이를 구한다.
+                            2-1) 현재위치 (0.0) 다음경로 (2,0) 그 다음경로(4,0)
+                            2-2) 2,0 과 0,0 의 기울기 차이를 구하여 첫번째 스티어링 각으로 설정 
+                            2-3) 4,0 과 2,0 의 기울기 차이를 구하여 두번째 스티어링 각으로 설정함.
+            '''
+            radian_tmp = gradient.calculate_radian(smoothingpath[LAD][0],smoothingpath[LAD][1],smoothingpath[LAD+1][0],smoothingpath[LAD+1][1])
             target_degree = gradient.rad2deg(radian_tmp)
             
             self.first_target_steering = target_degree - self.get_now_steering
             self.first_target_velocity = DEFAULT_VELOCITY
 
 
-            radian_tmp = gradient.calculate_radian(smoothingpath[1*LAD][0],smoothingpath[1*LAD][1],smoothingpath[2][0],smoothingpath[2][1])
+            radian_tmp = gradient.calculate_radian(smoothingpath[1+LAD][0],smoothingpath[1+LAD][1],smoothingpath[LAD+2][0],smoothingpath[LAD+2][1])
             target_degree = gradient.rad2deg(radian_tmp)
 
             self.second_target_steering = target_degree - self.get_now_steering # degree
@@ -186,16 +215,31 @@ class MotionPlanner():
 
             return self
         
+            '''
+                모션플래닝 테스트 코드 2
+                    * 작동방식
+                        1. perception 에게 데이터를 받아 올때, 왼쪽 콘과 오른쪽 콘의 위치를 따로 저장한 배열을 전달받는다.
+                        2. 왼쪽콘[1] 오른쪽콘[1] 의 산술평균을 이동경로 1지점으로 설정한다.
+                        3. 현재 yaw rate 와 1지점과의 기울기 차이를 구하여, 조향각으로 설정한다. 
+            '''
+        
         ### 빨간콘이 존재하고, 전방 콘과의 거리가 10 미터 이내일때 
-        elif perception.isBarricade()==1 and BARRICADE_DISTANCE_THRESHOLD < 100 :
-            
-            if BARRICADE_DISTANCE_THRESHOLD < 50:
-                self.first_target_velocity = 0
+        
+        elif perception.isBarricade()==1 and BARRICADE_DISTANCE_THRESHOLD < 100 : 
+            '''해당 함수는 거리 10m 전에서 멈추는것이였지만 지금은 ROI 안에 들어오면 brake 3단계 작동으로 변했음. 따라서 THRESHOLD 사용할것이 아니라 
+                ROI 에 주황색 콘이 들어오면 멈추는 함수로 바꿔야 함.  9.22(금) 조용재와 함께 할 예정 ! 
+            '''    
+            if BARRICADE_DISTANCE_THRESHOLD < 50: ### 주황색 콘이 인식되면 1단계 브레이크 작동 
+                self.set_target_steering(0,0)
+                self.set_target_velocity(5,5)
+                self.brake_level = 10
                 return self
             
-            print(" ************ OH FUCK! WE SHOULD STOP!! ***************** ")
+            print(" ************ OH FUCK! WE SHOULD STOP!! ***************** ") ### ROI 안에 들어오면 3단계 브레이크 작동 
             print(" ***************  DECREASE VELOCITY  ******************** ")
-            self.first_target_velocity = DEFAULT_VELOCITY-10
+            self.set_target_steering(0,0)
+            self.set_target_velocity(0,0)
+            self.brake_level = 90
             return self
 
 

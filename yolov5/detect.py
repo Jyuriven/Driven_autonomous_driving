@@ -16,17 +16,17 @@ from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier, time_synchronized
 
 # cone detection
-from utils.cone_utils import check_cone_color, emgergency_call, red_cone_stop
+from utils.cone_utils import check_cone_color, emgergency_call, red_cone_stop, plot_center_box, roi_size
 
 def run(emergency=3,
         red_stop=4,
          weights='weights/best.pt', # 가중치 경로
-         source='red.mp4', # 0 이면 웹캠, 데이터 경로
+         source='last.mp4', # 0 이면 웹캠, 데이터 경로
          imgsz=640,
          conf_thres=0.5,
          iou_thres=0.45,
          device='',
-         view_img=None,
+         view_img=True,
          save_txt=None,
          save_conf=None,
          classes=None,
@@ -128,6 +128,10 @@ def run(emergency=3,
                 emg = False
                 emg = emgergency_call(n, emergency)
                 box_list = []
+                color_list = []
+                
+                # red cone detection ROI
+                roi = roi_size(im0)
                 
                 # Write results
                 for *xyxy, conf, cls in reversed(det):
@@ -141,14 +145,19 @@ def run(emergency=3,
                         
                         # 콘 RGB
                         color = check_cone_color(im0, xyxy)
-                        if color[0] is 'Orange':
+                        color_list.append(color[0])
+                        
+                        if color[0] == 'Orange':
                             box_list.append(xyxy)
 
                         label = f'{color[0]} {conf:.2f}'
                         plot_one_box(xyxy, im0, label=label, color=color[1], line_thickness=3)
+                
+                # 가운데 네모 ROI 박스 만들기
+                plot_center_box(im0, roi)
                                
                 # stop sign when red cones come out
-                stop = red_cone_stop(box_list)
+                stop = red_cone_stop(im0, box_list, color_list, roi)
                 
                 yield emg, stop
                 

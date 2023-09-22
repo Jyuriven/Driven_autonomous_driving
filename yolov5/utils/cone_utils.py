@@ -44,7 +44,7 @@ def emgergency_call(cnt, threshold):
         return False
 
 
-def red_cone_stop(image, box_list, color_list, roi):
+def red_cone_stop(image, box_list, color_list, roi, red_stop):
     
     '''
     parameter: image - 원본 이미지
@@ -67,8 +67,14 @@ def red_cone_stop(image, box_list, color_list, roi):
         return 1
 
     # 2통과시
-    # 3. 기울기 테스트 : 좌측 최하단 박스와 우측 최상단 박스의 좌표를 통해 기울기를 계산하여 기울기가 임게치보다 크면 사이드에 콘이 있는 경우이므로 아직 도달 못한 상태라 판단
+    # 3. 빨간 콘의 개수
+    if len(color_list) < red_stop:
+        return 1
     
+    # 4. 기울기 테스트 : 좌측 최하단 박스와 우측 최상단 박스의 좌표를 통해 기울기를 계산하여 기울기가 임게치보다 크면 사이드에 콘이 있는 경우이므로 아직 도달 못한 상태라 판단
+    
+    
+    return 2
     
     
 def roi_oragne_cone(box_list, roi):
@@ -87,7 +93,14 @@ def roi_oragne_cone(box_list, roi):
     return True
 
 def check_gradient(box_list):
+    
+    # 리스트 안의 값이 텐서라 변환
+    box_convert = [[t.item() for t in row] for row in box_list]
+    # 초기화 ㄱㄱ
+    p1_idx, p2_idx = 0, 0
+    
     pass
+    
 
 def plot_center_box(image, roi):
     

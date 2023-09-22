@@ -18,8 +18,8 @@ from utils.torch_utils import select_device, load_classifier, time_synchronized
 # cone detection
 from utils.cone_utils import check_cone_color, emgergency_call, red_cone_stop, plot_center_box, roi_size
 
-def run(emergency=3,
-        red_stop=4,
+def run(emergency=3, # 사고 직전 보이는 콘 개수
+        red_stop=9, # 오렌지콘 개수 임계치 for 최종 감속
          weights='weights/best.pt', # 가중치 경로
          source='last.mp4', # 0 이면 웹캠, 데이터 경로
          imgsz=640,
@@ -157,7 +157,7 @@ def run(emergency=3,
                 plot_center_box(im0, roi)
                                
                 # stop sign when red cones come out
-                stop = red_cone_stop(im0, box_list, color_list, roi)
+                stop = red_cone_stop(im0, box_list, color_list, roi, red_stop)
                 
                 yield emg, stop
                 

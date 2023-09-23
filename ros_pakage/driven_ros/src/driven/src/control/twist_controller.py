@@ -8,8 +8,8 @@ Full_brake = 1
 
 class Controller(object):
     #stop_sign이 false면 리니어 모터는 움직이고 있다.
-    stop_sign = False
-    start_time=0
+    # stop_sign = False
+    # start_time=0
     
   
     
@@ -54,7 +54,7 @@ class Controller(object):
         self.last_time = rospy.get_time()
         self.last_vel = 0.0
 
-def control(self, current_vel, linear_vel, angular, stop_sign):
+def control(self, current_vel, linear_vel, angular):
 
     '''
     current_vel: 현재 속도
@@ -80,7 +80,7 @@ def control(self, current_vel, linear_vel, angular, stop_sign):
     #current_vel = self.vel_lpf.filt(current_vel)
 
     ### 아두이노에 처 넣을 각 
-    steering = self.yaw_controller.get_steering(linear_vel, angular, current_vel, stop_sign)
+    steering = self.yaw_controller.get_steering(linear_vel, angular, current_vel)
     
     #목표속도와 현재 속도 오차 연산
     vel_error = linear_vel - current_vel #선속도가 아니라 목표 속도가 맞는거같음.
@@ -94,23 +94,23 @@ def control(self, current_vel, linear_vel, angular, stop_sign):
     
     
     #목표 속도가 0이 되면 풀 브레이크
-    if linear_vel == 0.0 and vel_error < 3:
-        throttle = 0.0
-        brake = Full_brake
-        if stop_sign:
-            start_time = rospy.get_time()
-        stop_sign = False
+    # if linear_vel == 0.0 and vel_error < 3:
+    #     throttle = 0.0
+    #     brake = Full_brake
+        # if stop_sign:
+        #     start_time = rospy.get_time()
+        # stop_sign = False
     
     #중간브레이크는 없는가...?
     
     
     #원하는 속도에 도달하면 쓰로틀값을 내린다.
-    elif throttle < 0.1 and vel_error < 0.0:
-        throtle = 0.0
-        if not stop_sign:
-            decel = max(vel_error, self.decel_limit)
-            #brake를 안써도 되는 구간에서도 사용할 수 있는 것 아닌가??
-            brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
+    # elif throttle < 0.1 and vel_error < 0.0:
+    #     throtle = 0.0
+    #     if not stop_sign:
+    #         decel = max(vel_error, self.decel_limit)
+    #         #brake를 안써도 되는 구간에서도 사용할 수 있는 것 아닌가??
+    #         brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
     
 
     print("Jetson2Ardu Control DATA : ")
@@ -119,4 +119,4 @@ def control(self, current_vel, linear_vel, angular, stop_sign):
     print("Jetson2Ardu Control DATA ( STEERING ) : %f", steering )
     print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
 
-    return throttle, brake, steering, start_time
+    return throttle, brake, steering

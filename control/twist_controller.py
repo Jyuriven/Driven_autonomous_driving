@@ -101,7 +101,6 @@ def control(self, current_vel, linear_vel, angular, stop_sign):
             start_time = rospy.get_time()
         stop_sign = False
     
-    #중간브레이크는 없는가...?
     
     
     #원하는 속도에 도달하면 쓰로틀값을 내린다.

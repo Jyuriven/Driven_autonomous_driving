@@ -39,7 +39,7 @@ def get_imu():
         
     pre_sec=now_sec
     pre_yaw=yaw
-    return roll,pitch,yaw,
+    return roll,pitch,yaw
     
 if __name__ =="__main__":
         

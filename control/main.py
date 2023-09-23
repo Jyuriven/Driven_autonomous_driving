@@ -16,6 +16,15 @@ max_steer_angle: 조향 장치의 최대 회전각도
 #메인
 def main():
     master_control = Controller()
+    vehicle_mass = 220
+    brake_deadband = 0 
+    decel_limit: 출발 정지시 감속 제한 10
+    accel_limit: 최대 가속도 
+    wheel_radius: 바퀴 반지름 25 -> 단위확인필요
+    wheel_base: 차량 바퀴 사이의 거리 1319mm
+    steer_ratio: 조향 장치의 비율 
+    max_lat_accel: 차량의 최대 측면 가속도
+    max_steer_angle: 조향 장치의 최대 회전각도
 
    
     Throttle, Brake, Steering, start_time = master_control.control(210, )

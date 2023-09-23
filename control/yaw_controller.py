@@ -13,7 +13,7 @@ class YawController(object):
         self.min_angle = -max_steer_angle
         self.max_angle = max_steer_angle
 
-    def get_angle(self, radius): ### 목표조향각 to 아두이노 전달 각도
+    def get_angle(self, radius): ### 목표조향각
         #아크탄젠트
         angle = atan(self.wheel_base / radius) * self.steer_ratio
         

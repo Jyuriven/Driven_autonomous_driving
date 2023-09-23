@@ -16,6 +16,7 @@ class YawController(object):
     def get_angle(self, radius): ### 목표조향각 to 아두이노 전달 각도
         #아크탄젠트
         angle = atan(self.wheel_base / radius) * self.steer_ratio
+        return max(self.min_angle, min(self.max_angle, angle))
         
         '''
         최대 조향각과 최소 조향각 사이 값인지 확인
@@ -27,7 +28,7 @@ class YawController(object):
                 return self.min_angle
         '''
         
-        return max(self.min_angle, min(self.max_angle, angle))
+        
 
 
 

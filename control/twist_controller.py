@@ -79,7 +79,7 @@ def control(self, current_vel, linear_vel, angular, stop_sign):
     #LowPassFilter 클래스를 통한 노이즈 제거 (필요 없음)
     #current_vel = self.vel_lpf.filt(current_vel)
 
-    ### 아두이노에 처 넣을 각 
+    ### 아두이노에 넣을 각 
     steering = self.yaw_controller.get_steering(linear_vel, angular, current_vel, stop_sign)
     
     #목표속도와 현재 속도 오차 연산

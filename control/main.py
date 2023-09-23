@@ -16,11 +16,8 @@ max_steer_angle: 조향 장치의 최대 회전각도
 #메인
 def main():
     master_control = Controller()
-    
-    end_time = rospy.get_time()
-    if start_time - end_time > 2:
-        master_control.stop_sign = True
-    
+
+   
     Throttle, Brake, Steering, start_time = master_control.control(210, )
     print(Throttle,Brake,Steering)
 if __name__ == "__main__":

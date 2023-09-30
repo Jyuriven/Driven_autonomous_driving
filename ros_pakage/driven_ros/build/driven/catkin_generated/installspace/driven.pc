@@ -1,0 +1,8 @@
+prefix=/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/install
+
+Name: driven
+Description: Description of driven
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib -ldriven
+Requires: roscpp rospy std_msgs message_runtime main_msg

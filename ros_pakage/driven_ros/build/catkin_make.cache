@@ -1,0 +1,2 @@
+driven:main_msg
+-DCATKIN_DEVEL_PREFIX=/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel -DCMAKE_INSTALL_PREFIX=/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/install -G Unix Makefiles

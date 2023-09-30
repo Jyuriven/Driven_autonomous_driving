@@ -1,2 +1,0 @@
-driven
--DCATKIN_DEVEL_PREFIX=/home/taejeong/Desktop/driven_ros/devel -DCMAKE_INSTALL_PREFIX=/home/taejeong/Desktop/driven_ros/install -G Unix Makefiles

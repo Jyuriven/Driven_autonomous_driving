@@ -1,2 +1,0 @@
-pyastar2d
-imageio

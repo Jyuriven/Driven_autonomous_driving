@@ -39,7 +39,7 @@ class Convert:
     
         pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
         self.key_point = np.array([p[:3] for p in pc_data])
-        self.convert()
+        self.convert_clustering()
     
     def mapping_idx(self, 
                     x_point,

@@ -45,7 +45,7 @@ class Convert:
                     x_point,
                     y_point,
                     data,
-                    map_size = 50, 
+                    map_size = 30, 
                     filtering = False, 
                     filter_size = 6.0):
         '''
@@ -67,11 +67,11 @@ class Convert:
             
         return mapped_x, mapped_y
     
-    def cal_cluster_center(self, labels, data):
+    def cal_cluster_center(self, unique_labels, labels, data):
         
         cluster_center = []
             
-        for label in labels:
+        for label in unique_labels:
             if label != -1:  # -1 는 이상치
                 cluster_points = data[labels == label]
                 center = np.mean(cluster_points, axis=0)
@@ -80,8 +80,8 @@ class Convert:
         return cluster_center
     
     def convert_clustering(self,
-                           filter_size = 6.0,
-                           map_size = 50,
+                           filter_size = 5.0,
+                           map_size = 30,
                            eps = 0.3,
                            min_samples = 4):
         '''
@@ -96,13 +96,19 @@ class Convert:
             dbscan = DBSCAN(eps = eps, min_samples = min_samples)
             
             # 최종 맵
-            self.grid_map = [[' ']*map_size for i in range(map_size)]
+            self.grid_map = [[0]*map_size for i in range(map_size)]
         
             # x, y, z 좌표 값의 최대 최소 값
             max_list = np.apply_along_axis(lambda a: np.max(a), 0, self.map_point)
             min_list = np.apply_along_axis(lambda a: np.min(a), 0, self.map_point)
-            print(f'max point:{max_list[0]}   {max_list[1]}   {max_list[2]}')
-            print(f'min point:{min_list[0]}   {min_list[1]}   {min_list[2]}')
+            # print(f'max point:{max_list[0]}   {max_list[1]}   {max_list[2]}')
+            # print(f'min point:{min_list[0]}   {min_list[1]}   {min_list[2]}')
+            
+            # 차의 좌표 _ 거의 (0,0)
+            pose_x = self.key_point[0][0]
+            pose_y = self.key_point[0][1]
+            self.x_lst.append(pose_x)
+            self.y_lst.append(pose_y)
             
             # 이상치와 사람을 필터링
             for point in self.map_point:
@@ -111,7 +117,7 @@ class Convert:
                 map_z = point[2]
             
                 # z축 값을 확인하여 사람 필터링
-                if map_z > 0.58:
+                if map_z > 0.70:
                     continue
 
                 # 맵에 좌표 맵핑
@@ -123,34 +129,30 @@ class Convert:
             data_tmp = list(zip(self.x_lst, self.y_lst))
             data_tmp = np.array(data_tmp)
             
-            # 차의 좌표 _ 거의 (0,0)
-            pose_x = self.key_point[0][0]
-            pose_y = self.key_point[0][1]
-            
             if (abs(pose_x) <= filter_size) and (abs(pose_y) <= filter_size):
                 # x, y 좌표를 grid_map 인덱스로 변환
-                self.car_x, self.car_y = self.mapping_idx(x_point=pose_x, y_point=pose_y, data=data_tmp, filtering=False)
-
+                self.car_x, self.car_y = self.mapping_idx(x_point=pose_x, y_point=pose_y, data=data_tmp, map_size=map_size, filtering=False)
+                
 
             # Clustering
             labels = dbscan.fit_predict(data_tmp)
             unique_labels = set(labels)
-            cluster_center = self.cal_cluster_center(unique_labels, data_tmp)
-            
+            cluster_center = self.cal_cluster_center(unique_labels, labels, data_tmp)
+
             for center in cluster_center:
                 x, y = center
-                x_idx, y_idx = self.mapping_idx(x_point=x, y_point=y, filtering=False, data=data_tmp)
-                self.grid_map[x_idx][y_idx] = '🚧'
+                x_idx, y_idx = self.mapping_idx(x_point=x, y_point=y, map_size=map_size, filtering=False, data=data_tmp)
+                self.grid_map[x_idx][y_idx] = 1
             
              # 자동차
-            self.grid_map[self.car_x][self.car_y] = '🚘'
+            self.grid_map[self.car_x][self.car_y] = 7
             
-        for i in range(50):
-            for j in range(50):
-                print(self.grid_map[i][j], end=' ')
-            print()
-            
-            
+            for i in range(30):
+                for j in range(30):
+                    print(self.grid_map[i][j], end=' ')
+                print()
+            # save_map = np.array(self.grid_map)
+            # np.savetxt('/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/map_50.txt', save_map, fmt='%d')
             
             
     def convert_og(self):

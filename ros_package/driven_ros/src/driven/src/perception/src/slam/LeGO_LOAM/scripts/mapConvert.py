@@ -131,7 +131,7 @@ class Convert:
             # Clustering
             labels = dbscan.fit_predict(data_tmp)
             unique_labels = set(labels)
-            cluster_center = self.cal_cluster_center(unique_labels)
+            cluster_center = self.cal_cluster_center(unique_labels, data_tmp)
 
             for x, y in cluster_center:
                  

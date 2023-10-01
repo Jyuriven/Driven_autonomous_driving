@@ -36,7 +36,7 @@ class Convert:
         
     
     def key_pose_callback(self, msg):
-    
+        
         pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
         self.key_point = np.array([p[:3] for p in pc_data])
         self.convert_clustering()
@@ -104,14 +104,6 @@ class Convert:
             print(f'max point:{max_list[0]}   {max_list[1]}   {max_list[2]}')
             print(f'min point:{min_list[0]}   {min_list[1]}   {min_list[2]}')
             
-            # 차의 좌표 _ 거의 (0,0)
-            pose_x = self.key_point[0][0]
-            pose_y = self.key_point[0][1]
-            
-            if (abs(pose_x) <= filter_size) and (abs(pose_y) <= filter_size):
-                # x, y 좌표를 grid_map 인덱스로 변환
-                self.car_x, self.car_y = self.mapping_idx(x_point=pose_x, y_point=pose_y, filtering=False)
-
             # 이상치와 사람을 필터링
             for point in self.map_point:
                 map_x = point[0]
@@ -131,6 +123,15 @@ class Convert:
             data_tmp = list(zip(self.x_lst, self.y_lst))
             data_tmp = np.array(data_tmp)
             
+            # 차의 좌표 _ 거의 (0,0)
+            pose_x = self.key_point[0][0]
+            pose_y = self.key_point[0][1]
+            
+            if (abs(pose_x) <= filter_size) and (abs(pose_y) <= filter_size):
+                # x, y 좌표를 grid_map 인덱스로 변환
+                self.car_x, self.car_y = self.mapping_idx(x_point=pose_x, y_point=pose_y, data=data_tmp, filtering=False)
+
+
             # Clustering
             labels = dbscan.fit_predict(data_tmp)
             unique_labels = set(labels)

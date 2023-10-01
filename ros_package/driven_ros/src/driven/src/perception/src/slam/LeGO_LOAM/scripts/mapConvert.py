@@ -44,11 +44,10 @@ class Convert:
     def mapping_idx(self, 
                     x_point,
                     y_point,
+                    data,
                     map_size = 50, 
                     filtering = False, 
-                    filter_size = 6.0, 
-                    max_size = 10.0, 
-                    min_size = -10.0):
+                    filter_size = 6.0):
         '''
         라이다의 좌표를 리스트로 맵핑을 하기 전에 0-1 값으로 표준화를 해주는 메소드
         True시 정해진 filter 사이즈에 따라서 표준화를 진행 -> 맵 크기에 비해 사이즈가 좀 작아짐
@@ -59,8 +58,12 @@ class Convert:
             mapped_x = int((x_point + filter_size) / (2 * filter_size) * (map_size - 1))
             mapped_y = int((y_point + filter_size) / (2 * filter_size) * (map_size - 1))
         else:
+            max_size = max(data[:, 0])
+            min_size = min(data[:, 0])
             mapped_x = int((x_point - min_size) / (max_size - min_size) * (map_size - 1))
-            mapped_y = int((y_point + filter_size) / (2 * filter_size) * (map_size - 1))
+            max_size = max(data[:, 1])
+            min_size = min(data[:, 1])
+            mapped_y = int((y_point - min_size) / (max_size - min_size) * (map_size - 1))
             
         return mapped_x, mapped_y
     
@@ -132,12 +135,11 @@ class Convert:
             labels = dbscan.fit_predict(data_tmp)
             unique_labels = set(labels)
             cluster_center = self.cal_cluster_center(unique_labels, data_tmp)
-
+            
             for center in cluster_center:
                 x, y = center
-                x_idx, y_idx = self.mapping_idx(x_point=x, y_point=y, filtering=False)
+                x_idx, y_idx = self.mapping_idx(x_point=x, y_point=y, filtering=False, data=data_tmp)
                 self.grid_map[x_idx][y_idx] = '🚧'
-            
             
              # 자동차
             self.grid_map[self.car_x][self.car_y] = '🚘'

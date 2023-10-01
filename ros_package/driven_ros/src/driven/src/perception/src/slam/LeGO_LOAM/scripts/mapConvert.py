@@ -133,8 +133,8 @@ class Convert:
             unique_labels = set(labels)
             cluster_center = self.cal_cluster_center(unique_labels, data_tmp)
 
-            for x, y in cluster_center:
-                 
+            for center in cluster_center:
+                x, y = center
                 x_idx, y_idx = self.mapping_idx(x_point=x, y_point=y, filtering=False)
                 self.grid_map[x_idx][y_idx] = '🚧'
             

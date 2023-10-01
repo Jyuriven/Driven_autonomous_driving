@@ -42,6 +42,9 @@ class Convert:
     def convert(self):
         
         if self.map_point is not None and self.key_point is not None:
+            
+            self.x_lst = []
+            self.y_lst = []
 
             # Optimization
             map_size = 50
@@ -53,14 +56,26 @@ class Convert:
             # x, y, z 좌표 값의 최대 최소 값
             max_list = np.apply_along_axis(lambda a: np.max(a), 0, self.map_point)
             min_list = np.apply_along_axis(lambda a: np.min(a), 0, self.map_point)
-            # print(f'max point:{max_list[0]}  {max_list[1]}    {max_list[2]}')
-            # print(f'min point:{min_list[0]}  {min_list[1]}    {min_list[2]}')
+            print(f'max point:{max_list[0]}  {max_list[1]}    {max_list[2]}')
+            print(f'min point:{min_list[0]}  {min_list[1]}    {min_list[2]}')
+            
+            pose_x = self.key_point[0][0]
+            pose_y = self.key_point[0][1]
+            # 맵에 차 위치 맵핑
+            if (-filter_size <= pose_x <= filter_size) and (-filter_size <= pose_y <= filter_size):
+                # x, y 좌표를 grid_map 인덱스로 변환
+                x_idx = int((pose_x + filter_size) / (2 * filter_size) * (map_size - 1))
+                y_idx = int((pose_y + filter_size) / (2 * filter_size) * (map_size - 1))
+
+                self.car_x = x_idx
+                self.car_y = y_idx
+            
             for point in self.map_point:
                 map_x = point[0]
                 map_y = point[1]
                 map_z = point[2]
             
-                if map_z > -0.58:
+                if map_z > 0.58:
                     continue
 
                 # 맵에 좌표 맵핑
@@ -68,28 +83,23 @@ class Convert:
                     # x, y 좌표를 grid_map 인덱스로 변환
                     x_idx = int((map_x + filter_size) / (2 * filter_size) * (map_size - 1))
                     y_idx = int((map_y + filter_size) / (2 * filter_size) * (map_size - 1))
+                    
+                    if y_idx > self.car_y:
+                        self.x_lst.append(x_idx)
+                        self.y_lst.append(y_idx)
 
-                    self.x_lst.append(x_idx)
-                    self.y_lst.append(y_idx)
-
-                    # 장애물
-                    self.grid_map[x_idx][y_idx] = 0
+                        # 장애물
+                        self.grid_map[x_idx][y_idx] = 0
 
         
+             # 자동차
+            self.grid_map[self.car_x][self.car_y] = 7
             
-        
-            # 맵에 차 위치 맵핑
-            if (-filter_size <= self.car_x <= filter_size) and (-filter_size <= self.car_y <= filter_size):
-                # x, y 좌표를 grid_map 인덱스로 변환
-                x_idx = int((self.car_x + filter_size) / (2 * filter_size) * (map_size - 1))
-                y_idx = int((self.car_y + filter_size) / (2 * filter_size) * (map_size - 1))
-
-                self.car_x = x_idx
-                self.car_y = y_idx
-
-                # 자동차
-                self.grid_map[x_idx][y_idx] = 7
-            
+        for i in range(50):
+            for j in range(50):
+                print(self.grid_map[i][j], end=' ')
+            print()
+        # print(f'length of x,y lis: {len(self.x_lst)}, {len(self.y_lst)}')
 
     def map_publish(self):
         msg = map()

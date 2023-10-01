@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/include/cloud_msgs/cloud_info.h
+/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/include/cloud_msgs/cloud_info.h
 string
 -
 vector
@@ -24,7 +24,7 @@ ros/message_operations.h
 std_msgs/Header.h
 -
 
-/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include/utility.h
+/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include/utility.h
 ros/ros.h
 -
 sensor_msgs/Imu.h
@@ -34,7 +34,7 @@ sensor_msgs/PointCloud2.h
 nav_msgs/Odometry.h
 -
 cloud_msgs/cloud_info.h
-/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include/cloud_msgs/cloud_info.h
+/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include/cloud_msgs/cloud_info.h
 opencv2/core.hpp
 -
 pcl/point_cloud.h
@@ -96,9 +96,9 @@ thread
 mutex
 -
 
-/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/src/transformFusion.cpp
+/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/src/transformFusion.cpp
 utility.h
-/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/src/utility.h
+/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/src/utility.h
 
 /opt/ros/melodic/include/geometry_msgs/Point.h
 string

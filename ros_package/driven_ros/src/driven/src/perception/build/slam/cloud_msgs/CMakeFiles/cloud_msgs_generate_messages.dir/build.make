@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src
+CMAKE_SOURCE_DIR = /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build
+CMAKE_BINARY_DIR = /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build
 
 # Utility rule file for cloud_msgs_generate_messages.
 
@@ -63,10 +63,10 @@ slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/build: cloud_msgs_ge
 .PHONY : slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/build
 
 slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/clean:
-	cd /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build/slam/cloud_msgs && $(CMAKE_COMMAND) -P CMakeFiles/cloud_msgs_generate_messages.dir/cmake_clean.cmake
+	cd /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/slam/cloud_msgs && $(CMAKE_COMMAND) -P CMakeFiles/cloud_msgs_generate_messages.dir/cmake_clean.cmake
 .PHONY : slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/clean
 
 slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/depend:
-	cd /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/cloud_msgs /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build/slam/cloud_msgs /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build/slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/cloud_msgs /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/slam/cloud_msgs /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : slam/cloud_msgs/CMakeFiles/cloud_msgs_generate_messages.dir/depend
 

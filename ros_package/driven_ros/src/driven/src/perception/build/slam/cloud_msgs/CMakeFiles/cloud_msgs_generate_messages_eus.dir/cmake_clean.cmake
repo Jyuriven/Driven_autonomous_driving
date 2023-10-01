@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/cloud_msgs_generate_messages_eus"
-  "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/share/roseus/ros/cloud_msgs/msg/map.l"
-  "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/share/roseus/ros/cloud_msgs/msg/cloud_info.l"
-  "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/share/roseus/ros/cloud_msgs/manifest.l"
+  "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/roseus/ros/cloud_msgs/msg/cloud_info.l"
+  "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/roseus/ros/cloud_msgs/msg/map.l"
+  "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/roseus/ros/cloud_msgs/manifest.l"
 )
 
 # Per-language clean rules from dependency scanning.

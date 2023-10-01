@@ -32,6 +32,9 @@ class Convert:
         pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
         self.map_point = np.array([p[:3] for p in pc_data])
         
+        for i in self.map_point:
+            print(f'[{i[0]}, {i[1]}],')
+        print("---------------------------")
     
     def key_pose_callback(self, msg):
     

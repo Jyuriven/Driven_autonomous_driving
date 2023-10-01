@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src
+CMAKE_SOURCE_DIR = /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build
+CMAKE_BINARY_DIR = /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build
 
 # Utility rule file for sensor_msgs_generate_messages_py.
 
@@ -63,10 +63,10 @@ slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/build: sensor_msg
 .PHONY : slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/build
 
 slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/clean:
-	cd /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build/slam/LeGO_LOAM && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_py.dir/cmake_clean.cmake
+	cd /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/slam/LeGO_LOAM && $(CMAKE_COMMAND) -P CMakeFiles/sensor_msgs_generate_messages_py.dir/cmake_clean.cmake
 .PHONY : slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/clean
 
 slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/depend:
-	cd /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build/slam/LeGO_LOAM /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build/slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/slam/LeGO_LOAM /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : slam/LeGO_LOAM/CMakeFiles/sensor_msgs_generate_messages_py.dir/depend
 

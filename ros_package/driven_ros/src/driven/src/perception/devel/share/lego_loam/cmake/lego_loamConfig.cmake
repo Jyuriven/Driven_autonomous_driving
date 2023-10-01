@@ -67,14 +67,14 @@ set(lego_loam_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(lego_loam_SOURCE_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM)
-  set(lego_loam_DEVEL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel)
+  set(lego_loam_SOURCE_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM)
+  set(lego_loam_DEVEL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel)
   set(lego_loam_INSTALL_PREFIX "")
   set(lego_loam_PREFIX ${lego_loam_DEVEL_PREFIX})
 else()
   set(lego_loam_SOURCE_PREFIX "")
   set(lego_loam_DEVEL_PREFIX "")
-  set(lego_loam_INSTALL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/install)
+  set(lego_loam_INSTALL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/install)
   set(lego_loam_PREFIX ${lego_loam_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(lego_loam_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include;/usr/include/pcl-1.8;/usr/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2;/usr/include/vtk-6.3;/usr/include/freetype2;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include;/usr/lib/aarch64-linux-gnu/openmpi/include;/usr/include/python2.7;/usr/include/aarch64-linux-gnu;/usr/include/hdf5/openmpi;/usr/include/libxml2;/usr/include/jsoncpp;/usr/include/tcl " STREQUAL " ")
+if(NOT "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include;/usr/include/pcl-1.8;/usr/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2;/usr/include/vtk-6.3;/usr/include/freetype2;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include;/usr/lib/aarch64-linux-gnu/openmpi/include;/usr/include/python2.7;/usr/include/aarch64-linux-gnu;/usr/include/hdf5/openmpi;/usr/include/libxml2;/usr/include/jsoncpp;/usr/include/tcl " STREQUAL " ")
   set(lego_loam_INCLUDE_DIRS "")
-  set(_include_dirs "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include;/usr/include/pcl-1.8;/usr/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2;/usr/include/vtk-6.3;/usr/include/freetype2;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include;/usr/lib/aarch64-linux-gnu/openmpi/include;/usr/include/python2.7;/usr/include/aarch64-linux-gnu;/usr/include/hdf5/openmpi;/usr/include/libxml2;/usr/include/jsoncpp;/usr/include/tcl")
+  set(_include_dirs "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/include;/usr/include/pcl-1.8;/usr/include/eigen3;/usr/include;/usr/include/ni;/usr/include/openni2;/usr/include/vtk-6.3;/usr/include/freetype2;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent;/usr/lib/aarch64-linux-gnu/openmpi/include/openmpi/opal/mca/event/libevent2022/libevent/include;/usr/lib/aarch64-linux-gnu/openmpi/include;/usr/include/python2.7;/usr/include/aarch64-linux-gnu;/usr/include/hdf5/openmpi;/usr/include/libxml2;/usr/include/jsoncpp;/usr/include/tcl")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/
         message(FATAL_ERROR "Project 'lego_loam' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'lego_loam' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'lego_loam' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/${idir}'.  ${_report}")
     endif()
     _list_append_unique(lego_loam_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/lib;/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

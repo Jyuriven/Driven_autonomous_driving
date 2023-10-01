@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/transformFusion.dir/src/transformFusion.cpp.o"
-  "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/lib/lego_loam/transformFusion.pdb"
-  "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/lib/lego_loam/transformFusion"
+  "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/lib/lego_loam/transformFusion.pdb"
+  "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/lib/lego_loam/transformFusion"
 )
 
 # Per-language clean rules from dependency scanning.

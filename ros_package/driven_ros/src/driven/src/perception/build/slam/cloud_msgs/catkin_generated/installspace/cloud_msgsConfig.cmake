@@ -67,14 +67,14 @@ set(cloud_msgs_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("FALSE" STREQUAL "TRUE")
-  set(cloud_msgs_SOURCE_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/cloud_msgs)
-  set(cloud_msgs_DEVEL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel)
+  set(cloud_msgs_SOURCE_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/cloud_msgs)
+  set(cloud_msgs_DEVEL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel)
   set(cloud_msgs_INSTALL_PREFIX "")
   set(cloud_msgs_PREFIX ${cloud_msgs_DEVEL_PREFIX})
 else()
   set(cloud_msgs_SOURCE_PREFIX "")
   set(cloud_msgs_DEVEL_PREFIX "")
-  set(cloud_msgs_INSTALL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/install)
+  set(cloud_msgs_INSTALL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/install)
   set(cloud_msgs_PREFIX ${cloud_msgs_INSTALL_PREFIX})
 endif()
 
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/install/lib;/opt/ros/melodic/lib)
+    foreach(path /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/install/lib;/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

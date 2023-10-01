@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src
+CMAKE_SOURCE_DIR = /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build
+CMAKE_BINARY_DIR = /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build
 
 # Utility rule file for download_extra_data.
 
@@ -67,6 +67,6 @@ CMakeFiles/download_extra_data.dir/clean:
 .PHONY : CMakeFiles/download_extra_data.dir/clean
 
 CMakeFiles/download_extra_data.dir/depend:
-	cd /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/build/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build /home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/CMakeFiles/download_extra_data.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/download_extra_data.dir/depend
 

@@ -1,8 +1,0 @@
-prefix=/home/minseok/gps/devel
-
-Name: ublox_serialization
-Description: Description of ublox_serialization
-Version: 1.1.2
-Cflags: -I/home/minseok/gps/src/ublox_f9p/ublox_serialization/include
-Libs: -L${prefix}/lib 
-Requires: roscpp roscpp_serialization

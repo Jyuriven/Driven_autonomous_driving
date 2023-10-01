@@ -1,48 +1,28 @@
-#-*- coding:utf-8 -*-
-
+# -*- coding: utf-8 -*-
+import time
+import rospy
 from yaw_controller import YawController
 from pid import PID
+#import socket
+#import math
+#from pyproj import Proj, transform
+#from sensor_msgs.msg import NavSatFix
+#from geometry_msgs.msg import TwistWithCovarianceStamped
 
-import time
-
-
-Full_brake = 1
 
 class Controller(object):
-    #stop_sign이 false면 리니어 모터는 움직이고 있다.
     
+    def __init__(self, vehicle_mass=220.0,  decel_limit=100.0, accel_limit=5.0,
+                 wheel_radius=505.0, wheel_base=1.320, steer_ratio=6.0, max_lat_accel=10.0, max_steer_angle=25.0):
 
-    def __init__(self, vehicle_mass, decel_limit, accel_limit,
-                 wheel_radius, wheel_base, steer_ratio, max_lat_accel, max_steer_angle):
-        '''
-        vehicle_mass: 차량의 무게
-        brake_deadband: 브레이크 페달 민감도
-        decel_limit: 출발 정지시 감속 제한
-        accel_limit: 최대 가속도
-        wheel_radius: 바퀴 반지름
-        wheel_base: 차량 바퀴 사이의 거리
-        steer_ratio: 조향 장치의 비율
-        max_lat_accel: 차량의 최대 측면 가속도
-        max_steer_angle: 조향 장치의 최대 회전각도
-        '''
-        self.yaw_controller = YawController(wheel_base, steer_ratio, 0.1, max_lat_accel, max_steer_angle)
-
+        self.yaw_controller = YawController(wheel_base, steer_ratio, 5, max_lat_accel, max_steer_angle)
         #pid 제어값
-        kp = 0.3
-        ki = 0.1
+        kp = 0.1
+        ki = 0.09
         kd = 0.0
-        min_throttle = 0.0
-        max_throttle = 0.2
+        min_throttle = 10
+        max_throttle = 150
         self.throttle_controller = PID(kp, ki, kd, min_throttle, max_throttle)
-        
-        
-        #차단 주파수
-        '''
-        tau = 0.5  # cutoff frequency, i.e., 1/(2*pi*tau)
-        ts = 0.02  # sample time
-        self.vel_lpf = LowPassFilter(tau, ts)
-        '''
-        
         self.vehicle_mass = vehicle_mass
         self.decel_limit = decel_limit
         self.accel_limit = accel_limit
@@ -51,11 +31,20 @@ class Controller(object):
         self.last_time = time.time()
         self.last_vel = 0.0
 
-    def control(self, motion_planner, current_vel_from_gps):
+
+#    def control(self, motion_planner):
+#	linear_vel = motion_planner.target_velocity	
+#	angular = motion_planner.target_steering
+
+
+
+    def control(self, current_vel, linear_vel, angular, brake):
+
 
         '''
-        motion_planner : first steering, first velocity , brake level
-        current_vel_from_gps : current velocity from gps sensor
+        current_vel: 현재 속도
+        linear_vel: 목표 속도
+        angular: 목표 조향각
         '''
         # 전달받을 값들
 
@@ -75,29 +64,45 @@ class Controller(object):
         #LowPassFilter 클래스를 통한 노이즈 제거 (필요 없음)
         #current_vel = self.vel_lpf.filt(current_vel)
 
-
-        #### ignore second mission
-        linear_vel = motion_planner.first_target_velocity
-        angular = motion_planner.first_target_steering
-
-
-        ### 아두이노에 처 넣을 각 
-        steering = self.yaw_controller.get_steering(linear_vel, angular, current_vel_from_gps)
-        
+        ### 아두이노에 넣을 각 
+        steering = self.yaw_controller.get_steering(current_vel, linear_vel, angular)
         #목표속도와 현재 속도 오차 연산
-        vel_error = linear_vel - current_vel_from_gps #선속도가 아니라 목표 속도가 맞는거같음.
-        self.last_vel = current_vel_from_gps
+        vel_error = linear_vel - current_vel #선속도가 아니라 목표 속도가 맞는거같음.
+        self.last_vel = current_vel
 
         current_time = time.time()
-        sample_time = current_time - self.last_time
+        if current_time != self.last_time:
+                sample_time = current_time - self.last_time
+        else:
+                time.sleep(1)
+                sample_time = current_time - self.last_time
 
-        throttle = self.throttle_controller.step(vel_error, sample_time)        
+        throttle = self.throttle_controller.step(vel_error, sample_time)
+        print("throttle: ",throttle)
+        
+        # #목표 속도가 0이 되면 풀 브레이크
+        # if linear_vel == 0.0 and vel_error < 3:
+        #     throttle = 0.0
+        #     brake = Full_brake
+        #     if stop_sign:
+        #         start_time = rospy.get_time()
+        #     stop_sign = False
+        
+        # #중간브레이크는 없는가...?
+        
+        
+        # #원하는 속도에 도달하면 쓰로틀값을 내린다.
+        # elif throttle < 0.1 and vel_error < 0.0:
+        #     throtle = 0.0
+        #     if not stop_sign:
+        #         decel = max(vel_error, self.decel_limit)
+        #         #brake를 안써도 되는 구간에서도 사용할 수 있는 것 아닌가??
+        #         brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
+        
 
-        self.last_time = current_time
-
-        print("Jetson2Ardu Control DATA : ")
         print("Jetson2Ardu Control DATA ( THROTTLE ) : %d",throttle )
-        print("Jetson2Ardu Control DATA ( BREAK ) : %f", 0)
+        print("Jetson2Ardu Control DATA ( BREAK ) : %f", brake)
         print("Jetson2Ardu Control DATA ( STEERING ) : %f", steering )
+        #print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
 
-        return throttle, 0, steering
+        return throttle, brake, steering

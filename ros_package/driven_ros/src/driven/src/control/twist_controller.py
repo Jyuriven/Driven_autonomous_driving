@@ -72,10 +72,10 @@ class Controller(object):
 
         current_time = time.time()
         if motion_planner.now_velocity != self.last_time:
-                sample_time = motion_planner.now_velocity - self.last_time
+                sample_time = current_time - self.last_time
         else:
                 time.sleep(1)
-                sample_time = motion_planner.now_velocity - self.last_time
+                sample_time = current_time - self.last_time
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
         print("throttle: ",throttle)
@@ -101,8 +101,8 @@ class Controller(object):
         
 
         print("Jetson2Ardu Control DATA ( THROTTLE ) : %d",throttle )
-        print("Jetson2Ardu Control DATA ( BREAK ) : %f", brake)
+        print("Jetson2Ardu Control DATA ( BREAK ) : %f", motion_planner.brake_level)
         print("Jetson2Ardu Control DATA ( STEERING ) : %f", steering )
         #print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
 
-        return throttle, motion_planner.brake, steering
+        return throttle, motion_planner.brake_level, steering

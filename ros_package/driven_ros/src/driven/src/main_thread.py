@@ -4,6 +4,7 @@
 import sys
 import os
 import rospy
+from pyproj import Proj, transform
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import math
@@ -29,11 +30,19 @@ import mapConvert
 
 
 from main_msg.msg import jet2ard,map
+from geometry_msgs.msg import TwistWithCovarianceStamped
+from sensor_msgs.msg import NavSatFix
 
 
 
+### gps additional
+def WGS84toUTMK(n, e):
+	proj_UTMK = Proj(init='epsg:5178')
+	proj_WGS84 = Proj(init='epsg:4326')
+	x, y = transform(proj_WGS84, proj_UTMK, n, e)
+	return x, y
 
-### import control 
+
 
 
 ### SLAM 을 실행합니다.
@@ -51,58 +60,20 @@ from main_msg.msg import jet2ard,map
 
 motion_planner = MotionPlanner()
 controller = Controller(220,0,5,505,1320,0.151,5,27)
-plt.style.use('fivethirtyeight')
 
 ## global variance
 
-def callback_main(map):
+def main_thread():
+    rospy.init_node("jet2ard_publisher")
+    subscriber_gps_xy = rospy.Subscriber('/ublox/fix',NavSatFix,callback_gps_xy)
+    subscriber_gps_vel = rospy.Subscriber('/ublox/fix_velocity',TwistWithCovarianceStamped,callback_gps_vel)
+    subscriber_lidar = rospy.Subscriber('/per2main', map, callback_main)
+
+    publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
+    publisher_throttle = rospy.Publisher(name="jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
+    publisher_brake = rospy.Publisher(name="jet2ard_publisher_brake",data_class=Int16,queue_size=1)
+    publisher_steering = rospy.Publisher(name="jet2ard_publisher_steering",data_class=Int16,queue_size=1)
     
-    main_map = [[5 for j in range(50)] for i in range(50)]
-
-    for x,y in zip(map.x_lst,map.y_lst):
-        main_map[x][y] = 1
-
-   # main_map[map.car_x][map.car_y] = 7
-    print("test")
-
-    farest,second = farest_distance_point(main_map,map.car_x,map.car_y)
-    
-    
-    print(farest)
-    print(second)
-
-    #main_map[farest[0]][farest[1]] = 8
-    #main_map[second[0]][second[1]] = 4
-
-    print(f'len in main : {len(map.x_lst)}, {len(map.y_lst)}')
-
-    goal_x = int((farest[0]+second[0])/2)
-    goal_y = int((farest[1]+second[1])/2)
-
-    print("################ main map ####################")
-    for i in range(50):
-        for j in range(50):
-            print(main_map[i][j], end = ' ')
-        print()
-    print("################ position ####################")
-    print(f"car >>>>>>>>>>> x : {map.car_x}  y : {map.car_y}")
-    print(f"goal >>>>>>>>>> x : {goal_x}  y : {goal_y}")
-
-    path=pathplanning(main_map,map.car_x,map.car_y,goal_x,goal_y)
-    
-    global motion_planner
-    motion_planner = motion_planner.motionplanning(path,3)
-
-    
-
-
-#    def animate():
- #       plt.cla()
-  #      plt.plot(map.x_lst,map.y_lst)
-
-   # ani = FuncAnimation(plt.gcf(), animate, interval = 1000)
-    #plt.show()
-
 
     msg = jet2ard()
 
@@ -110,7 +81,8 @@ def callback_main(map):
     msg_steering = Int16()
     msg_brake = Int16()
 
-    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner,10)
+    global motion_planner
+    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner,motion_planner.now_velocity)
   
 
     publisher_throttle.publish(msg_throttle)
@@ -121,22 +93,76 @@ def callback_main(map):
     rospy.loginfo(msg_throttle)
     rospy.loginfo(msg_steering)
     rospy.loginfo(msg_brake)
+    
+    rospy.spin()
+
+
+def callback_gps_xy(data):
+    global motion_planner
+    WGS_pt_x = data.latitude
+    WGS_pt_y = data.longitude
+	# UTM transform
+    UTM_pt_x, UTM_pt_y = WGS84toUTMK(WGS_pt_y ,WGS_pt_x)
+    if motion_planner.now_gps_x == motion_planner.init_gps_x:
+        motion_planner.init_gps_x = round(UTM_pt_x,2)
+        motion_planner.init_gps_y = round(UTM_pt_y,2)
+    motion_planner.now_gps_x = round(UTM_pt_x,2)
+    motion_planner.now_gps_y = round(UTM_pt_y,2)
+
+def callback_gps_vel(data):
+    global motion_planner
+    vehicle_speed_acquired = math.sqrt((data.twist.twist.linear.x ** 2) + (data.twist.twist.linear.y ** 2))
+    motion_planner.now_velcity = vehicle_speed_acquired
+
+def callback_main(map):
+    
+    main_map = [[5 for j in range(50)] for i in range(50)]
+
+    for x,y in zip(map.x_lst,map.y_lst):
+        main_map[x][y] = 1
+
+   # main_map[map.car_x][map.car_y] = 7
+
+    farest,second = farest_distance_point(main_map,map.car_x,map.car_y)
+    
+    
+    print(farest)
+    print(second)
+
+    #main_map[farest[0]][farest[1]] = 8
+    #main_map[second[0]][second[1]] = 4
+
+    
+    print(f"[manual log] [DECISION] [mainthread.py] value1:len in main : {len(map.x_lst)}, {len(map.y_lst)}")
+    goal_x = int((farest[0]+second[0])/2)
+    goal_y = int((farest[1]+second[1])/2)
+
+    print("################ main map ####################")
+    print(f"[manual log] [DECISION] [mainthread.py] MAIN MAP")
+    for i in range(50):
+        for j in range(50):
+            if main_map[i][j]!=5:
+                print(main_map[i][j], end = ' ')
+        print()
+    print(f"[manual log] [DECISION] [main_thread.py] value1:map.car_x:{map.car_x},value2 map.car_y:{map.car_y}")
+    print(f"[manual log] [DECISION] [main_thread.py] value1:goal_x:{goal_x},goal_y:{goal_y}")
+    
+
+    path=pathplanning(main_map,map.car_x,map.car_y,goal_x,goal_y)
+
+    
+    global motion_planner
+    motion_planner = motion_planner.motionplanning(path,3)
+
 
     #rospy.sleep()
 
 
 if __name__ == '__main__':
     try:
-        rospy.init_node("jet2ard_publisher")
-        publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
-        publisher_throttle = rospy.Publisher(name="jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
-        publisher_brake = rospy.Publisher(name="jet2ard_publisher_brake",data_class=Int16,queue_size=1)
-        publisher_steering = rospy.Publisher(name="jet2ard_publisher_steering",data_class=Int16,queue_size=1)
-        subscriber = rospy.Subscriber('/per2main', map, callback_main)
-        rospy.spin()
-
+        main_thread()
     except KeyboardInterrupt:
-        print("######## Interupt ########")
+        print(f"[manual log] [DECISION] [mainthread.py] KEYBOARD INTERRUPT")
         sys.exit(0)
 
 ### PERCEPTION

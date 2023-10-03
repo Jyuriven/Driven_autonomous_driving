@@ -81,7 +81,7 @@ class Convert:
     
     def convert_clustering(self,
                            filter_size = 5.0,
-                           map_size = 30,
+                           map_size = 50,
                            eps = 0.3,
                            min_samples = 4):
         '''
@@ -101,8 +101,7 @@ class Convert:
             # x, y, z 좌표 값의 최대 최소 값
             max_list = np.apply_along_axis(lambda a: np.max(a), 0, self.map_point)
             min_list = np.apply_along_axis(lambda a: np.min(a), 0, self.map_point)
-            # print(f'max point:{max_list[0]}   {max_list[1]}   {max_list[2]}')
-            # print(f'min point:{min_list[0]}   {min_list[1]}   {min_list[2]}')
+            print(f'[manual log] [perception] [mapConvert.py] max point x:{max_list[0]} y;{max_list[1]} z:{max_list[2]}\nmin point x:{min_list[0]} y:{min_list[1]} z:{min_list[2]}')
             
             # 차의 좌표 _ 거의 (0,0)
             pose_x = self.key_point[0][0]
@@ -117,7 +116,9 @@ class Convert:
                 map_z = point[2]
             
                 # z축 값을 확인하여 사람 필터링
+                ######## 실험 대상 ########
                 if map_z > 0.70:
+                    print('[manual log] [perception] [mapConvert.py] People Detected!!')
                     continue
 
                 # 맵에 좌표 맵핑
@@ -147,8 +148,9 @@ class Convert:
              # 자동차
             self.grid_map[self.car_x][self.car_y] = 7
             
-            for i in range(30):
-                for j in range(30):
+            print(f'[manual log] [perception] [mapConvert.py] grid_map:')
+            for i in range(50):
+                for j in range(50):
                     print(self.grid_map[i][j], end=' ')
                 print()
             # save_map = np.array(self.grid_map)
@@ -172,8 +174,8 @@ class Convert:
             # x, y, z 좌표 값의 최대 최소 값
             max_list = np.apply_along_axis(lambda a: np.max(a), 0, self.map_point)
             min_list = np.apply_along_axis(lambda a: np.min(a), 0, self.map_point)
-            print(f'max point:{max_list[0]}  {max_list[1]}    {max_list[2]}')
-            print(f'min point:{min_list[0]}  {min_list[1]}    {min_list[2]}')
+            # print(f'max point:{max_list[0]}  {max_list[1]}    {max_list[2]}')
+            # print(f'min point:{min_list[0]}  {min_list[1]}    {min_list[2]}')
             
             pose_x = self.key_point[0][0]
             pose_y = self.key_point[0][1]
@@ -211,11 +213,12 @@ class Convert:
              # 자동차
             self.grid_map[self.car_x][self.car_y] = 7
             
+        print(f'[manual log] [perception] [mapConvert.py] grid_map:')
         for i in range(50):
             for j in range(50):
                 print(self.grid_map[i][j], end=' ')
             print()
-        # print(f'length of x,y lis: {len(self.x_lst)}, {len(self.y_lst)}')
+
 
     def map_publish(self):
         msg = map()
@@ -232,7 +235,6 @@ class Convert:
 
 
         self.map_pub.publish(msg)
-        print('map published')
 
 def main():
 
@@ -251,5 +253,5 @@ if __name__ == '__main__':
     try:
         main()
     except rospy.ROSInterruptException:
-        print("Something wrong in mapConvert file..")
+        print("[manual log] [perception] [mapConvert.py] ROS Exception")
         pass

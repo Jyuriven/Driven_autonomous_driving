@@ -38,9 +38,9 @@ class Controller(object):
 
 
 
-    def control(self, current_vel, linear_vel, angular, brake):
-
-
+    def control(self, motion_planner):
+        
+        
         '''
         current_vel: 현재 속도
         linear_vel: 목표 속도
@@ -65,17 +65,17 @@ class Controller(object):
         #current_vel = self.vel_lpf.filt(current_vel)
 
         ### 아두이노에 넣을 각 
-        steering = self.yaw_controller.get_steering(current_vel, linear_vel, angular)
+        steering = self.yaw_controller.get_steering(motion_planner.now_velocity, motion_planner.first_target_velocity, motion_planner.first_target_steering)
         #목표속도와 현재 속도 오차 연산
-        vel_error = linear_vel - current_vel #선속도가 아니라 목표 속도가 맞는거같음.
-        self.last_vel = current_vel
+        vel_error = motion_planner.first_target_velocity - motion_planner.now_velocity #선속도가 아니라 목표 속도가 맞는거같음.
+        self.last_vel = motion_planner.now_velocity
 
         current_time = time.time()
-        if current_time != self.last_time:
-                sample_time = current_time - self.last_time
+        if motion_planner.now_velocity != self.last_time:
+                sample_time = motion_planner.now_velocity - self.last_time
         else:
                 time.sleep(1)
-                sample_time = current_time - self.last_time
+                sample_time = motion_planner.now_velocity - self.last_time
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
         print("throttle: ",throttle)
@@ -105,4 +105,4 @@ class Controller(object):
         print("Jetson2Ardu Control DATA ( STEERING ) : %f", steering )
         #print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
 
-        return throttle, brake, steering
+        return throttle, motion_planner.brake, steering

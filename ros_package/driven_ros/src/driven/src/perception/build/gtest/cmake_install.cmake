@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/install")
+  set(CMAKE_INSTALL_PREFIX "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -37,9 +37,14 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
   set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 
+# Set default install directory permissions.
+if(NOT DEFINED CMAKE_OBJDUMP)
+  set(CMAKE_OBJDUMP "/usr/bin/objdump")
+endif()
+
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/gtest/googlemock/cmake_install.cmake")
+  include("/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/gtest/googlemock/cmake_install.cmake")
 
 endif()
 

@@ -4,15 +4,17 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
         - /TF1/Frames1
-      Splitter Ratio: 0.703999996
-    Tree Height: 707
+        - /PointCloud21
+      Splitter Ratio: 0.7039999961853027
+    Tree Height: 728
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
     Expanded: ~
     Name: Tool Properties
-    Splitter Ratio: 0.588679016
+    Splitter Ratio: 0.5886790156364441
   - Class: rviz/Views
     Expanded:
       - /Current View1
@@ -22,9 +24,11 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: Edge Features (green)
+    SyncSource: ""
   - Class: rviz/Help
     Name: Help
+Preferences:
+  PromptSaveOnExit: true
 Toolbars:
   toolButtonStyle: 2
 Visualization Manager:
@@ -32,6 +36,8 @@ Visualization Manager:
   Displays:
     - Class: rviz/TF
       Enabled: false
+      Filter (blacklist): ""
+      Filter (whitelist): ""
       Frame Timeout: 15
       Frames:
         All Enabled: false
@@ -48,7 +54,7 @@ Visualization Manager:
       Enabled: true
       Length: 2
       Name: map
-      Radius: 0.300000012
+      Radius: 0.30000001192092896
       Reference Frame: map
       Value: true
     - Class: rviz/Axes
@@ -61,8 +67,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 17.0059433
-        Min Value: -1.04788589
+        Max Value: 17.005943298339844
+        Min Value: -1.0478858947753906
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -73,15 +79,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 183
       Min Color: 0; 0; 0
-      Min Intensity: 1
       Name: Velodyne
       Position Transformer: XYZ
       Queue Size: 2
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /full_cloud_projected
       Unreliable: false
@@ -91,8 +95,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 20.4566002
-        Min Value: -3.58307004
+        Max Value: 20.456600189208984
+        Min Value: -3.5830700397491455
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -103,15 +107,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 96
       Min Color: 0; 0; 0
-      Min Intensity: 1
       Name: Surface (yellow)
       Position Transformer: XYZ
       Queue Size: 2
       Selectable: true
       Size (Pixels): 8
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /laser_cloud_flat
       Unreliable: false
@@ -121,8 +123,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 20.4566002
-        Min Value: -3.58307004
+        Max Value: 20.456600189208984
+        Min Value: -3.5830700397491455
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -133,15 +135,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 96
       Min Color: 0; 0; 0
-      Min Intensity: 1
       Name: Edge Sharp (blue)
       Position Transformer: XYZ
       Queue Size: 2
       Selectable: true
       Size (Pixels): 8
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /laser_cloud_sharp
       Unreliable: false
@@ -151,8 +151,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 20.4566002
-        Min Value: -3.58307004
+        Max Value: 20.456600189208984
+        Min Value: -3.5830700397491455
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -163,15 +163,13 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 96
       Min Color: 0; 0; 0
-      Min Intensity: 1
       Name: Edge Features (green)
       Position Transformer: XYZ
       Queue Size: 2
       Selectable: true
       Size (Pixels): 5
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /laser_cloud_less_sharp
       Unreliable: false
@@ -181,8 +179,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 20.4566002
-        Min Value: -3.58307004
+        Max Value: 20.456600189208984
+        Min Value: -3.5830700397491455
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -193,15 +191,13 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 96
       Min Color: 0; 0; 0
-      Min Intensity: 1
       Name: Surface Features (pink)
       Position Transformer: XYZ
       Queue Size: 2
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /laser_cloud_less_flat
       Unreliable: false
@@ -211,8 +207,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 10.7254
-        Min Value: -6.34819984
+        Max Value: 10.7253999710083
+        Min Value: -6.348199844360352
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -223,15 +219,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15.1604996
       Min Color: 0; 0; 0
-      Min Intensity: 8.00349998
       Name: Outlier Cloud
       Position Transformer: XYZ
       Queue Size: 2
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /outlier_cloud
       Unreliable: false
@@ -253,15 +247,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15.1787996
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: Segmentation Full
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /segmented_cloud
       Unreliable: false
@@ -280,29 +272,27 @@ Visualization Manager:
       Color: 255; 255; 255
       Color Transformer: Intensity
       Decay Time: 0
-      Enabled: false
+      Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 241
       Min Color: 0; 0; 0
-      Min Intensity: 1
       Name: Segmentation Pure
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 5
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /segmented_cloud_pure
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
-      Value: false
+      Value: true
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 18.9591999
-        Min Value: 0.0404983014
+        Max Value: 18.959199905395508
+        Min Value: 0.04049830138683319
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -313,15 +303,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: Ground Cloud
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /ground_cloud
       Unreliable: false
@@ -331,8 +319,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 4.57089996
-        Min Value: 0.300000012
+        Max Value: 4.570899963378906
+        Min Value: 0.30000001192092896
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -343,15 +331,13 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 42
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: Trajectory
       Position Transformer: XYZ
       Queue Size: 1
       Selectable: true
       Size (Pixels): 3
-      Size (m): 0.300000012
+      Size (m): 0.30000001192092896
       Style: Flat Squares
       Topic: /key_pose_origin
       Unreliable: false
@@ -373,15 +359,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: ICP cloud
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 5
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /corrected_cloud
       Unreliable: false
@@ -403,15 +387,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: History Key Frames
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 2
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /history_cloud
       Unreliable: false
@@ -421,8 +403,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 23.0833607
-        Min Value: -3.98265076
+        Max Value: 23.08336067199707
+        Min Value: -3.9826507568359375
         Value: true
       Axis: Y
       Channel Name: intensity
@@ -433,15 +415,13 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: Map Cloud
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 1
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /laser_cloud_surround
       Unreliable: false
@@ -451,8 +431,8 @@ Visualization Manager:
     - Alpha: 0.5
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 52.9331703
-        Min Value: -7.77158022
+        Max Value: 52.933170318603516
+        Min Value: -7.771580219268799
         Value: true
       Axis: Y
       Channel Name: intensity
@@ -463,15 +443,13 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: Map Cloud (stack)
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 2
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /registered_cloud
       Unreliable: false
@@ -481,8 +459,8 @@ Visualization Manager:
     - Alpha: 1
       Autocompute Intensity Bounds: true
       Autocompute Value Bounds:
-        Max Value: 20.2114735
-        Min Value: -2.70486069
+        Max Value: 20.21147346496582
+        Min Value: -2.7048606872558594
         Value: true
       Axis: Z
       Channel Name: intensity
@@ -493,21 +471,47 @@ Visualization Manager:
       Enabled: false
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 15
       Min Color: 0; 0; 0
-      Min Intensity: 0
       Name: Surround Cloud
       Position Transformer: XYZ
       Queue Size: 10
       Selectable: true
       Size (Pixels): 2
-      Size (m): 0.00999999978
+      Size (m): 0.009999999776482582
       Style: Points
       Topic: /recent_cloud
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
       Value: false
+    - Alpha: 1
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: intensity
+      Class: rviz/PointCloud2
+      Color: 255; 255; 255
+      Color Transformer: ""
+      Decay Time: 0
+      Enabled: true
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Min Color: 0; 0; 0
+      Name: PointCloud2
+      Position Transformer: ""
+      Queue Size: 10
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.009999999776482582
+      Style: Flat Squares
+      Topic: /segmented_cloud_pure
+      Unreliable: false
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 0; 0; 0
@@ -524,9 +528,9 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 86.4874191
+      Distance: 27.37139892578125
       Enable Stereo Rendering:
-        Stereo Eye Separation: 0.0599999987
+        Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
@@ -535,14 +539,14 @@ Visualization Manager:
         Y: 0
         Z: 0
       Focal Shape Fixed Size: false
-      Focal Shape Size: 0.0500000007
+      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
-      Near Clip Distance: 0.00999999978
-      Pitch: 0.829797029
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.8297970294952393
       Target Frame: base_link
       Value: Orbit (rviz)
-      Yaw: 0.395514786
+      Yaw: 0.37551480531692505
     Saved: ~
 Window Geometry:
   Displays:
@@ -552,7 +556,7 @@ Window Geometry:
     collapsed: false
   Hide Left Dock: false
   Hide Right Dock: true
-  QMainWindow State: 000000ff00000000fd000000040000000000000179000003b5fc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000006300fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c006100790073010000002e000003b5000000dd00fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000800480065006c0070000000032c000000ba0000007900ffffff000000010000010f000003befc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730000000028000003be000000b700fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000073f00000039fc0100000003fb0000001600520061006e0067006500200049006d00610067006500000000000000073f0000000000000000fb0000000a0049006d0061006700650000000000000006100000000000000000fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073e0000003efc0100000002fb0000000800540069006d006500000000000000073e0000038300fffffffb0000000800540069006d0065010000000000000450000000000000000000000600000003b500000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  QMainWindow State: 000000ff00000000fd000000040000000000000179000003c0fc0200000009fb0000001200530065006c0065006300740069006f006e00000001e10000009b0000005c00fffffffb0000001e0054006f006f006c002000500072006f007000650072007400690065007302000001ed000001df00000185000000a3fb000000120056006900650077007300200054006f006f02000001df000002110000018500000122fb000000200054006f006f006c002000500072006f0070006500720074006900650073003203000002880000011d000002210000017afb000000100044006900730070006c0061007900730100000027000003c0000000c900fffffffb0000002000730065006c0065006300740069006f006e00200062007500660066006500720200000138000000aa0000023a00000294fb00000014005700690064006500530074006500720065006f02000000e6000000d2000003ee0000030bfb0000000c004b0069006e0065006300740200000186000001060000030c00000261fb0000000800480065006c0070000000032c000000ba0000006e00ffffff000000010000010f000003befc0200000003fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000041000000780000000000000000fb0000000a005600690065007700730000000028000003be000000a400fffffffb0000001200530065006c0065006300740069006f006e010000025a000000b20000000000000000000000020000073f00000039fc0100000003fb0000001600520061006e0067006500200049006d00610067006500000000000000073f0000000000000000fb0000000a0049006d0061006700650000000000000006100000000000000000fb0000000a00560069006500770073030000004e00000080000002e100000197000000030000073e0000003efc0100000002fb0000000800540069006d006500000000000000073e000004f300fffffffb0000000800540069006d0065010000000000000450000000000000000000000601000003c000000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
   Selection:
     collapsed: false
   Time:
@@ -562,5 +566,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 1920
-  X: 637
-  Y: 227
+  X: 640
+  Y: 510

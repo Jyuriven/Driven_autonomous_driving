@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/gennodejs/ros/cloud_msgs/msg/cloud_info.js"
+  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/gennodejs/ros/cloud_msgs/msg/map.js"
   "CMakeFiles/cloud_msgs_generate_messages_nodejs"
-  "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/gennodejs/ros/cloud_msgs/msg/cloud_info.js"
-  "/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/gennodejs/ros/cloud_msgs/msg/map.js"
 )
 
 # Per-language clean rules from dependency scanning.

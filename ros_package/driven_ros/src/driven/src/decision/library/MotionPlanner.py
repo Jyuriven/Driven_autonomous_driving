@@ -3,10 +3,10 @@
 
 import math
 import sys,os
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/decision/library/')
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/decision/library/')
 import gradient
 
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/control/')
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control')
 from imu import get_imu
 
 ### YOLO import module
@@ -14,8 +14,8 @@ import cv2
 import torch
 
 
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/yolov5/')
-#import detect
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/yolov5/')
+import detect
 
 
 '''

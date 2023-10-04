@@ -12,16 +12,16 @@ try:
     from catkin.environment_cache import generate_environment_script
 except ImportError:
     # search for catkin package in all workspaces and prepend to path
-    for workspace in '/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel;/opt/ros/melodic'.split(';'):
+    for workspace in '/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel;/opt/ros/melodic'.split(';'):
         python_path = os.path.join(workspace, 'lib/python2.7/dist-packages')
         if os.path.isdir(os.path.join(python_path, 'catkin')):
             sys.path.insert(0, python_path)
             break
     from catkin.environment_cache import generate_environment_script
 
-code = generate_environment_script('/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/env.sh')
+code = generate_environment_script('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/env.sh')
 
-output_filename = '/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/catkin_generated/setup_cached.sh'
+output_filename = '/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build/catkin_generated/setup_cached.sh'
 with open(output_filename, 'w') as f:
     # print('Generate script for cached setup "%s"' % output_filename)
     f.write('\n'.join(code))

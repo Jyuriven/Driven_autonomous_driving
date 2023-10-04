@@ -67,14 +67,14 @@ set(main_msg_CONFIG_INCLUDED TRUE)
 
 # set variables for source/devel/install prefixes
 if("TRUE" STREQUAL "TRUE")
-  set(main_msg_SOURCE_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/main_msg)
-  set(main_msg_DEVEL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel)
+  set(main_msg_SOURCE_PREFIX /home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg)
+  set(main_msg_DEVEL_PREFIX /home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel)
   set(main_msg_INSTALL_PREFIX "")
   set(main_msg_PREFIX ${main_msg_DEVEL_PREFIX})
 else()
   set(main_msg_SOURCE_PREFIX "")
   set(main_msg_DEVEL_PREFIX "")
-  set(main_msg_INSTALL_PREFIX /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/install)
+  set(main_msg_INSTALL_PREFIX /home/driven/Driven_autonomous_driving/ros_package/driven_ros/install)
   set(main_msg_PREFIX ${main_msg_INSTALL_PREFIX})
 endif()
 
@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(main_msg_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel/include " STREQUAL " ")
+if(NOT "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/include " STREQUAL " ")
   set(main_msg_INCLUDE_DIRS "")
-  set(_include_dirs "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel/include")
+  set(_include_dirs "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/include")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT " " STREQUAL " ")
@@ -110,7 +110,7 @@ if(NOT "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/deve
         message(FATAL_ERROR "Project 'main_msg' specifies '${idir}' as an include dir, which is not found.  It does not exist in '${include}'.  ${_report}")
       endif()
     else()
-      message(FATAL_ERROR "Project 'main_msg' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/main_msg/${idir}'.  ${_report}")
+      message(FATAL_ERROR "Project 'main_msg' specifies '${idir}' as an include dir, which is not found.  It does neither exist as an absolute directory nor in '/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/${idir}'.  ${_report}")
     endif()
     _list_append_unique(main_msg_INCLUDE_DIRS ${include})
   endforeach()
@@ -154,7 +154,7 @@ foreach(library ${libraries})
     set(lib_path "")
     set(lib "${library}-NOTFOUND")
     # since the path where the library is found is returned we have to iterate over the paths manually
-    foreach(path /home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel/lib;/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/devel/lib;/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel/lib;/home/taejeong/Desktop/driven_ros/devel/lib;/opt/ros/melodic/lib)
+    foreach(path /home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/lib;/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/lib;/opt/ros/melodic/lib)
       find_library(lib ${library}
         PATHS ${path}
         NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)

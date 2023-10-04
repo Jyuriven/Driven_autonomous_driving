@@ -1,4 +1,4 @@
-prefix=/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/install
+prefix=/home/driven/Driven_autonomous_driving/ros_package/driven_ros/install
 
 Name: main_msg
 Description: Description of main_msg

@@ -1,10 +1,10 @@
 
 "use strict";
 
-let map = require('./map.js');
 let cloud_info = require('./cloud_info.js');
+let map = require('./map.js');
 
 module.exports = {
-  map: map,
   cloud_info: cloud_info,
+  map: map,
 };

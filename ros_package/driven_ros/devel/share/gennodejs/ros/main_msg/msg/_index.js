@@ -1,10 +1,10 @@
 
 "use strict";
 
-let map = require('./map.js');
 let jet2ard = require('./jet2ard.js');
+let map = require('./map.js');
 
 module.exports = {
-  map: map,
   jet2ard: jet2ard,
+  map: map,
 };

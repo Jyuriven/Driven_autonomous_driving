@@ -11,7 +11,7 @@
 
 # since this file is sourced either use the provided _CATKIN_SETUP_DIR
 # or fall back to the destination set at configure time
-: ${_CATKIN_SETUP_DIR:=/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/install}
+: ${_CATKIN_SETUP_DIR:=/home/driven/Driven_autonomous_driving/ros_package/driven_ros/install}
 _SETUP_UTIL="$_CATKIN_SETUP_DIR/_setup_util.py"
 unset _CATKIN_SETUP_DIR
 

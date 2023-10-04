@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #-*- coding:utf-8 -*-
 
 import sys
@@ -9,24 +9,22 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import math
 from std_msgs.msg import Int16
-#from seonsor_msgs.msg import NavSatFix
-#from geometry_msgs.msg import TwistWithCovarianceStamped
+from sensor_msgs.msg import NavSatFix
+from geometry_msgs.msg import TwistWithCovarianceStamped
 
 
-
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/decision/library/')
-
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/decision/library')
 
 from distance import farest_distance_point
 from pathplanner import pathplanning
 from MotionPlanner import MotionPlanner
 
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/control/')
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/')
 from twist_controller import Controller
 
 
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
-import mapConvert
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
+#import mapConvert
 
 
 from main_msg.msg import jet2ard,map
@@ -65,8 +63,8 @@ controller = Controller(220,0,5,505,1320,0.151,5,27)
 
 def main_thread():
     rospy.init_node("jet2ard_publisher")
-    subscriber_gps_xy = rospy.Subscriber('/ublox/fix',NavSatFix,callback_gps_xy)
-    subscriber_gps_vel = rospy.Subscriber('/ublox/fix_velocity',TwistWithCovarianceStamped,callback_gps_vel)
+    subscriber_gps_xy = rospy.Subscriber('/ublox_gps/fix',NavSatFix,callback_gps_xy)
+    subscriber_gps_vel = rospy.Subscriber('/ublox_gps/fix_velocity',TwistWithCovarianceStamped,callback_gps_vel)
     subscriber_lidar = rospy.Subscriber('/per2main', map, callback_main)
 
     publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
@@ -82,8 +80,7 @@ def main_thread():
     msg_brake = Int16()
 
     global motion_planner
-    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner,motion_planner.now_velocity)
-  
+    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner) 
 
     publisher_throttle.publish(msg_throttle)
     publisher_steering.publish(msg_steering)
@@ -102,12 +99,13 @@ def callback_gps_xy(data):
     WGS_pt_x = data.latitude
     WGS_pt_y = data.longitude
 	# UTM transform
-    UTM_pt_x, UTM_pt_y = WGS84toUTMK(WGS_pt_y ,WGS_pt_x)
+    #UTM_pt_x, UTM_pt_y = WGS84toUTMK(WGS_pt_y ,WGS_pt_x)
     if motion_planner.now_gps_x == motion_planner.init_gps_x:
-        motion_planner.init_gps_x = round(UTM_pt_x,2)
-        motion_planner.init_gps_y = round(UTM_pt_y,2)
-    motion_planner.now_gps_x = round(UTM_pt_x,2)
-    motion_planner.now_gps_y = round(UTM_pt_y,2)
+        motion_planner.init_gps_x = round(WGS_pt_x,4)
+        motion_planner.init_gps_y = round(WGS_pt_y,4)
+    motion_planner.now_gps_x = round(WGS_pt_x,4)
+    motion_planner.now_gps_y = round(WGS_pt_y,4)
+    
 
 def callback_gps_vel(data):
     global motion_planner

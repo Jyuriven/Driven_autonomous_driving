@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #-*- coding:utf-8 -*-
 
 import rospy
@@ -34,9 +34,6 @@ class Convert:
         pc_data = pc2.read_points(msg, field_names=("x", "y", "z"), skip_nans=True)
         self.map_point = np.array([p[:3] for p in pc_data])
         
-        for i in self.map_point:
-            print(f'[{i[0]}, {i[1]}],')
-        print("---------------------------")
     
     def key_pose_callback(self, msg):
         
@@ -121,7 +118,7 @@ class Convert:
                 # z축 값을 확인하여 사람 필터링
                 ######## 실험 대상 ########
                 if map_z > 0.70:
-                    print('[manual log] [perception] [mapConvert.py] People Detected!!')
+                    #print('[manual log] [perception] [mapConvert.py] People Detected!!')
                     continue
 
                 # 맵에 좌표 맵핑
@@ -172,7 +169,7 @@ class Convert:
             filter_size = 7.0
         
             # 최종 맵
-            self.grid_map = [[' ']*map_size for i in range(map_size)]
+            self.grid_map = [[0]*map_size for i in range(map_size)]
         
             # x, y, z 좌표 값의 최대 최소 값
             max_list = np.apply_along_axis(lambda a: np.max(a), 0, self.map_point)

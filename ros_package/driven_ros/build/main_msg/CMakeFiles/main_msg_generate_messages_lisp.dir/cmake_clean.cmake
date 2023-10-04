@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
+  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/common-lisp/ros/main_msg/msg/jet2ard.lisp"
+  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/common-lisp/ros/main_msg/msg/map.lisp"
   "CMakeFiles/main_msg_generate_messages_lisp"
-  "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel/share/common-lisp/ros/main_msg/msg/jet2ard.lisp"
-  "/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/devel/share/common-lisp/ros/main_msg/msg/map.lisp"
 )
 
 # Per-language clean rules from dependency scanning.

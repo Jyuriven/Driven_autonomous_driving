@@ -148,11 +148,12 @@ def callback_main(map):
     print(f"[manual log] [DECISION] [main_thread.py] value1:goal_x:{goal_x},goal_y:{goal_y}")
     
 
-    path=pathplanning(main_map,map.car_x,map.car_y,goal_x,goal_y)
+    #path=pathplanning(main_map,map.car_x,map.car_y,goal_x,goal_y)
 
     
     global motion_planner
-    motion_planner = motion_planner.motionplanning(path,3)
+    #motion_planner = motion_planner.motionplanning(path,3)
+    motion_planner = motion_planner.motionplanning(map.car_x,map.car_y,goal_x,goal_y,3)
 
 
     #rospy.sleep()

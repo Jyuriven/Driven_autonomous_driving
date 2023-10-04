@@ -23,7 +23,7 @@ from utils.cone_utils import check_cone_color, emgergency_call, red_cone_stop, p
 
 def run(emergency=3, # 사고 직전 보이는 콘 개수
         red_stop=9, # 오렌지콘 개수 임계치 for 최종 감속
-         weights='/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/yolov5/weights/archive/data.pkl', # 가중치 경로
+         weights='./weights/best.pt', # 가중치 경로
          source='0', # 0 이면 웹캠, 데이터 경로
          imgsz=640,
          conf_thres=0.5,

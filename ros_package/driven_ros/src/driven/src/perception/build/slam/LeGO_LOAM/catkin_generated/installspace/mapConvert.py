@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #-*- coding:utf-8 -*-
 
 import rospy
@@ -6,7 +6,7 @@ from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import numpy as np
 import threading
-from cloud_msgs.msg import map
+from cloud_msgs.msg import g_map
 from sklearn.cluster import DBSCAN
 
 
@@ -20,7 +20,7 @@ class Convert:
         rospy.Subscriber("/segmented_cloud_pure", PointCloud2, self.cloud_callback)
         rospy.Subscriber("/key_pose_origin", PointCloud2, self.key_pose_callback)
 
-        self.map_pub = rospy.Publisher("/per2main", map, queue_size=1)
+        self.map_pub = rospy.Publisher("/per2main", g_map, queue_size=1)
         self.map_point = None
         self.key_point = None
         self.grid_map = None
@@ -221,7 +221,7 @@ class Convert:
 
 
     def map_publish(self):
-        msg = map()
+        msg = g_map()
         
         msg.x_lst = self.x_lst
         msg.y_lst = self.y_lst
@@ -233,7 +233,7 @@ class Convert:
             msg.car_x = 24
             msg.car_y = 24
 
-
+        print("")
         self.map_pub.publish(msg)
 
 def main():

@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
-messages_str = "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/cloud_msgs/msg/cloud_info.msg;/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/cloud_msgs/msg/map.msg"
+messages_str = "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/cloud_msgs/msg/cloud_info.msg;/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/cloud_msgs/msg/g_map.msg"
 services_str = ""
 pkg_name = "cloud_msgs"
 dependencies_str = "geometry_msgs;std_msgs;nav_msgs"

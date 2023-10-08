@@ -7,7 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export LD_LIBRARY_PATH='/opt/ros/melodic/lib:/usr/local/lib'
-export PKG_CONFIG_PATH='/opt/ros/melodic/lib/pkgconfig'
 export PWD='/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build'
-export PYTHONPATH='/opt/ros/melodic/lib/python2.7/dist-packages'

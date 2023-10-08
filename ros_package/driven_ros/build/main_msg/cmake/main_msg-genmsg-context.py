@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
-messages_str = "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/msg/jet2ard.msg;/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/msg/map.msg"
+messages_str = "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/msg/jet2ard.msg;/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/msg/g_map.msg"
 services_str = ""
 pkg_name = "main_msg"
 dependencies_str = "std_msgs"

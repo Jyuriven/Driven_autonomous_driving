@@ -7,6 +7,6 @@
   :components ((:file "_package")
     (:file "cloud_info" :depends-on ("_package_cloud_info"))
     (:file "_package_cloud_info" :depends-on ("_package"))
-    (:file "map" :depends-on ("_package_map"))
-    (:file "_package_map" :depends-on ("_package"))
+    (:file "g_map" :depends-on ("_package_g_map"))
+    (:file "_package_g_map" :depends-on ("_package"))
   ))

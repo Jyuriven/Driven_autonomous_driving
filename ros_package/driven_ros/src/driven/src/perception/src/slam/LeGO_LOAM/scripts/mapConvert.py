@@ -6,7 +6,7 @@ from sensor_msgs.msg import PointCloud2
 import sensor_msgs.point_cloud2 as pc2
 import numpy as np
 import threading
-from cloud_msgs.msg import map
+from cloud_msgs.msg import g_map
 from sklearn.cluster import DBSCAN
 
 
@@ -20,7 +20,7 @@ class Convert:
         rospy.Subscriber("/segmented_cloud_pure", PointCloud2, self.cloud_callback)
         rospy.Subscriber("/key_pose_origin", PointCloud2, self.key_pose_callback)
 
-        self.map_pub = rospy.Publisher("/per2main", map, queue_size=1)
+        self.map_pub = rospy.Publisher("/per2main", g_map, queue_size=1)
         self.map_point = None
         self.key_point = None
         self.grid_map = None
@@ -92,7 +92,9 @@ class Convert:
             # 초기화
             self.x_lst = []
             self.y_lst = []
-            
+            x_lst_tmp = []
+            y_lst_tmp = []
+
             dbscan = DBSCAN(eps = eps, min_samples = min_samples)
             
             # 최종 맵
@@ -106,8 +108,8 @@ class Convert:
             # 차의 좌표 _ 거의 (0,0)
             pose_x = self.key_point[0][0]
             pose_y = self.key_point[0][1]
-            self.x_lst.append(pose_x)
-            self.y_lst.append(pose_y)
+            x_lst_tmp.append(pose_x)
+            y_lst_tmp.append(pose_y)
             
             # 이상치와 사람을 필터링
             for point in self.map_point:
@@ -123,11 +125,11 @@ class Convert:
 
                 # 맵에 좌표 맵핑
                 if (abs(map_x) <= filter_size) and (abs(map_y) <= filter_size):
-                    self.x_lst.append(map_x)
-                    self.y_lst.append(map_y)
+                    x_lst_tmp.append(map_x)
+                    y_lst_tmp.append(map_y)
 
             # 변환 전의 필터링 된 좌표 값들
-            data_tmp = list(zip(self.x_lst, self.y_lst))
+            data_tmp = list(zip(x_lst_tmp, y_lst_tmp))
             data_tmp = np.array(data_tmp)
             
             if (abs(pose_x) <= filter_size) and (abs(pose_y) <= filter_size):
@@ -143,6 +145,8 @@ class Convert:
             for center in cluster_center:
                 x, y = center
                 x_idx, y_idx = self.mapping_idx(x_point=x, y_point=y, map_size=map_size, filtering=False, data=data_tmp)
+                self.x_lst.append(x_idx)
+                self.y_lst.append(y_idx)
                 self.grid_map[x_idx][y_idx] = 1
             
              # 자동차
@@ -156,72 +160,9 @@ class Convert:
             # save_map = np.array(self.grid_map)
             # np.savetxt('/home/driven/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/map_50.txt', save_map, fmt='%d')
             
-            
-    def convert_og(self):
-        
-        if self.map_point is not None and self.key_point is not None:
-            
-            self.x_lst = []
-            self.y_lst = []
-
-            # Optimization
-            map_size = 50
-            filter_size = 7.0
-        
-            # 최종 맵
-            self.grid_map = [[0]*map_size for i in range(map_size)]
-        
-            # x, y, z 좌표 값의 최대 최소 값
-            max_list = np.apply_along_axis(lambda a: np.max(a), 0, self.map_point)
-            min_list = np.apply_along_axis(lambda a: np.min(a), 0, self.map_point)
-            # print(f'max point:{max_list[0]}  {max_list[1]}    {max_list[2]}')
-            # print(f'min point:{min_list[0]}  {min_list[1]}    {min_list[2]}')
-            
-            pose_x = self.key_point[0][0]
-            pose_y = self.key_point[0][1]
-            # 맵에 차 위치 맵핑
-            if (-filter_size <= pose_x <= filter_size) and (-filter_size <= pose_y <= filter_size):
-                # x, y 좌표를 grid_map 인덱스로 변환
-                x_idx = int((pose_x + filter_size) / (2 * filter_size) * (map_size - 1))
-                y_idx = int((pose_y + filter_size) / (2 * filter_size) * (map_size - 1))
-
-                self.car_x = x_idx
-                self.car_y = y_idx
-            
-            for point in self.map_point:
-                map_x = point[0]
-                map_y = point[1]
-                map_z = point[2]
-            
-                if map_z > 0.58:
-                    continue
-
-                # 맵에 좌표 맵핑
-                if (-filter_size <= map_x <= filter_size) and (-filter_size <= map_y <= filter_size):
-                    # x, y 좌표를 grid_map 인덱스로 변환
-                    x_idx = int((map_x + filter_size) / (2 * filter_size) * (map_size - 1))
-                    y_idx = int((map_y + filter_size) / (2 * filter_size) * (map_size - 1))
-                    
-                    if y_idx > self.car_y:
-                        self.x_lst.append(x_idx)
-                        self.y_lst.append(y_idx)
-
-                        # 장애물
-                        self.grid_map[x_idx][y_idx] = 0
-
-        
-             # 자동차
-            self.grid_map[self.car_x][self.car_y] = 7
-            
-        print(f'[manual log] [perception] [mapConvert.py] grid_map:')
-        for i in range(50):
-            for j in range(50):
-                print(self.grid_map[i][j], end=' ')
-            print()
-
 
     def map_publish(self):
-        msg = map()
+        msg = g_map()
         
         msg.x_lst = self.x_lst
         msg.y_lst = self.y_lst
@@ -233,14 +174,14 @@ class Convert:
             msg.car_x = 24
             msg.car_y = 24
 
-
+        print("")
         self.map_pub.publish(msg)
 
 def main():
 
     
     rospy.init_node('mapConvert', anonymous=True)
-    rate = rospy.Rate(5)
+    rate = rospy.Rate(10)
 
     convert = Convert()
 

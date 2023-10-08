@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/lib/python2.7/dist-packages/main_msg/msg/__init__.py"
+  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/lib/python2.7/dist-packages/main_msg/msg/_g_map.py"
   "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/lib/python2.7/dist-packages/main_msg/msg/_jet2ard.py"
-  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/lib/python2.7/dist-packages/main_msg/msg/_map.py"
   "CMakeFiles/main_msg_generate_messages_py"
 )
 

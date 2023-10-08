@@ -2,9 +2,9 @@
 "use strict";
 
 let jet2ard = require('./jet2ard.js');
-let map = require('./map.js');
+let g_map = require('./g_map.js');
 
 module.exports = {
   jet2ard: jet2ard,
-  map: map,
+  g_map: g_map,
 };

@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
   "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/roseus/ros/main_msg/manifest.l"
+  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/roseus/ros/main_msg/msg/g_map.l"
   "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/roseus/ros/main_msg/msg/jet2ard.l"
-  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/roseus/ros/main_msg/msg/map.l"
   "CMakeFiles/main_msg_generate_messages_eus"
 )
 

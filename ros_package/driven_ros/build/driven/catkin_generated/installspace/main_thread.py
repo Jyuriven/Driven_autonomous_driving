@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 #-*- coding:utf-8 -*-
 
 import sys
@@ -9,27 +9,26 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 import math
 from std_msgs.msg import Int16
-#from seonsor_msgs.msg import NavSatFix
-#from geometry_msgs.msg import TwistWithCovarianceStamped
+from sensor_msgs.msg import NavSatFix
+from geometry_msgs.msg import TwistWithCovarianceStamped
 
 
-
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/decision/library/')
-
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/decision/library')
 
 from distance import farest_distance_point
 from pathplanner import pathplanning
 from MotionPlanner import MotionPlanner
 
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/control/')
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/')
 from twist_controller import Controller
 
 
-sys.path.append('/home/driven/driven/Driven_autonomous_driving/ros_pakage/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
-import mapConvert
+sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
+#import mapConvert
 
 
-from main_msg.msg import jet2ard,map
+from main_msg.msg import jet2ard
+from main_msg.msg import g_map
 from geometry_msgs.msg import TwistWithCovarianceStamped
 from sensor_msgs.msg import NavSatFix
 
@@ -65,9 +64,9 @@ controller = Controller(220,0,5,505,1320,0.151,5,27)
 
 def main_thread():
     rospy.init_node("jet2ard_publisher")
-    subscriber_gps_xy = rospy.Subscriber('/ublox/fix',NavSatFix,callback_gps_xy)
-    subscriber_gps_vel = rospy.Subscriber('/ublox/fix_velocity',TwistWithCovarianceStamped,callback_gps_vel)
-    subscriber_lidar = rospy.Subscriber('/per2main', map, callback_main)
+    subscriber_gps_xy = rospy.Subscriber('/ublox_gps/fix',NavSatFix,callback_gps_xy)
+    subscriber_gps_vel = rospy.Subscriber('/ublox_gps/fix_velocity',TwistWithCovarianceStamped,callback_gps_vel)
+    subscriber_lidar = rospy.Subscriber('/per2main', g_map, callback_main)
 
     publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
     publisher_throttle = rospy.Publisher(name="jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
@@ -82,8 +81,7 @@ def main_thread():
     msg_brake = Int16()
 
     global motion_planner
-    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner,motion_planner.now_velocity)
-  
+    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner) 
 
     publisher_throttle.publish(msg_throttle)
     publisher_steering.publish(msg_steering)
@@ -102,28 +100,29 @@ def callback_gps_xy(data):
     WGS_pt_x = data.latitude
     WGS_pt_y = data.longitude
 	# UTM transform
-    UTM_pt_x, UTM_pt_y = WGS84toUTMK(WGS_pt_y ,WGS_pt_x)
+    #UTM_pt_x, UTM_pt_y = WGS84toUTMK(WGS_pt_y ,WGS_pt_x)
     if motion_planner.now_gps_x == motion_planner.init_gps_x:
-        motion_planner.init_gps_x = round(UTM_pt_x,2)
-        motion_planner.init_gps_y = round(UTM_pt_y,2)
-    motion_planner.now_gps_x = round(UTM_pt_x,2)
-    motion_planner.now_gps_y = round(UTM_pt_y,2)
+        motion_planner.init_gps_x = round(WGS_pt_x,4)
+        motion_planner.init_gps_y = round(WGS_pt_y,4)
+    motion_planner.now_gps_x = round(WGS_pt_x,4)
+    motion_planner.now_gps_y = round(WGS_pt_y,4)
+    
 
 def callback_gps_vel(data):
     global motion_planner
     vehicle_speed_acquired = math.sqrt((data.twist.twist.linear.x ** 2) + (data.twist.twist.linear.y ** 2))
     motion_planner.now_velcity = vehicle_speed_acquired
 
-def callback_main(map):
+def callback_main(g_map):
     
     main_map = [[5 for j in range(50)] for i in range(50)]
 
-    for x,y in zip(map.x_lst,map.y_lst):
+    for x,y in zip(g_map.x_lst,g_map.y_lst):
         main_map[x][y] = 1
 
    # main_map[map.car_x][map.car_y] = 7
 
-    farest,second = farest_distance_point(main_map,map.car_x,map.car_y)
+    farest,second = farest_distance_point(main_map,g_map.car_x,g_map.car_y)
     
     
     print(farest)
@@ -133,7 +132,7 @@ def callback_main(map):
     #main_map[second[0]][second[1]] = 4
 
     
-    print(f"[manual log] [DECISION] [mainthread.py] value1:len in main : {len(map.x_lst)}, {len(map.y_lst)}")
+    print(f"[manual log] [DECISION] [mainthread.py] value1:len in main : {len(g_map.x_lst)}, {len(g_map.y_lst)}")
     goal_x = int((farest[0]+second[0])/2)
     goal_y = int((farest[1]+second[1])/2)
 
@@ -144,7 +143,7 @@ def callback_main(map):
             if main_map[i][j]!=5:
                 print(main_map[i][j], end = ' ')
         print()
-    print(f"[manual log] [DECISION] [main_thread.py] value1:map.car_x:{map.car_x},value2 map.car_y:{map.car_y}")
+    print(f"[manual log] [DECISION] [main_thread.py] value1:map.car_x:{g_map.car_x},value2 map.car_y:{g_map.car_y}")
     print(f"[manual log] [DECISION] [main_thread.py] value1:goal_x:{goal_x},goal_y:{goal_y}")
     
 
@@ -153,7 +152,7 @@ def callback_main(map):
     
     global motion_planner
     #motion_planner = motion_planner.motionplanning(path,3)
-    motion_planner = motion_planner.motionplanning(map.car_x,map.car_y,goal_x,goal_y,3)
+    motion_planner = motion_planner.motionplanning(g_map.car_x,g_map.car_y,goal_x,goal_y,3)
 
 
     #rospy.sleep()

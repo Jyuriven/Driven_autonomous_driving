@@ -13,7 +13,7 @@ add_message_files(
   DIRECTORY msg
   FILES
   cloud_info.msg
-  map.msg
+  g_map.msg
 )
 
 generate_messages(

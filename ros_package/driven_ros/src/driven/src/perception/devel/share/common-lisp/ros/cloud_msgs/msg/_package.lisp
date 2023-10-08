@@ -3,7 +3,7 @@
   (:export
    "<CLOUD_INFO>"
    "CLOUD_INFO"
-   "<MAP>"
-   "MAP"
+   "<G_MAP>"
+   "G_MAP"
   ))
 

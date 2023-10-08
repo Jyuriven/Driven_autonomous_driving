@@ -78,7 +78,6 @@ class Controller(object):
                 sample_time = current_time - self.last_time
 
         throttle = self.throttle_controller.step(vel_error, sample_time)
-        print("throttle: ",throttle)
         
         # #목표 속도가 0이 되면 풀 브레이크
         # if linear_vel == 0.0 and vel_error < 3:
@@ -100,9 +99,9 @@ class Controller(object):
         #         brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
         
 
-        print("Jetson2Ardu Control DATA ( THROTTLE ) : %d",throttle )
-        print("Jetson2Ardu Control DATA ( BREAK ) : %f", motion_planner.brake_level)
-        print("Jetson2Ardu Control DATA ( STEERING ) : %f", steering )
+        print(f"Jetson2Ardu Control DATA ( THROTTLE ) : {throttle}")
+        print(f"Jetson2Ardu Control DATA ( BRAKE ) : {motion_planner.brake_level}")
+        print(f"Jetson2Ardu Control DATA ( STEERING ) : {steering} ")
         #print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
 
         return throttle, motion_planner.brake_level, steering

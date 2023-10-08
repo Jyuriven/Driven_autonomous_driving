@@ -38,7 +38,6 @@ def route2gradient(route,level=1):
 
 def calculate_radian(p1_x,p1_y,p2_x,p2_y):
     rad = math.atan2(p2_y-p1_y,p2_x-p1_x)
-    print("calculate arctan :",rad)
     return rad
 
 def rad2deg(rad):

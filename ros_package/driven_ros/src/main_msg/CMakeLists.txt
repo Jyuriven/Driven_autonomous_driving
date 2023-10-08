@@ -13,7 +13,7 @@ add_message_files(
   DIRECTORY msg
   FILES
   jet2ard.msg
-  map.msg
+  g_map.msg
 )
 
 generate_messages(

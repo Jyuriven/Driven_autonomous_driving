@@ -45,7 +45,7 @@ endif()
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/main_msg/msg" TYPE FILE FILES
     "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/msg/jet2ard.msg"
-    "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/msg/map.msg"
+    "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/main_msg/msg/g_map.msg"
     )
 endif()
 

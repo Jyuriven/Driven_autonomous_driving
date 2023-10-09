@@ -27,7 +27,7 @@ class YoloDetection:
     def __init__(self):
         self.emergency=3, # 사고 직전 보이는 콘 개수
         self.red_stop=9, # 오렌지콘 개수 임계치 for 최종 감속
-        self.weights='./weights/best.pt', # 가중치 경로
+        self.weights='/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/weights/best.pt', # 가중치 경로
         self.source='0', # 0 이면 웹캠, 데이터 경로
         self.imgsz=640,
         self.conf_thres=0.5,

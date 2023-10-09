@@ -160,9 +160,9 @@ file(GLOB MODEL_SCRIPTS "/home/driven/Driven_autonomous_driving/ros_package/driv
 file(GLOB UTIL_SCRIPTS "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/utils/*.py")
 
 catkin_install_python(PROGRAMS
-	MAIN_SCRIPTS
-	MODEL_SCRIPTS
-  UTIL_SCRIPTS
+  ${MAIN_SCRIPTS}
+  ${MODEL_SCRIPTS}
+  ${UTIL_SCRIPTS}
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 

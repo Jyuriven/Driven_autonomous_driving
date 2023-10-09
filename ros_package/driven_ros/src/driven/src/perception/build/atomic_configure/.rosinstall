@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/setup.sh
+    local-name: /home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/setup.sh

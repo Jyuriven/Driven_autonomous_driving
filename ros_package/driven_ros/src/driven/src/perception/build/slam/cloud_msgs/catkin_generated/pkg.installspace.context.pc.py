@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "${prefix}/include".split(';') if "${prefix}/i
 PROJECT_CATKIN_DEPENDS = "message_runtime;message_generation;geometry_msgs;std_msgs;nav_msgs".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "cloud_msgs"
-PROJECT_SPACE_DIR = "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/install"
+PROJECT_SPACE_DIR = "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/install"
 PROJECT_VERSION = "1.0.0"

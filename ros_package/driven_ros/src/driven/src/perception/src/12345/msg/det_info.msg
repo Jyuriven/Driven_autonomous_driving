@@ -1,2 +1,0 @@
-int16 emg_stop
-int16 stop_rate

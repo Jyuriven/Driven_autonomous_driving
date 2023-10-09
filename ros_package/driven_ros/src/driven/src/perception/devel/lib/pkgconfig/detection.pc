@@ -1,0 +1,8 @@
+prefix=/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel
+
+Name: detection
+Description: Description of detection
+Version: 0.0.0
+Cflags: -I/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/include
+Libs: -L${prefix}/lib -ldetection
+Requires: rospy std_msgs message_runtime

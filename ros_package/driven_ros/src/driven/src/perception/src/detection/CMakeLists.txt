@@ -155,9 +155,9 @@ include_directories(
 
 ## Mark executable scripts (Python etc.) for installation
 ## in contrast to setup.py, you can choose the destination
-file(GLOB MAIN_SCRIPTS "yolov5/*.py")
-file(GLOB MODEL_SCRIPTS "yolov5/models/*.py")
-file(GLOB UTIL_SCRIPTS "yolov5/utils/*.py")
+file(GLOB MAIN_SCRIPTS "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/*.py")
+file(GLOB MODEL_SCRIPTS "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/models/*.py")
+file(GLOB UTIL_SCRIPTS "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/utils/*.py")
 
 catkin_install_python(PROGRAMS
 	MAIN_SCRIPTS

@@ -26,7 +26,7 @@ from twist_controller import Controller
 sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
 #import mapConvert
 
-
+from main_msg.msg import det_info
 from main_msg.msg import jet2ard
 from main_msg.msg import g_map
 from geometry_msgs.msg import TwistWithCovarianceStamped
@@ -43,7 +43,7 @@ def WGS84toUTMK(n, e):
 
 
 
-
+global emg,stop
 ### SLAM 을 실행합니다.
 ### --- 상세요구사항
 ### ------ 1. SLAM 이 동작하고 있는것을 디스플레이로 확인할 수 있어야 합니다. < 대회 중 모니터링을 위해 > 
@@ -66,11 +66,16 @@ def main_thread():
     rospy.init_node("jet2ard_publisher")
     subscriber_gps_xy = rospy.Subscriber('/ublox_gps/fix',NavSatFix,callback_gps_xy)
     subscriber_gps_vel = rospy.Subscriber('/ublox_gps/fix_velocity',TwistWithCovarianceStamped,callback_gps_vel)
+    subscriber_det_info = rospy.Subscriber('/det2main',det_info,callback_det)
     subscriber_lidar = rospy.Subscriber('/per2main', g_map, callback_main)
   
     rospy.spin()
    
-
+def callback_det(det_info):
+    global emg,stop
+    emg = det_info.emg
+    stop = det_info.stop
+    
 
 def callback_gps_xy(data):
     global motion_planner
@@ -91,7 +96,7 @@ def callback_gps_vel(data):
     motion_planner.now_velcity = vehicle_speed_acquired
 
 def callback_main(g_map):
-
+    global emg,stop
     if len(g_map.x_lst) == 0:
         print(f'[manual log] [DECISION] [mainthread.py] None Grid Map')
         return
@@ -136,7 +141,7 @@ def callback_main(g_map):
     print(f"[manual log] [DECISION] [main_thread.py] value1:goal_x:{goal_x},goal_y:{goal_y}")
     global motion_planner
     #motion_planner = motion_planner.motionplanning(path,3)
-    motion_planner = motion_planner.motionplanning_for_point(g_map.car_x,g_map.car_y,goal_x,goal_y,3)
+    motion_planner = motion_planner.motionplanning_for_point(g_map.car_x,g_map.car_y,goal_x,goal_y,3,emg,stop)
     publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
     publisher_throttle = rospy.Publisher(name="jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
     publisher_brake = rospy.Publisher(name="jet2ard_publisher_brake",data_class=Int16,queue_size=1)

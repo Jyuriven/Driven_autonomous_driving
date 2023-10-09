@@ -316,10 +316,9 @@ class MotionPlanner():
 
     ### 차량 상태 컨트롤 ### 
     
-    def motionplanning_for_point(self,car_x,car_y,goal_x,goal_y,LAD):
+    def motionplanning_for_point(self,car_x,car_y,goal_x,goal_y,LAD,e,s):
     #---미완성코드---
     ## 우리 차가 초기 위치로 돌아왔냐 ? --- 
-    
         try:
         
             #print(f'crash: {e}, stop sign: {s}')
@@ -331,7 +330,7 @@ class MotionPlanner():
             s=0
             ##gps 
             
-            if self.isInitPosition_by_gps(0.0000001):
+            if self.isInitPosition_by_gps(0.0000001) or e:
                 self.first_target_steering = 0
                 self.second_target_steering = 0
                 self.first_target_velocity = 0
@@ -350,6 +349,14 @@ class MotionPlanner():
                                 2-2) 2,0 과 0,0 의 기울기 차이를 구하여 첫번째 스티어링 각으로 설정 
                                 2-3) 4,0 과 2,0 의 기울기 차이를 구하여 두번째 스티어링 각으로 설정함.
                 '''
+                
+                now_steer = self.get_now_steering()
+                
+                ###### LiDar 배열의 yaw rate 각 만큼의 회전을 통하여 실제 imu가 바라보고 있는 방향으로의 조향각을 구한다.
+                ###### 만약 값이 이상하다면 now_steer 를 - now steer 로 바꿔야합니다. 
+                goal_x = int(goal_x*math.cos(now_steer) - goal_y*math.sin(now_steer))
+                goal_y =int (goal_x*math.sinn(now_steer) + goal_y*math.cos(now_steer))
+                
                 radian_point = gradient.calculate_radian(car_x,car_y,goal_x,goal_y)
                 target_degree =  gradient.rad2deg(radian_point)
                 
@@ -358,7 +365,7 @@ class MotionPlanner():
                 #self.first_target_steering = target_degree - self.get_now_steering()
                 #self.first_target_steering = target_degree - self.get_now_steering()
                 
-                self.first_target_steering = int(target_degree) - self.get_now_steering()
+                self.first_target_steering = int(target_degree) - now_steer
                 print(f"[manual log] [DECISION] [MotionPlanner.py] [Motion Planning] first_target_steering {self.first_target_steering}")
                 self.now_steering = self.first_target_steering
                 self.first_target_velocity = 10

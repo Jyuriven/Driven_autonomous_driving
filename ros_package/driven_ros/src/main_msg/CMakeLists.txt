@@ -14,6 +14,7 @@ add_message_files(
   FILES
   jet2ard.msg
   g_map.msg
+  det_info.msg
 )
 
 generate_messages(

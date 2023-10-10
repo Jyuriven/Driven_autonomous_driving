@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/include/main_msg/g_map.h"
-  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/include/main_msg/jet2ard.h"
+  "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/devel/include/main_msg/det_info.h"
+  "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/devel/include/main_msg/g_map.h"
+  "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/devel/include/main_msg/jet2ard.h"
   "CMakeFiles/main_msg_generate_messages_cpp"
 )
 

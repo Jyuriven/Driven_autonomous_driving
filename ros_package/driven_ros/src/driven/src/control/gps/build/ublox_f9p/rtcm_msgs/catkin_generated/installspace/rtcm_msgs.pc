@@ -1,4 +1,4 @@
-prefix=/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/install
+prefix=/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/install
 
 Name: rtcm_msgs
 Description: Description of rtcm_msgs

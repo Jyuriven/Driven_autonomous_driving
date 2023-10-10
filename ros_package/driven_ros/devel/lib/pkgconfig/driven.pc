@@ -1,4 +1,4 @@
-prefix=/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel
+prefix=/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/devel
 
 Name: driven
 Description: Description of driven

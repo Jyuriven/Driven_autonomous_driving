@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/roseus/ros/driven/manifest.l"
+  "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/devel/share/roseus/ros/driven/manifest.l"
   "CMakeFiles/driven_generate_messages_eus"
 )
 

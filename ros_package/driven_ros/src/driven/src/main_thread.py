@@ -12,18 +12,17 @@ from std_msgs.msg import Int16
 from sensor_msgs.msg import NavSatFix
 from geometry_msgs.msg import TwistWithCovarianceStamped
 
+sys.path.append('/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/decision/library/')
 
-sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/decision/library')
-
-from distance import farest_distance_point
+from distance_sex import farest_distance_point
 from pathplanner import pathplanning
 from MotionPlanner import MotionPlanner
 
-sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/')
+sys.path.append('/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/')
 from twist_controller import Controller
 
 
-sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
+sys.path.append('/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
 #import mapConvert
 
 from main_msg.msg import det_info
@@ -97,6 +96,8 @@ def callback_gps_vel(data):
 
 def callback_main(g_map):
     global emg,stop
+    emg = 0
+    stop = 0
     if len(g_map.x_lst) == 0:
         print(f'[manual log] [DECISION] [mainthread.py] None Grid Map')
         return

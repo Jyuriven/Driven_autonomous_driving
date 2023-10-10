@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 #-*- coding:utf-8 -*-
 
+import rospy
 import argparse
 import time
 from pathlib import Path
@@ -25,6 +26,7 @@ from detection.msg import det_info
 @torch.no_grad()
 class YoloDetection:
     def __init__(self):
+        
         self.emergency=3, # 사고 직전 보이는 콘 개수
         self.red_stop=9, # 오렌지콘 개수 임계치 for 최종 감속
         self.weights='/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/weights/best.pt', # 가중치 경로
@@ -47,8 +49,31 @@ class YoloDetection:
 
         self.det_pub = rospy.Publisher("/det2main", det_info, queue_size=1)
         
-    def run(self,):
-        
+    def run(self):
+        # print(type(self.source))
+        # if type(self.source) == 'tuple':
+        self.emergency=3
+        self.red_stop=9
+        self.weights='/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/weights/best.pt'
+        self.source='0'
+        self.imgsz=640
+        self.conf_thres=0.5
+        self.iou_thres=0.45
+        self.device=''
+        self.view_img=False
+        self.save_txt=None
+        self.save_conf=None
+        self.classes=None
+        self.agnostic_nms=None
+        self.augment=None
+        self.update=None
+        self.project='runs/detect'
+        self.name='cone'
+        self.exist_ok=None
+        self.save_img=False
+
+
+        self.source = '0'
         webcam = self.source.isnumeric() or self.source.endswith('.txt') or self.source.lower().startswith(
             ('rtsp://', 'rtmp://', 'http://'))
 

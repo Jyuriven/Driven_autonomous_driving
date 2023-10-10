@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 set(CMAKE_RELATIVE_PATH_TOP_SOURCE "/usr/src/googletest")
-set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/build")
+set(CMAKE_RELATIVE_PATH_TOP_BINARY "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/build")
 
 # Force unix paths in dependencies.
 set(CMAKE_FORCE_UNIX_PATHS 1)

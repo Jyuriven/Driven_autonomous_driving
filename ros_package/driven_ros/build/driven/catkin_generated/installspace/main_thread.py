@@ -12,21 +12,20 @@ from std_msgs.msg import Int16
 from sensor_msgs.msg import NavSatFix
 from geometry_msgs.msg import TwistWithCovarianceStamped
 
+###sys.path.append('/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/decision/library/')
 
-sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/decision/library')
+###from distance import farest_distance_point
+###from pathplanner import pathplanning
+###from MotionPlanner import MotionPlanner
 
-from distance import farest_distance_point
-from pathplanner import pathplanning
-from MotionPlanner import MotionPlanner
-
-sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/')
+sys.path.append('/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/')
 from twist_controller import Controller
 
 
-sys.path.append('/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
+sys.path.append('/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/slam/LeGO_LOAM/scripts/')
 #import mapConvert
 
-
+from main_msg.msg import det_info
 from main_msg.msg import jet2ard
 from main_msg.msg import g_map
 from geometry_msgs.msg import TwistWithCovarianceStamped
@@ -43,7 +42,7 @@ def WGS84toUTMK(n, e):
 
 
 
-
+global emg,stop
 ### SLAM 을 실행합니다.
 ### --- 상세요구사항
 ### ------ 1. SLAM 이 동작하고 있는것을 디스플레이로 확인할 수 있어야 합니다. < 대회 중 모니터링을 위해 > 
@@ -66,34 +65,16 @@ def main_thread():
     rospy.init_node("jet2ard_publisher")
     subscriber_gps_xy = rospy.Subscriber('/ublox_gps/fix',NavSatFix,callback_gps_xy)
     subscriber_gps_vel = rospy.Subscriber('/ublox_gps/fix_velocity',TwistWithCovarianceStamped,callback_gps_vel)
+    subscriber_det_info = rospy.Subscriber('/det2main',det_info,callback_det)
     subscriber_lidar = rospy.Subscriber('/per2main', g_map, callback_main)
-
-    publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
-    publisher_throttle = rospy.Publisher(name="jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
-    publisher_brake = rospy.Publisher(name="jet2ard_publisher_brake",data_class=Int16,queue_size=1)
-    publisher_steering = rospy.Publisher(name="jet2ard_publisher_steering",data_class=Int16,queue_size=1)
-    
-
-    msg = jet2ard()
-
-    msg_throttle = Int16()
-    msg_steering = Int16()
-    msg_brake = Int16()
-
-    global motion_planner
-    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner) 
-
-    publisher_throttle.publish(msg_throttle)
-    publisher_steering.publish(msg_steering)
-    publisher_brake.publish(msg_brake)
-
-    
-    rospy.loginfo(msg_throttle)
-    rospy.loginfo(msg_steering)
-    rospy.loginfo(msg_brake)
-    
+  
     rospy.spin()
-
+   
+def callback_det(det_info):
+    global emg,stop
+    emg = det_info.emg
+    stop = det_info.stop
+    
 
 def callback_gps_xy(data):
     global motion_planner
@@ -102,10 +83,10 @@ def callback_gps_xy(data):
 	# UTM transform
     #UTM_pt_x, UTM_pt_y = WGS84toUTMK(WGS_pt_y ,WGS_pt_x)
     if motion_planner.now_gps_x == motion_planner.init_gps_x:
-        motion_planner.init_gps_x = round(WGS_pt_x,4)
-        motion_planner.init_gps_y = round(WGS_pt_y,4)
-    motion_planner.now_gps_x = round(WGS_pt_x,4)
-    motion_planner.now_gps_y = round(WGS_pt_y,4)
+        motion_planner.init_gps_x = round(WGS_pt_x,7)
+        motion_planner.init_gps_y = round(WGS_pt_y,7)
+    motion_planner.now_gps_x = round(WGS_pt_x,7)
+    motion_planner.now_gps_y = round(WGS_pt_y,7)
     
 
 def callback_gps_vel(data):
@@ -114,25 +95,33 @@ def callback_gps_vel(data):
     motion_planner.now_velcity = vehicle_speed_acquired
 
 def callback_main(g_map):
-    
-    main_map = [[5 for j in range(50)] for i in range(50)]
+    global emg,stop
+    if len(g_map.x_lst) == 0:
+        print(f'[manual log] [DECISION] [mainthread.py] None Grid Map')
+        return
+
+    main_map = [[0 for j in range(50)] for i in range(50)]
 
     for x,y in zip(g_map.x_lst,g_map.y_lst):
         main_map[x][y] = 1
 
-   # main_map[map.car_x][map.car_y] = 7
+# main_map[map.car_x][map.car_y] = 7
+    main_map[g_map.car_x][g_map.car_y] = 7
+    
 
     farest,second = farest_distance_point(main_map,g_map.car_x,g_map.car_y)
     
     
-    print(farest)
-    print(second)
+    
+    print(f'[manual log] [DECISION] [mainthread.py] farest point : {farest} second point :{second}')
 
     #main_map[farest[0]][farest[1]] = 8
     #main_map[second[0]][second[1]] = 4
 
     
-    print(f"[manual log] [DECISION] [mainthread.py] value1:len in main : {len(g_map.x_lst)}, {len(g_map.y_lst)}")
+    print(f"[manual log] [DECISION] [mainthread.py] value1:Counting barricade : {len(g_map.x_lst)}, {len(g_map.y_lst)}")
+    
+    
     goal_x = int((farest[0]+second[0])/2)
     goal_y = int((farest[1]+second[1])/2)
 
@@ -140,27 +129,47 @@ def callback_main(g_map):
     print(f"[manual log] [DECISION] [mainthread.py] MAIN MAP")
     for i in range(50):
         for j in range(50):
-            if main_map[i][j]!=5:
+            if main_map[i][j]==0:
+                print(' ',end = '')
+                
+            else:
                 print(main_map[i][j], end = ' ')
         print()
+                
     print(f"[manual log] [DECISION] [main_thread.py] value1:map.car_x:{g_map.car_x},value2 map.car_y:{g_map.car_y}")
     print(f"[manual log] [DECISION] [main_thread.py] value1:goal_x:{goal_x},goal_y:{goal_y}")
-    
-
-    #path=pathplanning(main_map,map.car_x,map.car_y,goal_x,goal_y)
-
-    
     global motion_planner
     #motion_planner = motion_planner.motionplanning(path,3)
-    motion_planner = motion_planner.motionplanning(g_map.car_x,g_map.car_y,goal_x,goal_y,3)
+    motion_planner = motion_planner.motionplanning_for_point(g_map.car_x,g_map.car_y,goal_x,goal_y,3,emg,stop)
+    publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
+    publisher_throttle = rospy.Publisher(name="jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
+    publisher_brake = rospy.Publisher(name="jet2ard_publisher_brake",data_class=Int16,queue_size=1)
+    publisher_steering = rospy.Publisher(name="jet2ard_publisher_steering",data_class=Int16,queue_size=1)
+    
+    msg = jet2ard()
 
+    msg_throttle = Int16()
+    msg_steering = Int16()
+    msg_brake = Int16()
 
-    #rospy.sleep()
+    msg_throttle.data,msg_brake.data,msg_steering.data = controller.control(motion_planner) 
+    publisher_throttle.publish(msg_throttle)
+    publisher_steering.publish(msg_steering)
+    publisher_brake.publish(msg_brake)
+
+    
+    rospy.loginfo(msg_throttle)
+    rospy.loginfo(msg_steering)
+    rospy.loginfo(msg_brake)    
+    #rate.sleep()   
+
 
 
 if __name__ == '__main__':
     try:
         main_thread()
+        
+       
     except KeyboardInterrupt:
         print(f"[manual log] [DECISION] [mainthread.py] KEYBOARD INTERRUPT")
         sys.exit(0)

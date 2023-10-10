@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "${prefix}/include".split(';') if "${prefix}/i
 PROJECT_CATKIN_DEPENDS = "message_runtime;ublox_serialization;std_msgs;sensor_msgs".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "-lublox_msgs".split(';') if "-lublox_msgs" != "" else []
 PROJECT_NAME = "ublox_msgs"
-PROJECT_SPACE_DIR = "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/install"
+PROJECT_SPACE_DIR = "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/install"
 PROJECT_VERSION = "1.1.2"

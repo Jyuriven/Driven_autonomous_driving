@@ -1,8 +1,8 @@
-# Install script for directory: /home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/src/ublox_f9p/ublox
+# Install script for directory: /home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/src/ublox_f9p/ublox
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/install")
+  set(CMAKE_INSTALL_PREFIX "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -43,6 +43,6 @@ if(NOT DEFINED CMAKE_OBJDUMP)
 endif()
 
 if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ublox" TYPE FILE FILES "/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/src/ublox_f9p/ublox/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ublox" TYPE FILE FILES "/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/src/ublox_f9p/ublox/package.xml")
 endif()
 

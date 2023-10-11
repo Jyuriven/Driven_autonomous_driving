@@ -144,9 +144,9 @@ def callback_main(g_map):
     #motion_planner = motion_planner.motionplanning(path,3)
     motion_planner = motion_planner.motionplanning_for_point(g_map.car_x,g_map.car_y,goal_x,goal_y,3,emg,stop)
     publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
-    publisher_throttle = rospy.Publisher(name="jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
-    publisher_brake = rospy.Publisher(name="jet2ard_publisher_brake",data_class=Int16,queue_size=1)
-    publisher_steering = rospy.Publisher(name="jet2ard_publisher_steering",data_class=Int16,queue_size=1)
+    publisher_throttle = rospy.Publisher(name="/jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
+    publisher_brake = rospy.Publisher(name="/jet2ard_publisher_brake",data_class=Int16,queue_size=1)
+    publisher_steering = rospy.Publisher(name="/jet2ard_publisher_steering",data_class=Int16,queue_size=1)
     
     msg = jet2ard()
 

@@ -78,14 +78,19 @@ def red_cone_stop(image, box_list, color_list, roi, red_stop):
     
     
 def roi_oragne_cone(box_list, roi):
-    
+    '''
+    roi[0] : width 최소
+    roi[1] : height 최소
+    roi[2] : width
+    roi[3] : height
+    '''
     for box in box_list:
         x_min, y_min, x_max, y_max = box[0].item(), box[1].item(), box[2].item(), box[3].item()
         
         x_center = int((x_min + x_max) / 2)
         y_center = int((y_min + y_max) / 2)
         
-        if (x_center > roi[0] and x_center < roi[0] + int(roi[2]/2)) and (y_center > roi[1] and y_center < roi[1] + roi[2]):
+        if (x_center > roi[0] and x_center < roi[0] + roi[2]) and (y_center > roi[1] and y_center < roi[1] + roi[3]):
             print("Orange Cone in ROI!!")
             #있다
             return False
@@ -103,17 +108,28 @@ def check_gradient(box_list):
     
 
 def plot_center_box(image, roi):
-    
-    image = cv2.rectangle(image, (roi[0], roi[1]), (roi[0] + int(roi[2]/2), roi[1] + roi[2]), [0, 0, 255], thickness=5, lineType=cv2.LINE_AA)
+    '''
+    roi[0] : width 최소
+    roi[1] : height 최소
+    roi[2] : width
+    roi[3] : height
+    '''
+    image = cv2.rectangle(image, (roi[0], roi[1]), (roi[0] + roi[2], roi[1] + roi[3]), [0, 0, 255], thickness=5, lineType=cv2.LINE_AA)
     
     
 def roi_size(image):
     size = image.shape
 
-    y_min = int(size[0] / 3)
-    y_max = int(size[0] / 3 * 2)
-    length = (y_max - y_min)
-    x_min = int(size[1] / 2) + int(length / 2)
-    x_max = x_min + int(length / 2)
+
+    x_min = int(size[1] / 3)
+    x_max = int(size[1] / 3 * 2)
+    width = (x_max - x_min)
     
-    return (x_min, y_min, length)
+    # height
+    y_mid = int(size[0] / 2)
+    y_qt = int(size[0] / 4)
+    
+    y_min = y_mid + y_qt
+    height = y_qt
+    
+    return (x_min, y_min, width, height)

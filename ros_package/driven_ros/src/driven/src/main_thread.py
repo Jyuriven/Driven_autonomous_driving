@@ -128,11 +128,11 @@ def callback_main(g_map):
         goal_y = int((farest[1]+second[1])/2)
 
     else:
-        goal_x = int((farest[0]+second[0]+second[0])/2)
-        goal_y = int((farest[1]+second[1]+second[1])/2)
+        goal_x = int((farest[0]+second[0]+third[0])/2)
+        goal_y = int((farest[1]+second[1]+third[1])/2)
 
     main_map[goal_x][goal_y] = 9
-    
+
     print("################ main map ####################")
     print(f"[manual log] [DECISION] [mainthread.py] MAIN MAP")
     for i in range(50):

@@ -2,4 +2,4 @@
 source_root_dir = '/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src'
 whitelisted_packages = ''.split(';') if '' != '' else []
 blacklisted_packages = ''.split(';') if '' != '' else []
-underlay_workspaces = '/opt/ros/melodic'.split(';') if '/opt/ros/melodic' != '' else []
+underlay_workspaces = '/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/devel;/opt/ros/melodic'.split(';') if '/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/devel;/opt/ros/melodic' != '' else []

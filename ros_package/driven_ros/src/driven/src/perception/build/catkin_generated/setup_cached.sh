@@ -12,5 +12,5 @@ export LD_LIBRARY_PATH="/home/driven/Driven/Driven_autonomous_driving/ros_packag
 export PKG_CONFIG_PATH="/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build'
 export PYTHONPATH="/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/lib/python2.7/dist-packages:$PYTHONPATH"
-export ROSLISP_PACKAGE_DIRECTORIES='/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/common-lisp'
+export ROSLISP_PACKAGE_DIRECTORIES="/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel/share/common-lisp:$ROSLISP_PACKAGE_DIRECTORIES"
 export ROS_PACKAGE_PATH="/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src:$ROS_PACKAGE_PATH"

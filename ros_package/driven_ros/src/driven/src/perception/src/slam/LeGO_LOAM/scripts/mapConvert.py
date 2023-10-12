@@ -114,20 +114,18 @@ class Convert:
             min_list = np.apply_along_axis(lambda a: np.min(a), 0, self.map_point)
             print(f'[manual log] [perception] [mapConvert.py]\nmax point x:{max_list[0]} y;{max_list[1]} z:{max_list[2]}\nmin point x:{min_list[0]} y:{min_list[1]} z:{min_list[2]}')
             
-            # 차의 좌표 _ 거의 (0,0)
-            pose_x = self.key_point[0][0]
-            pose_y = self.key_point[0][1]
-            x_lst_tmp.append(pose_x)
-            y_lst_tmp.append(pose_y)
+            
             
             # 사람으로 추정되는 데이터 인덱스
             people_idx = []
             
             # 이상치와 사람을 필터링
-            for i, point in enumerate(self.map_point):
+            idx = 0
+            for point in self.map_point:
                 map_x = point[0]
                 map_y = point[1]
                 map_z = point[2]
+                
 
                 # 맵에 좌표 맵핑
                 if (abs(map_x) <= filter_size) and (abs(map_y) <= filter_size):
@@ -137,8 +135,16 @@ class Convert:
                     # z축 값을 확인하여 사람 필터링
                     ######## 실험 대상 ########
                     if map_z > 0.70:
-                        people_idx.append(i)
-                    
+                        people_idx.append(idx)
+                    idx += 1
+ 
+
+            # 차의 좌표 _ 거의 (0,0)
+            pose_x = self.key_point[0][0]
+            pose_y = self.key_point[0][1]
+            x_lst_tmp.append(pose_x)
+            y_lst_tmp.append(pose_y)
+
             # 변환 전의 필터링 된 좌표 값
             data_tmp = list(zip(x_lst_tmp, y_lst_tmp))
             data_tmp = np.array(data_tmp)
@@ -153,6 +159,7 @@ class Convert:
             labels = dbscan.fit_predict(data_tmp)
             labels = np.array(labels)
             
+            print(len(data_tmp), np.max(people_idx))
             # 사람인 좌표들을 필터링
             data_tmp, labels = self.people_filtering(data_tmp, labels, people_idx)
             

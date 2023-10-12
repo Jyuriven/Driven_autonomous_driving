@@ -79,6 +79,15 @@ class Convert:
                 
         return cluster_center
     
+    def people_filtering(self, data, labels, people_idx):
+        '''
+        people_idx: data, labels의 인덱스 값인데, z값이 임계치 이상인 좌표들에 대한 인덱스를 모아두었다
+        '''
+        data = np.delete(data, people_idx, axis=0)
+        labels = np.delete(labels, people_idx)
+        
+        return data, labels
+    
     def convert_clustering(self,
                            filter_size = 5.0,
                            map_size = 50,
@@ -103,34 +112,43 @@ class Convert:
             # x, y, z 좌표 값의 최대 최소 값
             max_list = np.apply_along_axis(lambda a: np.max(a), 0, self.map_point)
             min_list = np.apply_along_axis(lambda a: np.min(a), 0, self.map_point)
-            print(f'[manual log] [perception] [mapConvert.py] max point x:{max_list[0]} y;{max_list[1]} z:{max_list[2]}\nmin point x:{min_list[0]} y:{min_list[1]} z:{min_list[2]}')
+            print(f'[manual log] [perception] [mapConvert.py]\nmax point x:{max_list[0]} y;{max_list[1]} z:{max_list[2]}\nmin point x:{min_list[0]} y:{min_list[1]} z:{min_list[2]}')
             
-            # 차의 좌표 _ 거의 (0,0)
-            pose_x = self.key_point[0][0]
-            pose_y = self.key_point[0][1]
-            x_lst_tmp.append(pose_x)
-            y_lst_tmp.append(pose_y)
+            
+            
+            # 사람으로 추정되는 데이터 인덱스
+            people_idx = []
             
             # 이상치와 사람을 필터링
+            idx = 0
             for point in self.map_point:
                 map_x = point[0]
                 map_y = point[1]
                 map_z = point[2]
-            
-                # z축 값을 확인하여 사람 필터링
-                ######## 실험 대상 ########
-                if map_z > 0.70:
-                    #print('[manual log] [perception] [mapConvert.py] People Detected!!')
-                    continue
+                
 
                 # 맵에 좌표 맵핑
                 if (abs(map_x) <= filter_size) and (abs(map_y) <= filter_size):
                     x_lst_tmp.append(map_x)
                     y_lst_tmp.append(map_y)
 
-            # 변환 전의 필터링 된 좌표 값들
+                    # z축 값을 확인하여 사람 필터링
+                    ######## 실험 대상 ########
+                    if map_z > 0.70:
+                        people_idx.append(idx)
+                    idx += 1
+ 
+
+            # 차의 좌표 _ 거의 (0,0)
+            pose_x = self.key_point[0][0]
+            pose_y = self.key_point[0][1]
+            x_lst_tmp.append(pose_x)
+            y_lst_tmp.append(pose_y)
+
+            # 변환 전의 필터링 된 좌표 값
             data_tmp = list(zip(x_lst_tmp, y_lst_tmp))
             data_tmp = np.array(data_tmp)
+            people_idx = np.array(people_idx)
             
             if (abs(pose_x) <= filter_size) and (abs(pose_y) <= filter_size):
                 # x, y 좌표를 grid_map 인덱스로 변환
@@ -139,6 +157,13 @@ class Convert:
 
             # Clustering
             labels = dbscan.fit_predict(data_tmp)
+            labels = np.array(labels)
+            
+            print(len(data_tmp), np.max(people_idx))
+            # 사람인 좌표들을 필터링
+            data_tmp, labels = self.people_filtering(data_tmp, labels, people_idx)
+            
+            # 유일값
             unique_labels = set(labels)
             cluster_center = self.cal_cluster_center(unique_labels, labels, data_tmp)
 
@@ -179,7 +204,6 @@ class Convert:
 
 def main():
 
-    
     rospy.init_node('mapConvert', anonymous=True)
     rate = rospy.Rate(10)
 
@@ -195,4 +219,3 @@ if __name__ == '__main__':
         main()
     except rospy.ROSInterruptException:
         print("[manual log] [perception] [mapConvert.py] ROS Exception")
-        pass

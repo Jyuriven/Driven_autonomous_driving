@@ -103,5 +103,5 @@ class Controller(object):
         print(f"Jetson2Ardu Control DATA ( BRAKE ) : {motion_planner.brake_level}")
         print(f"Jetson2Ardu Control DATA ( STEERING ) : {steering} ")
         #print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
-
-        return int(throttle), int(motion_planner.brake_level), int(steering)
+        
+        return 30, 0, 510

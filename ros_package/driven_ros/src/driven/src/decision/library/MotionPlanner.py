@@ -359,8 +359,8 @@ class MotionPlanner():
                 
                 ###### LiDar 배열의 yaw rate 각 만큼의 회전을 통하여 실제 imu가 바라보고 있는 방향으로의 조향각을 구한다.
                 ###### 만약 값이 이상하다면 now_steer 를 - now steer 로 바꿔야합니다. 
-                goal_x = int(goal_x*math.cos(now_steer) - goal_y*math.sin(now_steer))
-                goal_y =int (goal_x*math.sin(now_steer) + goal_y*math.cos(now_steer))
+                goal_x = int(goal_x*math.cos(-now_steer) - goal_y*math.sin(-now_steer))
+                goal_y =int (goal_x*math.sin(-now_steer) + goal_y*math.cos(-now_steer))
                 
                 radian_point = gradient.calculate_radian(car_x,car_y,goal_x,goal_y)
 

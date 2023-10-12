@@ -72,6 +72,9 @@ class MotionPlanner():
     right_barricade_distance = 0
     front_barricade_distance = 0
 
+    emg = 0
+    stop = 0
+
     '''getter'''
     def get_now_velocity(self):
         roll,pitch,yaw = get_imu()
@@ -328,7 +331,7 @@ class MotionPlanner():
                 ## 0 : 파란색이랑 노란색만 보일 때 
                 ## 1 : 오렌지 콘만 보일 때 
                 ## 2 : ROI 오랜지 콘 들어올 때 
-      
+            now_steer = self.get_now_steering()
             
             if self.isInitPosition_by_gps(0.0000001) or e:
                 self.first_target_steering = 0
@@ -349,8 +352,8 @@ class MotionPlanner():
                                 2-2) 2,0 과 0,0 의 기울기 차이를 구하여 첫번째 스티어링 각으로 설정 
                                 2-3) 4,0 과 2,0 의 기울기 차이를 구하여 두번째 스티어링 각으로 설정함.
                 '''
-                
                 now_steer = self.get_now_steering()
+                
                 
                 ###### LiDar 배열의 yaw rate 각 만큼의 회전을 통하여 실제 imu가 바라보고 있는 방향으로의 조향각을 구한다.
                 ###### 만약 값이 이상하다면 now_steer 를 - now steer 로 바꿔야합니다. 

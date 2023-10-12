@@ -42,7 +42,6 @@ def WGS84toUTMK(n, e):
 
 
 
-global emg,stop
 ### SLAM 을 실행합니다.
 ### --- 상세요구사항
 ### ------ 1. SLAM 이 동작하고 있는것을 디스플레이로 확인할 수 있어야 합니다. < 대회 중 모니터링을 위해 > 
@@ -71,9 +70,9 @@ def main_thread():
     rospy.spin()
    
 def callback_det(det_info):
-    global emg,stop
-    emg = det_info.emg_stop
-    stop = det_info.stop_rate
+    global motion_planner
+    motion_planner.emg = det_info.emg_stop
+    motion_planner.stop = det_info.stop_rate
     
 
 def callback_gps_xy(data):
@@ -95,7 +94,7 @@ def callback_gps_vel(data):
     motion_planner.now_velcity = vehicle_speed_acquired
 
 def callback_main(g_map):
-    global emg,stop
+    global motion_planner
 
     if len(g_map.x_lst) == 0:
         print(f'[manual log] [DECISION] [mainthread.py] None Grid Map')
@@ -147,7 +146,7 @@ def callback_main(g_map):
     print(f"[manual log] [DECISION] [main_thread.py] value1:goal_x:{goal_x},goal_y:{goal_y}")
     global motion_planner
     #motion_planner = motion_planner.motionplanning(path,3)
-    motion_planner = motion_planner.motionplanning_for_point(g_map.car_x,g_map.car_y,goal_x,goal_y,3,emg,stop)
+    motion_planner = motion_planner.motionplanning_for_point(g_map.car_x,g_map.car_y,goal_x,goal_y,3,motion_planner.emg,motion_planner.stop)
     publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)
     publisher_throttle = rospy.Publisher(name="/jet2ard_publisher_throttle",data_class=Int16,queue_size=1)
     publisher_brake = rospy.Publisher(name="/jet2ard_publisher_brake",data_class=Int16,queue_size=1)

@@ -30,7 +30,7 @@ from main_msg.msg import jet2ard
 from main_msg.msg import g_map
 from geometry_msgs.msg import TwistWithCovarianceStamped
 from sensor_msgs.msg import NavSatFix
-
+import numpy as np
 
 
 ### gps additional
@@ -59,6 +59,31 @@ motion_planner = MotionPlanner()
 controller = Controller(220,0,5,505,1320,0.151,5,27)
 
 ## global variance
+
+def rotate_2d_array(array, angle_radians,car_x,car_y):
+    # 배열의 중심을 찾습니다
+    center_x = car_x
+    center_y = car_y
+
+    # 회전 변환 행렬을 생성합니다
+    rotation_matrix = np.array([[math.cos(angle_radians), -math.sin(angle_radians)],
+                                [math.sin(angle_radians), math.cos(angle_radians)]])
+
+    # 회전된 배열을 저장할 빈 배열을 생성합니다
+    rotated_array = np.zeros(array.shape, dtype=array.dtype)
+
+    # 각 픽셀을 회전하여 새 배열에 배치합니다
+    for y in range(array.shape[0]):
+        for x in range(array.shape[1]):
+            new_x, new_y = np.dot(rotation_matrix, np.array([x - center_x, y - center_y]))
+            new_x, new_y = int(new_x + center_x), int(new_y + center_y)
+            if 0 <= new_x < array.shape[1] and 0 <= new_y < array.shape[0]:
+                rotated_array[new_y, new_x] = array[y, x]
+
+    return rotated_array
+
+
+
 
 def main_thread():
     rospy.init_node("jet2ard_publisher")
@@ -108,8 +133,12 @@ def callback_main(g_map):
 # main_map[map.car_x][map.car_y] = 7
     main_map[g_map.car_x][g_map.car_y] = 7
     
-
-    farest,second,third = farest_distance_point(main_map,g_map.car_x,g_map.car_y)
+    rotate = np.array(main_map)
+    angle_in_degree = motion_planner.get_now_steering()
+    angle_in_radians = math.radians(-angle_in_degree)
+    rotate_array = rotate_2d_array(rotate)
+    rotate_array.tolist()
+    farest,second,third = farest_distance_point(rotate_array,g_map.car_x,g_map.car_y)
     
     
     
@@ -129,17 +158,17 @@ def callback_main(g_map):
         goal_x = int((farest[0]+second[0]+third[0])/3)
         goal_y = int((farest[1]+second[1]+third[1])/3)
 
-    main_map[goal_x][goal_y] = 9
+    rotate_array[goal_x][goal_y] = 9
 
     print("################ main map ####################")
     print(f"[manual log] [DECISION] [mainthread.py] MAIN MAP")
     for i in range(50):
         for j in range(50):
-            if main_map[i][j]==0:
+            if rotate_array[i][j]==0:
                 print(' ',end = '')
                 
             else:
-                print(main_map[i][j], end = ' ')
+                print(rotate_array[i][j], end = ' ')
         print()
                 
     print(f"[manual log] [DECISION] [main_thread.py] value1:map.car_x:{g_map.car_x},value2 map.car_y:{g_map.car_y}")

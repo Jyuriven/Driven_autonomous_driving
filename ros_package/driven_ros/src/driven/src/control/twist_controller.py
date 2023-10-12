@@ -99,9 +99,9 @@ class Controller(object):
         #         brake = abs(decel) * self.vehicle_mass * self.wheel_radius  # Torque (N*m)
         
 
-        print(f"Jetson2Ardu Control DATA ( THROTTLE ) : {throttle}")
+        print(f"Jetson2Ardu Control DATA ( THROTTLE ) : {throttle+60}")
         print(f"Jetson2Ardu Control DATA ( BRAKE ) : {motion_planner.brake_level}")
-        print(f"Jetson2Ardu Control DATA ( STEERING ) : {steering} ")
+        print(f"Jetson2Ardu Control DATA ( STEERING ) : {steering + 190} ")
         #print("Jetson2Ardu Control DATA ( BREAK MOTOR START TIME ) : %f",start_time )
         
-        return int(throttle), int(motion_planner.brake_level), int(steering + 180)
+        return int(throttle + 60), int(motion_planner.brake_level), int(steering + 190)

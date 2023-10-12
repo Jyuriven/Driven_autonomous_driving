@@ -20,12 +20,14 @@ def farest_distance_point(main_map,x,y):
     # 거리에 따라 장애물을 정렬합니다.
     obstacles.sort(key=lambda x: x[1], reverse=True)
 
-    if len(obstacles) >= 2:
-        return obstacles[0][0], obstacles[1][0]
+    if len(obstacles) >= 3:
+        return obstacles[0][0], obstacles[1][0], obstacles[2][0]
+    elif len(obstacles) == 2:
+        return obstacles[0][0], obstacles[1][0], None
     elif len(obstacles) == 1:
-        return obstacles[0][0], None
+        return obstacles[0][0], None, None
     else:
-        return None, None
+        return None, None,None
 
     '''
     for i in range(50):

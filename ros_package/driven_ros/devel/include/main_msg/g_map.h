@@ -39,10 +39,10 @@ struct g_map_
 
 
 
-   typedef std::vector<int16_t, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<int16_t>> _x_lst_type;
+   typedef std::vector<int64_t, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<int64_t>> _x_lst_type;
   _x_lst_type x_lst;
 
-   typedef std::vector<int16_t, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<int16_t>> _y_lst_type;
+   typedef std::vector<int64_t, typename std::allocator_traits<ContainerAllocator>::template rebind_alloc<int64_t>> _y_lst_type;
   _y_lst_type y_lst;
 
    typedef int16_t _car_x_type;
@@ -140,12 +140,12 @@ struct MD5Sum< ::main_msg::g_map_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "97eb6427ffcca94f25feb3e4b16337f3";
+    return "841c3629304d075e0a764e23d33792d5";
   }
 
   static const char* value(const ::main_msg::g_map_<ContainerAllocator>&) { return value(); }
-  static const uint64_t static_value1 = 0x97eb6427ffcca94fULL;
-  static const uint64_t static_value2 = 0x25feb3e4b16337f3ULL;
+  static const uint64_t static_value1 = 0x841c3629304d075eULL;
+  static const uint64_t static_value2 = 0x0a764e23d33792d5ULL;
 };
 
 template<class ContainerAllocator>
@@ -164,8 +164,8 @@ struct Definition< ::main_msg::g_map_<ContainerAllocator> >
 {
   static const char* value()
   {
-    return "int16[] x_lst\n"
-"int16[] y_lst\n"
+    return "int64[] x_lst\n"
+"int64[] y_lst\n"
 "int16 car_x\n"
 "int16 car_y\n"
 ;
@@ -212,13 +212,13 @@ struct Printer< ::main_msg::g_map_<ContainerAllocator> >
     for (size_t i = 0; i < v.x_lst.size(); ++i)
     {
       s << indent << "  x_lst[" << i << "]: ";
-      Printer<int16_t>::stream(s, indent + "  ", v.x_lst[i]);
+      Printer<int64_t>::stream(s, indent + "  ", v.x_lst[i]);
     }
     s << indent << "y_lst[]" << std::endl;
     for (size_t i = 0; i < v.y_lst.size(); ++i)
     {
       s << indent << "  y_lst[" << i << "]: ";
-      Printer<int16_t>::stream(s, indent + "  ", v.y_lst[i]);
+      Printer<int64_t>::stream(s, indent + "  ", v.y_lst[i]);
     }
     s << indent << "car_x: ";
     Printer<int16_t>::stream(s, indent + "  ", v.car_x);

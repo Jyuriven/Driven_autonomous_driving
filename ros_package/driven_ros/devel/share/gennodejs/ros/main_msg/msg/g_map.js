@@ -54,9 +54,9 @@ class g_map {
   static serialize(obj, buffer, bufferOffset) {
     // Serializes a message object of type g_map
     // Serialize message field [x_lst]
-    bufferOffset = _arraySerializer.int16(obj.x_lst, buffer, bufferOffset, null);
+    bufferOffset = _arraySerializer.int64(obj.x_lst, buffer, bufferOffset, null);
     // Serialize message field [y_lst]
-    bufferOffset = _arraySerializer.int16(obj.y_lst, buffer, bufferOffset, null);
+    bufferOffset = _arraySerializer.int64(obj.y_lst, buffer, bufferOffset, null);
     // Serialize message field [car_x]
     bufferOffset = _serializer.int16(obj.car_x, buffer, bufferOffset);
     // Serialize message field [car_y]
@@ -69,9 +69,9 @@ class g_map {
     let len;
     let data = new g_map(null);
     // Deserialize message field [x_lst]
-    data.x_lst = _arrayDeserializer.int16(buffer, bufferOffset, null)
+    data.x_lst = _arrayDeserializer.int64(buffer, bufferOffset, null)
     // Deserialize message field [y_lst]
-    data.y_lst = _arrayDeserializer.int16(buffer, bufferOffset, null)
+    data.y_lst = _arrayDeserializer.int64(buffer, bufferOffset, null)
     // Deserialize message field [car_x]
     data.car_x = _deserializer.int16(buffer, bufferOffset);
     // Deserialize message field [car_y]
@@ -81,8 +81,8 @@ class g_map {
 
   static getMessageSize(object) {
     let length = 0;
-    length += 2 * object.x_lst.length;
-    length += 2 * object.y_lst.length;
+    length += 8 * object.x_lst.length;
+    length += 8 * object.y_lst.length;
     return length + 12;
   }
 
@@ -93,16 +93,17 @@ class g_map {
 
   static md5sum() {
     //Returns md5sum for a message object
-    return '97eb6427ffcca94f25feb3e4b16337f3';
+    return '841c3629304d075e0a764e23d33792d5';
   }
 
   static messageDefinition() {
     // Returns full string definition for message
     return `
-    int16[] x_lst
-    int16[] y_lst
+    int64[] x_lst
+    int64[] y_lst
     int16 car_x
     int16 car_y
+    
     `;
   }
 

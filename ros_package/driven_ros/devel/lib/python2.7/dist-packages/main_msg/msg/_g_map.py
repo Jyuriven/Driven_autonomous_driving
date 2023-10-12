@@ -8,15 +8,16 @@ import struct
 
 
 class g_map(genpy.Message):
-  _md5sum = "97eb6427ffcca94f25feb3e4b16337f3"
+  _md5sum = "841c3629304d075e0a764e23d33792d5"
   _type = "main_msg/g_map"
   _has_header = False  # flag to mark the presence of a Header object
-  _full_text = """int16[] x_lst
-int16[] y_lst
+  _full_text = """int64[] x_lst
+int64[] y_lst
 int16 car_x
-int16 car_y"""
+int16 car_y
+"""
   __slots__ = ['x_lst','y_lst','car_x','car_y']
-  _slot_types = ['int16[]','int16[]','int16','int16']
+  _slot_types = ['int64[]','int64[]','int16','int16']
 
   def __init__(self, *args, **kwds):
     """
@@ -63,11 +64,11 @@ int16 car_y"""
     try:
       length = len(self.x_lst)
       buff.write(_struct_I.pack(length))
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       buff.write(struct.Struct(pattern).pack(*self.x_lst))
       length = len(self.y_lst)
       buff.write(_struct_I.pack(length))
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       buff.write(struct.Struct(pattern).pack(*self.y_lst))
       _x = self
       buff.write(_get_struct_2h().pack(_x.car_x, _x.car_y))
@@ -86,7 +87,7 @@ int16 car_y"""
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       start = end
       s = struct.Struct(pattern)
       end += s.size
@@ -94,7 +95,7 @@ int16 car_y"""
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       start = end
       s = struct.Struct(pattern)
       end += s.size
@@ -117,11 +118,11 @@ int16 car_y"""
     try:
       length = len(self.x_lst)
       buff.write(_struct_I.pack(length))
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       buff.write(self.x_lst.tostring())
       length = len(self.y_lst)
       buff.write(_struct_I.pack(length))
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       buff.write(self.y_lst.tostring())
       _x = self
       buff.write(_get_struct_2h().pack(_x.car_x, _x.car_y))
@@ -141,19 +142,19 @@ int16 car_y"""
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       start = end
       s = struct.Struct(pattern)
       end += s.size
-      self.x_lst = numpy.frombuffer(str[start:end], dtype=numpy.int16, count=length)
+      self.x_lst = numpy.frombuffer(str[start:end], dtype=numpy.int64, count=length)
       start = end
       end += 4
       (length,) = _struct_I.unpack(str[start:end])
-      pattern = '<%sh'%length
+      pattern = '<%sq'%length
       start = end
       s = struct.Struct(pattern)
       end += s.size
-      self.y_lst = numpy.frombuffer(str[start:end], dtype=numpy.int16, count=length)
+      self.y_lst = numpy.frombuffer(str[start:end], dtype=numpy.int64, count=length)
       _x = self
       start = end
       end += 4

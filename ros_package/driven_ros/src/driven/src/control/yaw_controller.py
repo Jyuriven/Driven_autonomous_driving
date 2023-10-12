@@ -19,7 +19,8 @@ class YawController(object):
 		
     def get_steering(self, current_velocity, linear_velocity, angular):
         print(f"[manual log] [CONTROL] [yaw_controller.py] current velocity : {current_velocity} linear_velocity :{linear_velocity} angular : {angular}")
-
+        if current_velocity == 0:
+            current_velocity =1
         if angular == 0:
              return 0
         

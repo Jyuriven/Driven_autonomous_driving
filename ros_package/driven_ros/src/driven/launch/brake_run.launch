@@ -3,7 +3,7 @@
   <!-- 아두이노 노드 실행 -->
   <node pkg="rosserial_python" type="serial_node.py" name="ard_brake_node" output="screen">
     <!-- 아두이노 포트 및 통신 속도 설정 -->
-    <param name="port" value="/dev/ttyACM1" />
+    <param name="port" value="/dev/ttyACM2" />
     <param name="baud" value="57600" />
   </node>
 

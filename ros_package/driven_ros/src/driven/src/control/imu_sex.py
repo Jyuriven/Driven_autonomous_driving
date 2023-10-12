@@ -17,7 +17,8 @@ def quat_to_euler(x, y, z, w):
 
 
 def get_imu():
-    ser = serial.Serial(port='/dev/ttyUSB0', baudrate=9126000)
+    print("imu connecting....")
+    ser = serial.Serial(port='/dev/ttyUSB0', baudrate=912600)
     line = ser.readline()
     print(line)
     words = line.decode('utf-8').split(",")

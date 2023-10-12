@@ -159,9 +159,10 @@ class Convert:
             labels = dbscan.fit_predict(data_tmp)
             labels = np.array(labels)
             
-            # 사람인 좌표들을 필터링
-            data_tmp, labels = self.people_filtering(data_tmp, labels, people_idx)
-            
+            if people_idx.size is not 0:
+                # 사람인 좌표들을 필터링
+                data_tmp, labels = self.people_filtering(data_tmp, labels, people_idx)
+                
             # 유일값
             unique_labels = set(labels)
             cluster_center = self.cal_cluster_center(unique_labels, labels, data_tmp)

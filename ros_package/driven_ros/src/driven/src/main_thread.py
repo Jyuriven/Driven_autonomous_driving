@@ -137,8 +137,8 @@ def callback_main(g_map):
     angle_in_degree = motion_planner.get_now_steering()
     angle_in_radians = math.radians(-angle_in_degree)
     rotate_array = rotate_2d_array(rotate)
-    rotate_array.tolist()
-    farest,second,third = farest_distance_point(rotate_array,g_map.car_x,g_map.car_y)
+    rotated_array = rotate_array.tolist()
+    farest,second,third = farest_distance_point(rotated_array,g_map.car_x,g_map.car_y)
     
     
     
@@ -158,7 +158,7 @@ def callback_main(g_map):
         goal_x = int((farest[0]+second[0]+third[0])/3)
         goal_y = int((farest[1]+second[1]+third[1])/3)
 
-    rotate_array[goal_x][goal_y] = 9
+    rotated_array[goal_x][goal_y] = 9
 
     print("################ main map ####################")
     print(f"[manual log] [DECISION] [mainthread.py] MAIN MAP")

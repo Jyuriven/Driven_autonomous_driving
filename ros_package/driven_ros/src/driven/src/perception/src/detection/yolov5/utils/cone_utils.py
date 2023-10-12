@@ -85,7 +85,7 @@ def roi_oragne_cone(box_list, roi):
         x_center = int((x_min + x_max) / 2)
         y_center = int((y_min + y_max) / 2)
         
-        if (x_center > roi[0] and x_center < roi[0] + roi[2]) and (y_center > roi[1] and y_center < roi[1] + roi[2]):
+        if (x_center > roi[0] and x_center < roi[0] + int(roi[2]/2)) and (y_center > roi[1] and y_center < roi[1] + roi[2]):
             print("Orange Cone in ROI!!")
             #있다
             return False
@@ -104,7 +104,7 @@ def check_gradient(box_list):
 
 def plot_center_box(image, roi):
     
-    image = cv2.rectangle(image, (roi[0], roi[1]), (roi[0] + roi[2], roi[1] + roi[2]), [0, 0, 255], thickness=5, lineType=cv2.LINE_AA)
+    image = cv2.rectangle(image, (roi[0], roi[1]), (roi[0] + int(roi[2]/2), roi[1] + roi[2]), [0, 0, 255], thickness=5, lineType=cv2.LINE_AA)
     
     
 def roi_size(image):
@@ -113,7 +113,7 @@ def roi_size(image):
     y_min = int(size[0] / 3)
     y_max = int(size[0] / 3 * 2)
     length = (y_max - y_min)
-    x_min = int(size[1] / 2) - int(length / 2)
-    x_max = x_min + length
+    x_min = int(size[1] / 2) + int(length / 2)
+    x_max = x_min + int(length / 2)
     
     return (x_min, y_min, length)

@@ -111,7 +111,7 @@ def callback_main(g_map):
     main_map[g_map.car_x][g_map.car_y] = 7
     
 
-    farest,second = farest_distance_point(main_map,g_map.car_x,g_map.car_y)
+    farest,second,third = farest_distance_point(main_map,g_map.car_x,g_map.car_y)
     
     
     
@@ -123,9 +123,13 @@ def callback_main(g_map):
     
     print(f"[manual log] [DECISION] [mainthread.py] value1:Counting barricade : {len(g_map.x_lst)}, {len(g_map.y_lst)}")
     
-    
-    goal_x = int((farest[0]+second[0])/2)
-    goal_y = int((farest[1]+second[1])/2)
+    if third==None:
+        goal_x = int((farest[0]+second[0])/2)
+        goal_y = int((farest[1]+second[1])/2)
+
+    else:
+        goal_x = int((farest[0]+second[0]+second[0])/2)
+        goal_y = int((farest[1]+second[1]+second[1])/2)
 
     print("################ main map ####################")
     print(f"[manual log] [DECISION] [mainthread.py] MAIN MAP")

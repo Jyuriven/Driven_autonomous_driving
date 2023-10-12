@@ -358,6 +358,9 @@ class MotionPlanner():
                 goal_y =int (goal_x*math.sin(now_steer) + goal_y*math.cos(now_steer))
                 
                 radian_point = gradient.calculate_radian(car_x,car_y,goal_x,goal_y)
+
+                print(f"[manual log] [DECISION] [MotionPlanner.py] [ Motion Planning ] radian_ : {radian_point}")
+
                 target_degree =  gradient.rad2deg(radian_point)
                 
                 print(f"[manual log] [DECISION] [MotionPlanner.py] [ Motion Planning ] target_degree : {target_degree}")
@@ -365,7 +368,8 @@ class MotionPlanner():
                 #self.first_target_steering = target_degree - self.get_now_steering()
                 #self.first_target_steering = target_degree - self.get_now_steering()
                 
-                self.first_target_steering = int(target_degree) - now_steer
+                self.first_target_steering = int(target_degree) - int(now_steer)
+
                 print(f"[manual log] [DECISION] [MotionPlanner.py] [Motion Planning] first_target_steering {self.first_target_steering}")
                 self.now_steering = self.first_target_steering
                 self.first_target_velocity = 10

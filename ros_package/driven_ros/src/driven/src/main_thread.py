@@ -144,7 +144,7 @@ def callback_main(g_map):
                 
     print(f"[manual log] [DECISION] [main_thread.py] value1:map.car_x:{g_map.car_x},value2 map.car_y:{g_map.car_y}")
     print(f"[manual log] [DECISION] [main_thread.py] value1:goal_x:{goal_x},goal_y:{goal_y}")
-    global motion_planner
+    
     #motion_planner = motion_planner.motionplanning(path,3)
     motion_planner = motion_planner.motionplanning_for_point(g_map.car_x,g_map.car_y,goal_x,goal_y,3,motion_planner.emg,motion_planner.stop)
     publisher = rospy.Publisher(name="jet2ard_publisher",data_class=jet2ard,queue_size=1)

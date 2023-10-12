@@ -136,7 +136,7 @@ def callback_main(g_map):
     rotate = np.array(main_map)
     angle_in_degree = motion_planner.get_now_steering()
     angle_in_radians = math.radians(-angle_in_degree)
-    rotate_array = rotate_2d_array(rotate,g_map.car_x,g_map.car_y)
+    rotate_array = rotate_2d_array(rotate,angle_in_radians,g_map.car_x,g_map.car_y)
     rotated_array = rotate_array.tolist()
     farest,second,third = farest_distance_point(rotated_array,g_map.car_x,g_map.car_y)
     

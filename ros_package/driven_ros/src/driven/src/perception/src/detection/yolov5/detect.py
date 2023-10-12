@@ -31,7 +31,7 @@ class YoloDetection:
         self.red_stop=9, # 오렌지콘 개수 임계치 for 최종 감속
         self.weights='/home/driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/weights/best.pt', # 가중치 경로
         self.source='0', # 0 이면 웹캠, 데이터 경로
-        self.imgsz=640,
+        self.imgsz=320,
         self.conf_thres=0.5,
         self.iou_thres=0.45,
         self.device='',
@@ -56,7 +56,7 @@ class YoloDetection:
         self.red_stop=9
         self.weights='/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/src/detection/yolov5/weights/best.pt'
         self.source='0'
-        self.imgsz=640
+        self.imgsz=320
         self.conf_thres=0.5
         self.iou_thres=0.45
         self.device=''

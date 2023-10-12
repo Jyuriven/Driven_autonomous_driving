@@ -72,8 +72,8 @@ def main_thread():
    
 def callback_det(det_info):
     global emg,stop
-    emg = det_info.emg
-    stop = det_info.stop
+    emg = det_info.emg_stop
+    stop = det_info.stop_rate
     
 
 def callback_gps_xy(data):

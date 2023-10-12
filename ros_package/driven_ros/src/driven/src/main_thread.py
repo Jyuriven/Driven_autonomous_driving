@@ -128,8 +128,8 @@ def callback_main(g_map):
         goal_y = int((farest[1]+second[1])/2)
 
     else:
-        goal_x = int((farest[0]+second[0]+third[0])/2)
-        goal_y = int((farest[1]+second[1]+third[1])/2)
+        goal_x = int((farest[0]+second[0]+third[0])/3)
+        goal_y = int((farest[1]+second[1]+third[1])/3)
 
     main_map[goal_x][goal_y] = 9
 

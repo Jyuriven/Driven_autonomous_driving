@@ -82,6 +82,7 @@ class MotionPlanner():
     def get_now_steering(self):
         roll,pitch,yaw = get_imu()
         self.now_steering = yaw
+        print(f"[manual log] [DECISION] [MotionPlanner.py] [get_now_steeering] YAW : {yaw}")
         return self.now_steering
     
     def get_now_yawrate(self):
@@ -327,8 +328,7 @@ class MotionPlanner():
                 ## 0 : 파란색이랑 노란색만 보일 때 
                 ## 1 : 오렌지 콘만 보일 때 
                 ## 2 : ROI 오랜지 콘 들어올 때 
-            s=0
-            ##gps 
+      
             
             if self.isInitPosition_by_gps(0.0000001) or e:
                 self.first_target_steering = 0

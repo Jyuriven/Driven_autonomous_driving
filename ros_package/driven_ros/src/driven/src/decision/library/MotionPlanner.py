@@ -80,8 +80,8 @@ class MotionPlanner():
         return self.now_velocity
     
     def get_now_steering(self):
-        #roll,pitch,yaw = get_imu()
-        #self.now_steering = yaw
+        roll,pitch,yaw = get_imu()
+        self.now_steering = yaw
         return self.now_steering
     
     def get_now_yawrate(self):

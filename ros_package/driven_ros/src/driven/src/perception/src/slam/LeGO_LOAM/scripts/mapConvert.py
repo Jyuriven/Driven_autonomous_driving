@@ -159,7 +159,6 @@ class Convert:
             labels = dbscan.fit_predict(data_tmp)
             labels = np.array(labels)
             
-            print(len(data_tmp), np.max(people_idx))
             # 사람인 좌표들을 필터링
             data_tmp, labels = self.people_filtering(data_tmp, labels, people_idx)
             

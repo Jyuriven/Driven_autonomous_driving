@@ -324,7 +324,9 @@ class MotionPlanner():
     #---미완성코드---
     ## 우리 차가 초기 위치로 돌아왔냐 ? --- 
         try:
-        
+            print(s)
+            s=0
+            
             #print(f'crash: {e}, stop sign: {s}')
             #### e : 벽에 박을 것 같을 때 사용하는 변수 현재 3
             #### s : 정지 신호 

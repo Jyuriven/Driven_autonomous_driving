@@ -63,13 +63,13 @@ def red_cone_stop(image, box_list, color_list, roi, red_stop):
     ### 통과되면 모든 콘은 Orange
     
     # 2. ROI영역에 Orange 콘이 안들어오면 : 화면의 중앙 부근에 주황콘이 보이지 않으면 아직 최종 경로에 도착하지는 못한 상태라 판단
-    if roi_oragne_cone(box_list, roi):
-        return 1
+    # if roi_oragne_cone(box_list, roi):
+    #     return 2
 
-    # 2통과시
-    # 3. 빨간 콘의 개수
-    if len(color_list) < red_stop:
-        return 1
+    # # 2통과시
+    # # 3. 빨간 콘의 개수
+    # if len(color_list) < red_stop:
+    #     return 2
     
     # 4. 기울기 테스트 : 좌측 최하단 박스와 우측 최상단 박스의 좌표를 통해 기울기를 계산하여 기울기가 임게치보다 크면 사이드에 콘이 있는 경우이므로 아직 도달 못한 상태라 판단
     

@@ -2,5 +2,8 @@
 *.pyc
 DS_Store
 .venv
-build/*
-devel/*
+~/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/build
+~/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/perception/devel
+~/Driven_autonomous_driving/ros_package/driven_ros/devel
+~/Driven_autonomous_driving/ros_package/driven_ros/build
+*.bag

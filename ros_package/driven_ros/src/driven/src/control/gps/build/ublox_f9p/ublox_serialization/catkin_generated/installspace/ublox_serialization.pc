@@ -1,0 +1,8 @@
+prefix=/home/driven/Driven/Driven_autonomous_driving/ros_package/driven_ros/src/driven/src/control/gps/install
+
+Name: ublox_serialization
+Description: Description of ublox_serialization
+Version: 1.1.2
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: roscpp roscpp_serialization

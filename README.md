@@ -42,8 +42,8 @@ End-to-End ROS Melodic System / 3 package / 8 Node
 		├ 📂 devel
 		├ 📂 build
 		⎣ 📂 src
-				⏐
-				├ 📂 driven(pkg)
+		⏐
+		├ 📂 driven(pkg)
 		        ├ 📂 include(cpp)
 				⏐   ├ 📄 CMakeList.txt
 				⏐   ├ 📄 package.xml
@@ -65,18 +65,18 @@ End-to-End ROS Melodic System / 3 package / 8 Node
 ``` html
 
 📂 driven ( code )
-		⏐
-		├ 📂 Perception
+	⏐
+	├ 📂 Perception
         ⏐   ├ 📂 src(python)
         |   
-		├ 📂 Decision
+	├ 📂 Decision
         |  ├ 📂 src(python) 	
         |  ⏐ 📄 main_thread.py
         |   
-		⎣ 📂 Control
-		   ⏐
-		   ├ 📂 src(python)
-		   ⏐   ⏐ 📄 main_thread.py
+	⎣ 📂 Control
+	   ⏐
+	   ├ 📂 src(python)
+	   ⏐   ⏐ 📄 main_thread.py
 
 ```
 

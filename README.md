@@ -87,6 +87,14 @@ End-to-End ROS Melodic System / 3 package / 8 Node
 #### Perception
 
 #### Decision
+```shell
+
+cd driven_ros_final
+source devel/setup.bash
+cd driven_ros_final/src/driven/src
+rosrun driven main_thraed.py
+
+```
 
 #### Control
 

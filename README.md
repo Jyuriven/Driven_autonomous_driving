@@ -98,16 +98,16 @@ rosrun driven main_thraed.py
 
 #### Control
 
-'''terminal
+```terminal
 cd driven_ros_final/src/driven/src/Control/gps
 source devel/setup.bash
 roslaunch ntrip_ros ntrip_ros.launch
-'''
-'''next_terminal
+```
+```next_terminal
 cd driven_ros_final/src/driven/src/Control/gps
 sudo chmod 777 /dev/tty*
 roslaunch ublox_gps ublox_device.launch
-'''
+```
 
 ## 환경
 ```ruby

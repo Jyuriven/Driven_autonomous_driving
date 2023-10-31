@@ -26,8 +26,8 @@
 |         | lavacone_detect(yolo) |용재|
 |Decision| PATH PLANNING |태정|
 |         | Motion Planning |태정|
-|Control| Steering calculation |재민|
-|       | Velocity calculation |재민|
+|Control| Steering calculation |재민,민석|
+|       | Velocity calculation |재민,민석석|
 |Communication| Autonomous System Platfrom |용재,태정|
 |Main Process (Node)| Main Process |태정|
 |Project Manager |  - | 태정 |
@@ -97,6 +97,17 @@ rosrun driven main_thraed.py
 ```
 
 #### Control
+
+'''terminal
+cd driven_ros_final/src/driven/src/Control/gps
+source devel/setup.bash
+roslaunch ntrip_ros ntrip_ros.launch
+'''
+'''next_terminal
+cd driven_ros_final/src/driven/src/Control/gps
+sudo chmod 777 /dev/tty*
+roslaunch ublox_gps ublox_device.launch
+'''
 
 ## 환경
 ```ruby

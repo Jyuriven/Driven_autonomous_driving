@@ -27,7 +27,7 @@
 |Decision| PATH PLANNING |태정|
 |         | Motion Planning |태정|
 |Control| Steering calculation |재민,민석|
-|       | Velocity calculation |재민,민석석|
+|       | Velocity calculation |재민,민석|
 |Communication| Autonomous System Platfrom |용재,태정|
 |Main Process (Node)| Main Process |태정|
 |Project Manager |  - | 태정 |
@@ -98,12 +98,12 @@ rosrun driven main_thraed.py
 
 #### Control
 
-```terminal
+```shell
 cd driven_ros_final/src/driven/src/Control/gps
 source devel/setup.bash
 roslaunch ntrip_ros ntrip_ros.launch
 ```
-```next_terminal
+```shell
 cd driven_ros_final/src/driven/src/Control/gps
 sudo chmod 777 /dev/tty*
 roslaunch ublox_gps ublox_device.launch
@@ -140,7 +140,7 @@ python2.6
 | ROS 는 뭘까 ?  
 
 | ROS 는 어떻게 선택해야 할까 ?
-
+[자율주행팀 Notion_필요한 장비들](https://www.notion.so/h17/9bfefa9d0ba44e9199b07d39eb6ee41b?v=936de2c730ed45488be9400a9b3292d7&pvs=4)
 | Driven 이 ROS 를 사용하며 겪었던 문제들  
 * ROS package 에 의존성을 추가하는 것은 어떻게 해야할까?
 * 한개의 노드에서 여러개의 센서를 한번에 받아 작업하는 것은 구조가 어떻게 되는걸까 ?

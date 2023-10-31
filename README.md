@@ -117,8 +117,8 @@ Hardware
 main_computer : Jetson Xavier AGX H01 <bender>
 camera :
 lidar : Velodyne puck
-gps :
-imu :
+gps : Ublox ZED-F9P-01B
+imu : EBIMU24GV5.2, EBRCV24GV5
 
 
 Software

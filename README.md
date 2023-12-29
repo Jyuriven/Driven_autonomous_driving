@@ -157,8 +157,8 @@ roslaunch ublox_gps ublox_device.launch
 
 Hardware
 ---
-main_computer : Jetson Xavier AGX H01 <bender>
-camera :
+main_computer : Jetson Xavier AGX H01 <bender: seeed>
+camera : __
 lidar : Velodyne puck 16 channel
 gps : Ublox ZED-F9P-01B
 imu : EBIMU24GV5.2, EBRCV24GV5
